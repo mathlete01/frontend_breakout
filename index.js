@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", (event) => {
 
   const leaderboard = document.getElementById("leaderboard")
-  //const players = []
+  //const form = document.getElementById("form")
+  
 
     fetch("http://localhost:3000/players")
       .then((res) => res.json())
@@ -10,6 +11,24 @@ document.addEventListener("DOMContentLoaded", (event) => {
         makeLeaderboard(players)
       })
 
+    function renderForm() {
+      // build all elements with createElement
+      // OR build it like Lantz with a big string
+      const form = document.getElementById("form")
+
+      form.innerHTML =
+          `
+              <input id="name"></input>
+              <br>
+              <button class='btn-submit'>Submit</button>
+          `
+      const submitButton = form.querySelector('.btn-submit')
+      submitButton.addEventListener('click', () => submitName())
+  }
+
+
+    renderForm()
+    
     function makeLeaderboard(arr){
       let ul = document.createElement("ul")
       for(element of arr){
