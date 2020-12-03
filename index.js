@@ -124,17 +124,25 @@ document.addEventListener("DOMContentLoaded", (event) => {
       leaderboard.append(ol)
     }
 
+    // GAME CODE
+
+    // Variable Declariations
     const canvas = document.getElementById("myCanvas")
     const ctx = canvas.getContext("2d")
     
     let x = canvas.width/2
     let y = canvas.height-30
+    // dx and dy = the incremental x and y movement
     let dx = 2
     let dy = -2
 
+    let ballRadius = 10
+
+    // Methods
+
     function drawBall(){
       ctx.beginPath();
-      ctx.arc(x, y, 10, 0, Math.PI*2);
+      ctx.arc(x, y, ballRadius, 0, Math.PI*2);
       ctx.fillStyle = "black";
       ctx.fill();
       ctx.closePath();
@@ -145,6 +153,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
       drawBall()
       x += dx
       y += dy
+
+      // Make it bounce off the walls
+      if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+        dx = -dx;
+      }
+      if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
+          dy = -dy;
+      }
     }
     setInterval(draw, 10)
 
