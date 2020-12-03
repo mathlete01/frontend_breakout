@@ -182,6 +182,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
         leftPressed = true;
     }
   }
+
+  function collisionDetection() {
+    for(var c=0; c<brickColumnCount; c++) {
+        for(var r=0; r<brickRowCount; r++) {
+            var brickObj = bricks[c][r];
+            if(x > brickObj.x && x < brickObj.x+brickWidth && y > brickObj.y && y < brickObj.y+brickHeight) {
+                dy = -dy;
+            }
+        }
+    }
+}
   
   function keyUpHandler(e) {
       if(e.key == "Right" || e.key == "ArrowRight") {
@@ -213,6 +224,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     drawBall()
     drawPaddle()
     drawBricks()
+    collisionDetection()
     x += dx
     y += dy
 
