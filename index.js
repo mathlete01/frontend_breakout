@@ -172,7 +172,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
   }
 
+  let score = 0
+
 // Methods
+
+  function drawScore(){
+    ctx.font = "16px Arial"
+    ctx.fillStyle = "#0095DD"
+    ctx.fillText("Score: "+ score, 8, 20)
+  }
 
   function keyDownHandler(e) {
     if(e.key == "Right" || e.key == "ArrowRight") {
@@ -191,6 +199,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
               if(x > brickObj.x && x < brickObj.x+brickWidth && y > brickObj.y && y < brickObj.y+brickHeight) {
                   dy = -dy;
                   brickObj.status = 0;
+                  score ++
               }
           }
         }
@@ -228,6 +237,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.clearRect(0,0,canvas.width, canvas.height)
     drawBall()
     drawPaddle()
+    drawScore()
     drawBricks()
     collisionDetection()
     x += dx
