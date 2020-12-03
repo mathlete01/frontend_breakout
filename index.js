@@ -155,6 +155,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
   document.addEventListener("keydown", keyDownHandler, false);
   document.addEventListener("keyup", keyUpHandler, false);
 
+  // Bricks
+  let brickRowCount = 3;
+  let brickColumnCount = 5;
+  let brickWidth = 75;
+  let brickHeight = 20;
+  let brickPadding = 10;
+  let brickOffsetTop = 30;
+  let brickOffsetLeft = 30;
+
+  let bricks = [];
+  for(let c=0; c<brickColumnCount; c++) {
+      bricks[c] = [];
+      for(let r=0; r<brickRowCount; r++) {
+          bricks[c][r] = { x: 0, y: 0 };
+      }
+  }
+
 // Methods
 
   function keyDownHandler(e) {
@@ -165,6 +182,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
         leftPressed = true;
     }
   }
+
+  function collisionDetection() {
+    for(var c=0; c<brickColumnCount; c++) {
+        for(var r=0; r<brickRowCount; r++) {
+            var brickObj = bricks[c][r];
+            if(x > brickObj.x && x < brickObj.x+brickWidth && y > brickObj.y && y < brickObj.y+brickHeight) {
+                dy = -dy;
+            }
+        }
+    }
+}
   
   function keyUpHandler(e) {
       if(e.key == "Right" || e.key == "ArrowRight") {
@@ -174,11 +202,29 @@ document.addEventListener("DOMContentLoaded", (event) => {
           leftPressed = false;
       }
   }
+
+  function drawBricks() {
+    for(var c=0; c<brickColumnCount; c++) {
+        for(var r=0; r<brickRowCount; r++) {
+            var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+            var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+            bricks[c][r].x = brickX;
+            bricks[c][r].y = brickY;
+            ctx.beginPath();
+            ctx.rect(brickX, brickY, brickWidth, brickHeight);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+        }
+    }
+  }
   
   function draw(){
     ctx.clearRect(0,0,canvas.width, canvas.height)
     drawBall()
     drawPaddle()
+    drawBricks()
+    collisionDetection()
     x += dx
     y += dy
 
@@ -186,9 +232,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
     if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
       dx = -dx;
     }
-    if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
-        dy = -dy;
+    if(y + dy < ballRadius) {
+      dy = -dy;
+    } else if(y + dy > canvas.height-ballRadius) {
+        if(x > paddleX && x < paddleX + paddleWidth) {
+            dy = -dy;
+        }
+        else {
+            alert("GAME OVER");
+            document.location.reload();
+            clearInterval(interval);
+        }
     }
+
     if(rightPressed) {
       paddleX += paddleIncrement;
       if (paddleX + paddleWidth > canvas.width){
@@ -201,26 +257,26 @@ document.addEventListener("DOMContentLoaded", (event) => {
           paddleX = 0;
         }
       }
-    }
+  }
 
-    function drawBall(){
-      ctx.beginPath();
-      ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-      ctx.fillStyle = "black";
-      ctx.fill();
-      ctx.closePath();
-    }
+  function drawBall(){
+    ctx.beginPath();
+    ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+    ctx.fillStyle = "black";
+    ctx.fill();
+    ctx.closePath();
+  }
 
-    function drawPaddle() {
-      ctx.beginPath();
-      ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-      ctx.fillStyle = "#0095DD";
-      ctx.fill();
-      ctx.closePath();
-    }
+  function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+  }
 
     
-    setInterval(draw, 10)
+    const interval = setInterval(draw, 10)
 
     // Semitransparant blue stroke rect
     // ctx.beginPath();
@@ -228,6 +284,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
     // ctx.stroke();
     // ctx.closePath();
+
+    // DETECTING KEY PRESSES
 
     const input = document.querySelector('input');
     const log = document.getElementById('log');
