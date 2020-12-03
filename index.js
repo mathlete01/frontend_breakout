@@ -186,9 +186,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
     if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
       dx = -dx;
     }
-    if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
-        dy = -dy;
+    if(y + dy < ballRadius) {
+      dy = -dy;
+    } else if(y + dy > canvas.height-ballRadius) {
+        if(x > paddleX && x < paddleX + paddleWidth) {
+            dy = -dy;
+        }
+        else {
+            alert("GAME OVER");
+            document.location.reload();
+            clearInterval(interval);
+        }
     }
+
     if(rightPressed) {
       paddleX += paddleIncrement;
       if (paddleX + paddleWidth > canvas.width){
@@ -220,7 +230,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
 
     
-    setInterval(draw, 10)
+    const interval = setInterval(draw, 10)
 
     // Semitransparant blue stroke rect
     // ctx.beginPath();
@@ -228,6 +238,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
     // ctx.stroke();
     // ctx.closePath();
+
+    // DETECTING KEY PRESSES
 
     const input = document.querySelector('input');
     const log = document.getElementById('log');
