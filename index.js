@@ -110,35 +110,98 @@ document.addEventListener("DOMContentLoaded", (event) => {
       btnSave.addEventListener('click', () => savePlayer(playername.value))
   }
 
-    renderForm()
-    
-    function makeLeaderboard(arr){
-      console.log(`makeLeaderboard run...`)
-      console.dir(arr)
-      let ol = document.createElement("ol")
-      for(element of arr){
-        let li = document.createElement("li")
-        li.innerText = `${element.name}......${element.score}`
-        ol.append(li)
-      }
-      leaderboard.append(ol)
+  renderForm()
+  
+  function makeLeaderboard(arr){
+    console.log(`makeLeaderboard run...`)
+    console.dir(arr)
+    let ol = document.createElement("ol")
+    for(element of arr){
+      let li = document.createElement("li")
+      li.innerText = `${element.name}......${element.score}`
+      ol.append(li)
     }
+    leaderboard.append(ol)
+  }
 
-    // GAME CODE
+  // GAME CODE
 
-    // Variable Declariations
-    const canvas = document.getElementById("myCanvas")
-    const ctx = canvas.getContext("2d")
-    
-    let x = canvas.width/2
-    let y = canvas.height-30
-    // dx and dy = the incremental x and y movement
-    let dx = 2
-    let dy = -2
+  // Variable Declariations
 
-    let ballRadius = 10
+  // Canvas
+  const canvas = document.getElementById("myCanvas")
+  const ctx = canvas.getContext("2d")
+  
+  let x = canvas.width/2
+  let y = canvas.height-30
 
-    // Methods
+  //Ball
+
+  // dx and dy = the incremental x and y movement
+  let dx = 2
+  let dy = -2
+  let ballRadius = 10
+
+  // Paddle
+  let paddleHeight = 10;
+  let paddleWidth = 75;
+  let paddleX = (canvas.width-paddleWidth) / 2;
+  let paddleIncrement = 7
+
+  
+  // Interactivity
+  let rightPressed = false;
+  let leftPressed = false;
+  document.addEventListener("keydown", keyDownHandler, false);
+  document.addEventListener("keyup", keyUpHandler, false);
+
+// Methods
+
+  function keyDownHandler(e) {
+    if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = true;
+    }
+    else if(e.key == "Left" || e.key == "ArrowLeft") {
+        leftPressed = true;
+    }
+  }
+  
+  function keyUpHandler(e) {
+      if(e.key == "Right" || e.key == "ArrowRight") {
+          rightPressed = false;
+      }
+      else if(e.key == "Left" || e.key == "ArrowLeft") {
+          leftPressed = false;
+      }
+  }
+  
+  function draw(){
+    ctx.clearRect(0,0,canvas.width, canvas.height)
+    drawBall()
+    drawPaddle()
+    x += dx
+    y += dy
+
+    // Make it bounce off the walls
+    if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+      dx = -dx;
+    }
+    if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
+        dy = -dy;
+    }
+    if(rightPressed) {
+      paddleX += paddleIncrement;
+      if (paddleX + paddleWidth > canvas.width){
+        paddleX = canvas.width - paddleWidth;
+      }
+    }
+    else if(leftPressed) {
+        paddleX -= paddleIncrement;
+        if (paddleX < 0){
+          paddleX = 0;
+        }
+      }
+    }
 
     function drawBall(){
       ctx.beginPath();
@@ -148,20 +211,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
       ctx.closePath();
     }
 
-    function draw(){
-      ctx.clearRect(0,0,canvas.width, canvas.height)
-      drawBall()
-      x += dx
-      y += dy
-
-      // Make it bounce off the walls
-      if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
-        dx = -dx;
-      }
-      if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
-          dy = -dy;
-      }
+    function drawPaddle() {
+      ctx.beginPath();
+      ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+      ctx.fillStyle = "#0095DD";
+      ctx.fill();
+      ctx.closePath();
     }
+
+    
     setInterval(draw, 10)
 
     // Semitransparant blue stroke rect
