@@ -1,55 +1,83 @@
 const BASE_URL = "http://localhost:3000"
 const PLAYERS_URL = `${BASE_URL}/players`
 const GAMES_URL = `${BASE_URL}/games`
+//const CURR_PLAYER = "" 
 
 document.addEventListener("DOMContentLoaded", (event) => {
 
   const leaderboard = document.getElementById("leaderboard")
   const form = document.getElementById("form")
 
+  function setCurrentPlayer(obj){
+    console.log(`setCurrentPlayer run...`)
+    console.dir(obj)
+    CURRENT_PLAYER = obj.id
+    //console.log(`CURRENT_PLAYER = ${CURRENT_PLAYER}`)
+  }
+
   function createPlayer(){
-    let formData = {
+    console.log("createPlayer run")
+    let formDataCreate = {
       score: 0,
       lives: 3
     }
 
-    let configObj = {
+    let configObjCreate = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(formDataCreate)
     }
 
-    fetch(PLAYERS_URL, configObj)
+    fetch(PLAYERS_URL, configObjCreate)
         .then(res => res.json())
-        .then(obj => console.log(obj))
+        //.then(obj => console.log(obj))
+        .then(data => setCurrentPlayer(data))
         .catch(errors=>alert(errors))
     
   }
   
-  function savePlayer(target){
-    console.log("target", target)
-    fetch(PLAYERS_URL, {
-        method: 'PATCH', 
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({'trainer_id': target})
-    })
+  function savePlayer(name){
+    console.log(`savePlayer:name = ${name}`)
+    //console.log(`CURRENT_PLAYER = ${CURRENT_PLAYER}`)
+    // console.log(`event.target = ${event.target}`)
+    // console.log(`event.target.playername = ${event.target.playername}`)
+    // console.log(`event.target.playername.value = ${event.target.playername.value}`)
+    let saveData = {
+      id: CURRENT_PLAYER,
+      name: name,
+      score: 100,
+      lives: 0
+    }
+
+    let configObjSave = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(saveData)
+    }
+
+    fetch(PLAYERS_URL, configObjSave)
         .then(res => res.json())
+        .then(obj => console.log(obj))
+        .catch(errors => alert(errors))
+    
   }
 
 
   fetch("http://localhost:3000/players")
     .then((res) => res.json())
     .then(json => {
-      const players = json
-      makeLeaderboard(players)
+      const objs = json
+      makeLeaderboard(objs)
   })
 
   function renderForm() {
+    console.log("renderForm run")
       // build all elements with createElement
       // OR build it like Lantz with a big string
       const form = document.getElementById("form")
@@ -58,31 +86,42 @@ document.addEventListener("DOMContentLoaded", (event) => {
       // form.append
       const btnStart = document.createElement("button")
       btnStart.setAttribute("id", "btn-start")
-      btnStart.innerHTML = "Start Game, yo"
+      btnStart.innerHTML = "Start Game"
       btnStart.addEventListener("click", () => createPlayer())
       const interface = document.getElementById("interface")
       interface.append(btnStart)
 
-      form.innerHTML =
-          `
-              <input id="playername"></input>
-              <br>
-              <button class='btn-submit'>Submit</button>
-          `
-      const submitButton = form.querySelector('.btn-submit')
-      submitButton.addEventListener('click', () => submitName())
+      const playername = document.createElement("input")
+      playername.setAttribute("name", "playername")
+      playername.placeholder = "enter name"
+      const btnSave = document.createElement("button")
+      btnSave.innerText = "Save Game"
+      interface.append(playername)
+      interface.append(btnSave)
+
+      // form.innerHTML =
+      //     `
+      //         <input id="playername"></input>
+      //         <br>
+      //         <button class='btn-submit'>Submit</button>
+      //     `
+      //const btnSave = form.querySelector('.btn-submit')
+      //btnSave.addEventListener('click', (event) => savePlayer(event))
+      btnSave.addEventListener('click', () => savePlayer(playername.value))
   }
 
     renderForm()
     
     function makeLeaderboard(arr){
-      let ul = document.createElement("ul")
+      console.log(`makeLeaderboard run...`)
+      console.dir(arr)
+      let ol = document.createElement("ol")
       for(element of arr){
         let li = document.createElement("li")
         li.innerText = `${element.name}......${element.score}`
-        ul.append(li)
+        ol.append(li)
       }
-      leaderboard.append(ul)
+      leaderboard.append(ol)
     }
 
     const canvas = document.getElementById("myCanvas")
