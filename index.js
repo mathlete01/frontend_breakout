@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   for(let c=0; c<brickColumnCount; c++) {
       bricks[c] = [];
       for(let r=0; r<brickRowCount; r++) {
-          bricks[c][r] = { x: 0, y: 0 };
+          bricks[c][r] = { x: 0, y: 0, status: 1 };
       }
   }
 
@@ -187,9 +187,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     for(var c=0; c<brickColumnCount; c++) {
         for(var r=0; r<brickRowCount; r++) {
             var brickObj = bricks[c][r];
-            if(x > brickObj.x && x < brickObj.x+brickWidth && y > brickObj.y && y < brickObj.y+brickHeight) {
-                dy = -dy;
-            }
+            if(brickObj.status == 1) {
+              if(x > brickObj.x && x < brickObj.x+brickWidth && y > brickObj.y && y < brickObj.y+brickHeight) {
+                  dy = -dy;
+                  brickObj.status = 0;
+              }
+          }
         }
     }
 }
@@ -204,10 +207,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawBricks() {
-    for(var c=0; c<brickColumnCount; c++) {
-        for(var r=0; r<brickRowCount; r++) {
-            var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
-            var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+    for(let c=0; c<brickColumnCount; c++) {
+        for(let r=0; r<brickRowCount; r++) {
+          if(bricks[c][r].status == 1) {
+            let brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+            let brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
             bricks[c][r].x = brickX;
             bricks[c][r].y = brickY;
             ctx.beginPath();
@@ -215,6 +219,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             ctx.fillStyle = "#0095DD";
             ctx.fill();
             ctx.closePath();
+          }
         }
     }
   }
