@@ -155,6 +155,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
   document.addEventListener("keydown", keyDownHandler, false);
   document.addEventListener("keyup", keyUpHandler, false);
 
+  // Bricks
+  let brickRowCount = 3;
+  let brickColumnCount = 5;
+  let brickWidth = 75;
+  let brickHeight = 20;
+  let brickPadding = 10;
+  let brickOffsetTop = 30;
+  let brickOffsetLeft = 30;
+
+  let bricks = [];
+  for(let c=0; c<brickColumnCount; c++) {
+      bricks[c] = [];
+      for(let r=0; r<brickRowCount; r++) {
+          bricks[c][r] = { x: 0, y: 0 };
+      }
+  }
+
 // Methods
 
   function keyDownHandler(e) {
@@ -174,11 +191,28 @@ document.addEventListener("DOMContentLoaded", (event) => {
           leftPressed = false;
       }
   }
+
+  function drawBricks() {
+    for(var c=0; c<brickColumnCount; c++) {
+        for(var r=0; r<brickRowCount; r++) {
+            var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+            var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+            bricks[c][r].x = brickX;
+            bricks[c][r].y = brickY;
+            ctx.beginPath();
+            ctx.rect(brickX, brickY, brickWidth, brickHeight);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+        }
+    }
+  }
   
   function draw(){
     ctx.clearRect(0,0,canvas.width, canvas.height)
     drawBall()
     drawPaddle()
+    drawBricks()
     x += dx
     y += dy
 
@@ -211,23 +245,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
           paddleX = 0;
         }
       }
-    }
+  }
 
-    function drawBall(){
-      ctx.beginPath();
-      ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-      ctx.fillStyle = "black";
-      ctx.fill();
-      ctx.closePath();
-    }
+  function drawBall(){
+    ctx.beginPath();
+    ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+    ctx.fillStyle = "black";
+    ctx.fill();
+    ctx.closePath();
+  }
 
-    function drawPaddle() {
-      ctx.beginPath();
-      ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-      ctx.fillStyle = "#0095DD";
-      ctx.fill();
-      ctx.closePath();
-    }
+  function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+  }
 
     
     const interval = setInterval(draw, 10)
