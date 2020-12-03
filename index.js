@@ -145,6 +145,15 @@ let brickHeight = 20;
 let brickPadding = 10;
 let brickOffsetTop = 30;
 let brickOffsetLeft = 30;
+//
+let keySegments = 15
+
+// let keyboards = {
+//   macbook: {
+//     row0: [],
+//     row1: []
+//   },
+//
 let score = 0;
 let lives = 3
 
@@ -155,18 +164,48 @@ for(let c=0; c<brickColumnCount; c++) {
     bricks[c][r] = { x: 0, y: 0, status: 1 };
   }
 }
+const input = document.querySelector('input');
+const log = document.getElementById('log');
+document.addEventListener('keydown', logKey);
+    
+  function logKey(e) {
+      log.textContent += ` ${e.code}`;
+      console.log(e.code)
+      if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = true;
+      }
+      else if(e.key == "Left" || e.key == "ArrowLeft") {
+          leftPressed = true;
+      }
+    }
 
-document.addEventListener("keydown", keyDownHandler, false);
+// document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
-function keyDownHandler(e) {
-    if(e.key == "Right" || e.key == "ArrowRight") {
-        rightPressed = true;
-    }
-    else if(e.key == "Left" || e.key == "ArrowLeft") {
-        leftPressed = true;
-    }
-}
+// function keyDownHandler(e) {
+//     if(e.key == "Right" || e.key == "ArrowRight") {
+//         rightPressed = true;
+//         console.log("Right")
+//     }
+//     else if(e.key == "Left" || e.key == "ArrowLeft") {
+//         leftPressed = true;
+//         console.log("Left")
+//     }
+// }
+
+// function keyDownHandler(e) {
+//   switch (e.key) {
+//     case "Right":
+//     case "ArrowRight":
+//       rightPressed = true;
+//       console.log("Right")
+//       break;
+//     case "Left":
+//     case "ArrowLeft":
+//       leftPressed = true;
+//       console.log("Left")
+//   }
+// }
 
 function keyUpHandler(e) {
     if(e.key == "Right" || e.key == "ArrowRight") {
@@ -297,8 +336,8 @@ draw();
 
     // DETECTING KEY PRESSES
 
-    const input = document.querySelector('input');
-    const log = document.getElementById('log');
+    
+    
     const w = window.innerWidth;
     const h = window.innerHeight;
     const browser = navigator.appName
@@ -314,10 +353,6 @@ draw();
     //browser.innerText += browser
     //platform.innerText += platform
     
-    input.addEventListener('keydown', logKey);
     
-    function logKey(e) {
-      log.textContent += ` ${e.code}`;
-    }
 
 });
