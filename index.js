@@ -1,31 +1,77 @@
+const BASE_URL = "http://localhost:3000"
+const PLAYERS_URL = `${BASE_URL}/players`
+const GAMES_URL = `${BASE_URL}/games`
+
 document.addEventListener("DOMContentLoaded", (event) => {
 
   const leaderboard = document.getElementById("leaderboard")
-  //const form = document.getElementById("form")
+  const form = document.getElementById("form")
+
+  function createPlayer(){
+    let formData = {
+      score: 0,
+      lives: 3
+    }
+
+    let configObj = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(formData)
+    }
+
+    fetch(PLAYERS_URL, configObj)
+        .then(res => res.json())
+        .then(obj => console.log(obj))
+        .catch(errors=>alert(errors))
+    
+  }
   
+  function savePlayer(target){
+    console.log("target", target)
+    fetch(PLAYERS_URL, {
+        method: 'PATCH', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'trainer_id': target})
+    })
+        .then(res => res.json())
+  }
 
-    fetch("http://localhost:3000/players")
-      .then((res) => res.json())
-      .then(json => {
-        const players = json
-        makeLeaderboard(players)
-      })
 
-    function renderForm() {
+  fetch("http://localhost:3000/players")
+    .then((res) => res.json())
+    .then(json => {
+      const players = json
+      makeLeaderboard(players)
+  })
+
+  function renderForm() {
       // build all elements with createElement
       // OR build it like Lantz with a big string
       const form = document.getElementById("form")
+      // const playerName = document.createElement("input")
+      // playerName.placeholder = "enter name"
+      // form.append
+      const btnStart = document.createElement("button")
+      btnStart.setAttribute("id", "btn-start")
+      btnStart.innerHTML = "Start Game, yo"
+      btnStart.addEventListener("click", () => createPlayer())
+      const interface = document.getElementById("interface")
+      interface.append(btnStart)
 
       form.innerHTML =
           `
-              <input id="name"></input>
+              <input id="playername"></input>
               <br>
               <button class='btn-submit'>Submit</button>
           `
       const submitButton = form.querySelector('.btn-submit')
       submitButton.addEventListener('click', () => submitName())
   }
-
 
     renderForm()
     
@@ -38,8 +84,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
       leaderboard.append(ul)
     }
-
-    //makeLeaderboard()
 
     const canvas = document.getElementById("myCanvas")
     const ctx = canvas.getContext("2d")
