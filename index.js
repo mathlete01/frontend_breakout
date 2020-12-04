@@ -5,7 +5,7 @@ const GAMES_URL = `${BASE_URL}/games`
 
 document.addEventListener("DOMContentLoaded", (event) => {
 
-  const leaderboard = document.getElementById("leaderboard")
+  // const leaderboard = document.getElementById("leaderboard")
   const form = document.getElementById("form")
 
   function setCurrentPlayer(obj){
@@ -71,12 +71,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
 
-  fetch("http://localhost:3000/players")
-    .then((res) => res.json())
-    .then(json => {
-      const objs = json
-      makeLeaderboard(objs)
-  })
+  // fetch("http://localhost:3000/players")
+  //   .then((res) => res.json())
+  //   .then(json => {
+  //     const objs = json
+  //     makeLeaderboard(objs)
+  // })
 
   function renderForm() {
     //console.log("renderForm run")
@@ -114,17 +114,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   renderForm()
   
-  function makeLeaderboard(arr){
-    //console.log(`makeLeaderboard run...`)
-    //console.dir(arr)
-    let ol = document.createElement("ol")
-    for(element of arr){
-      let li = document.createElement("li")
-      li.innerText = `${element.name}......${element.score}`
-      ol.append(li)
-    }
-    leaderboard.append(ol)
-  }
+  // function makeLeaderboard(arr){
+  //   //console.log(`makeLeaderboard run...`)
+  //   //console.dir(arr)
+  //   let ol = document.createElement("ol")
+  //   for(element of arr){
+  //     let li = document.createElement("li")
+  //     li.innerText = `${element.name}......${element.score}`
+  //     ol.append(li)
+  //   }
+  //   leaderboard.append(ol)
+  // }
 
 const w = window.innerWidth;
 const h = window.innerHeight;
