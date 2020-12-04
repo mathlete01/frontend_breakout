@@ -174,17 +174,18 @@ const log = document.getElementById('log');
 //document.addEventListener('keydown', logKey);
 
 const keys = [
-  {name: 'Tab', row: 1, segments:2},
-  {name: 'q', row: 1, segments:1},
-  {name: 'w', row: 1, segments:1},
-  {name: 'e', row: 1, segments:1},
-  {name: 'r', row: 1, segments:1},
-  {name: 't', row: 1, segments:1},
-  {name: 'y', row: 1, segments:1}
+  {name: 'Tab', row: 1, segments:2, status:1},
+  {name: 'q', row: 1, segments:1, status:1},
+  {name: 'w', row: 1, segments:1, status:1},
+  {name: 'e', row: 1, segments:1, status:1},
+  {name: 'r', row: 1, segments:1, status:1},
+  {name: 't', row: 1, segments:1, status:1},
+  {name: 'y', row: 1, segments:1, status:1}
 ];
 
   document.body.addEventListener("keydown", function(ev){
-      //console.log(ev.key)
+    let keyPressed = ev.key
+      console.log(`keyPressed = ${keyPressed}`)
       if(ev.key == "Right" || ev.key == "ArrowRight") {
         rightPressed = true;
       }
@@ -245,7 +246,8 @@ function drawKeys(keys){
     let h = brickHeight
     let x = w * i
     let y = keys[i].row * brickHeight
-    KEY_ARRAY.push({name: k, x:x, y:y, w:w, h:h})
+    let s = keys[i].status
+    KEY_ARRAY.push({name: k, x:x, y:y, w:w, h:h, s:s})
     drawKey(k,x,y,w,h)
   }
 }
