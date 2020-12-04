@@ -1,24 +1,17 @@
 const BASE_URL = "http://localhost:3000"
 const PLAYERS_URL = `${BASE_URL}/players`
 const GAMES_URL = `${BASE_URL}/games`
-//const CURR_PLAYER = "" 
 
 document.addEventListener("DOMContentLoaded", (event) => {
 
-  // const leaderboard = document.getElementById("leaderboard")
   const form = document.getElementById("form")
 
   function setCurrentPlayer(obj){
-    //console.log(`setCurrentPlayer run...`)
-    //console.dir(obj)
     CURRENT_PLAYER = obj.id
-    //console.log(`CURRENT_PLAYER = ${CURRENT_PLAYER}`)
   }
 
   function createPlayer(){
-    //console.log("createPlayer run")
     draw();
-    //drawKeys(keys);
     let formDataCreate = {
       score: 0,
       lives: 3
@@ -38,7 +31,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         //.then(obj => console.log(obj))
         .then(data => setCurrentPlayer(data))
         .catch(errors=>alert(errors))
-    
   }
   
   function savePlayer(name){
@@ -70,22 +62,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     
   }
 
-
-  // fetch("http://localhost:3000/players")
-  //   .then((res) => res.json())
-  //   .then(json => {
-  //     const objs = json
-  //     makeLeaderboard(objs)
-  // })
-
   function renderForm() {
-    //console.log("renderForm run")
-      // build all elements with createElement
-      // OR build it like Lantz with a big string
       const form = document.getElementById("form")
-      // const playerName = document.createElement("input")
-      // playerName.placeholder = "enter name"
-      // form.append
       const btnStart = document.createElement("button")
       btnStart.setAttribute("id", "btn-start")
       btnStart.innerHTML = "Start Game"
@@ -100,45 +78,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
       btnSave.innerText = "Save Game"
       interface.append(playername)
       interface.append(btnSave)
-
-      // form.innerHTML =
-      //     `
-      //         <input id="playername"></input>
-      //         <br>
-      //         <button class='btn-submit'>Submit</button>
-      //     `
-      //const btnSave = form.querySelector('.btn-submit')
-      //btnSave.addEventListener('click', (event) => savePlayer(event))
       btnSave.addEventListener('click', () => savePlayer(playername.value))
   }
 
   renderForm()
   
-  // function makeLeaderboard(arr){
-  //   //console.log(`makeLeaderboard run...`)
-  //   //console.dir(arr)
-  //   let ol = document.createElement("ol")
-  //   for(element of arr){
-  //     let li = document.createElement("li")
-  //     li.innerText = `${element.name}......${element.score}`
-  //     ol.append(li)
-  //   }
-  //   leaderboard.append(ol)
-  // }
+
 
 const w = window.innerWidth;
 const h = window.innerHeight;
 const browser = navigator.appName
 const platform = navigator.platform
-//const browser = document.getElementById("browser")
-//const platform = document.getElementById("platform")
 
 let width = document.getElementById("window-width")
 let height = document.getElementById("window-height")
 width.innerText += w
 height.innerText += h
-//browser.innerText += browser
-//platform.innerText += platform
+
 // GAME CODE
 
 let canvas = document.getElementById("myCanvas");
@@ -155,8 +111,6 @@ let rightPressed = false;
 let leftPressed = false;
 let brickRowCount = 5;
 let brickColumnCount = 10;
-//let brickWidth = 75;
-//let brickHeight = 20;
 let brickPadding = 10;
 let brickOffsetTop = 30;
 let brickOffsetLeft = 30;
@@ -171,7 +125,6 @@ let lives = 3
 
 const input = document.querySelector('input');
 const log = document.getElementById('log');
-//document.addEventListener('keydown', logKey);
 
 const keys = [
   {name: 'Tab', row: 1, segments:2, status:1},
@@ -195,7 +148,6 @@ const keys = [
   document.body.addEventListener("keydown", function(ev){
     let keyPressed = ev.key
     console.log(`keyPressed = ${keyPressed}`)
-    //let keyObj = keys.find(({name}) => name === keyPressed)
     let keyObj = KEY_ARRAY.find(({name}) => name === keyPressed)
     keyObj.s = 0
       console.dir(keyObj)
@@ -274,7 +226,6 @@ function drawKey(key, brickX, brickY, brickWidth, brickHeight){
   ctx.font = "16px Arial";
   ctx.fillStyle = "#000000";
   ctx.fillText(key, (brickX+brickWidth/2), (brickY+brickHeight/2));
-  //console.log(`key = ${key}`)
 }
 
 function drawScore() {
