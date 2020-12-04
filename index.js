@@ -174,17 +174,31 @@ const log = document.getElementById('log');
 //document.addEventListener('keydown', logKey);
 
 const keys = [
-  {name: 'Tab', row: 1, segments:2},
-  {name: 'q', row: 1, segments:1},
-  {name: 'w', row: 1, segments:1},
-  {name: 'e', row: 1, segments:1},
-  {name: 'r', row: 1, segments:1},
-  {name: 't', row: 1, segments:1},
-  {name: 'y', row: 1, segments:1}
+  {name: 'Tab', row: 1, segments:2, status:1},
+  {name: 'q', row: 1, segments:1, status:1},
+  {name: 'w', row: 1, segments:1, status:1},
+  {name: 'e', row: 1, segments:1, status:1},
+  {name: 'r', row: 1, segments:1, status:1},
+  {name: 't', row: 1, segments:1, status:1},
+  {name: 'y', row: 1, segments:1, status:1},
+  {name: 'u', row: 1, segments:1, status:1},
+  {name: 'i', row: 1, segments:1, status:1},
+  {name: 'o', row: 1, segments:1, status:1},
+  {name: 'p', row: 1, segments:1, status:1},
+  {name: '[', row: 1, segments:1, status:1},
+  {name: ']', row: 1, segments:1, status:1},
+  {name: '\\', row: 1, segments:1, status:1},
+  {name: 'CapsLock', row: 2, segments:3, status:1},
+  {name: 'Enter', row: 2, segments:1, status:1}
 ];
 
   document.body.addEventListener("keydown", function(ev){
-      //console.log(ev.key)
+    let keyPressed = ev.key
+    console.log(`keyPressed = ${keyPressed}`)
+    //let keyObj = keys.find(({name}) => name === keyPressed)
+    let keyObj = KEY_ARRAY.find(({name}) => name === keyPressed)
+    keyObj.s = 0
+      console.dir(keyObj)
       if(ev.key == "Right" || ev.key == "ArrowRight") {
         rightPressed = true;
       }
@@ -196,7 +210,6 @@ const keys = [
   });
 
   document.body.addEventListener("keyup", function(ev){
-    //console.log(ev.key)
     if(ev.key == "Right" || ev.key == "ArrowRight") {
       rightPressed = false;
   }
@@ -245,7 +258,8 @@ function drawKeys(keys){
     let h = brickHeight
     let x = w * i
     let y = keys[i].row * brickHeight
-    KEY_ARRAY.push({name: k, x:x, y:y, w:w, h:h})
+    let s = keys[i].status
+    KEY_ARRAY.push({name: k, x:x, y:y, w:w, h:h, s:s})
     drawKey(k,x,y,w,h)
   }
 }
