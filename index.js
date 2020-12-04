@@ -9,14 +9,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const form = document.getElementById("form")
 
   function setCurrentPlayer(obj){
-    console.log(`setCurrentPlayer run...`)
-    console.dir(obj)
+    //console.log(`setCurrentPlayer run...`)
+    //console.dir(obj)
     CURRENT_PLAYER = obj.id
     //console.log(`CURRENT_PLAYER = ${CURRENT_PLAYER}`)
   }
 
   function createPlayer(){
-    console.log("createPlayer run")
+    //console.log("createPlayer run")
+    draw();
+    //drawKeys(keys);
     let formDataCreate = {
       score: 0,
       lives: 3
@@ -77,7 +79,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   })
 
   function renderForm() {
-    console.log("renderForm run")
+    //console.log("renderForm run")
       // build all elements with createElement
       // OR build it like Lantz with a big string
       const form = document.getElementById("form")
@@ -113,8 +115,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   renderForm()
   
   function makeLeaderboard(arr){
-    console.log(`makeLeaderboard run...`)
-    console.dir(arr)
+    //console.log(`makeLeaderboard run...`)
+    //console.dir(arr)
     let ol = document.createElement("ol")
     for(element of arr){
       let li = document.createElement("li")
@@ -124,7 +126,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
     leaderboard.append(ol)
   }
 
-  // GAME CODE
+const w = window.innerWidth;
+const h = window.innerHeight;
+const browser = navigator.appName
+const platform = navigator.platform
+//const browser = document.getElementById("browser")
+//const platform = document.getElementById("platform")
+
+
+let width = document.getElementById("window-width")
+let height = document.getElementById("window-height")
+width.innerText += w
+height.innerText += h
+//browser.innerText += browser
+//platform.innerText += platform
+// GAME CODE
 
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
@@ -139,14 +155,18 @@ let paddleX = (canvas.width-paddleWidth)/2;
 let rightPressed = false;
 let leftPressed = false;
 let brickRowCount = 5;
-let brickColumnCount = 3;
-let brickWidth = 75;
-let brickHeight = 20;
+let brickColumnCount = 10;
+//let brickWidth = 75;
+//let brickHeight = 20;
 let brickPadding = 10;
 let brickOffsetTop = 30;
 let brickOffsetLeft = 30;
 //
 let keySegments = 15
+let brickWidth = w/keySegments
+let brickHeight = brickWidth
+let topRow = 100
+
 
 // let keyboards = {
 //   macbook: {
@@ -157,64 +177,50 @@ let keySegments = 15
 let score = 0;
 let lives = 3
 
-let bricks = [];
-for(let c=0; c<brickColumnCount; c++) {
-  bricks[c] = [];
-  for(let r=0; r<brickRowCount; r++) {
-    bricks[c][r] = { x: 0, y: 0, status: 1 };
-  }
-}
 const input = document.querySelector('input');
 const log = document.getElementById('log');
-document.addEventListener('keydown', logKey);
-    
-  function logKey(e) {
-      log.textContent += ` ${e.code}`;
-      console.log(e.code)
-      if(e.key == "Right" || e.key == "ArrowRight") {
+//document.addEventListener('keydown', logKey);
+   
+// const keys = {
+//   "`": {row: 1, segments: 1},
+//   "1": {row: 1, segments: 1},
+//   "2": {row: 1, segments: 1}
+// }
+const keys = [
+  {name: 'Tab', row: 1, segments:2},
+  {name: 'q', row: 1, segments:1},
+  {name: 'w', row: 1, segments:1},
+  {name: 'e', row: 1, segments:1},
+  {name: 'r', row: 1, segments:1},
+  {name: 't', row: 1, segments:1},
+  {name: 'y', row: 1, segments:1}
+];
+
+  document.body.addEventListener("keydown", function(ev){
+      //console.log(ev.key)
+      if(ev.key == "Right" || ev.key == "ArrowRight") {
         rightPressed = true;
       }
-      else if(e.key == "Left" || e.key == "ArrowLeft") {
+      else if(ev.key == "Left" || ev.key == "ArrowLeft") {
           leftPressed = true;
       }
-    }
+    ev.preventDefault() // cancels default actions
+    return false; // cancels this function only
+  });
 
-// document.addEventListener("keydown", keyDownHandler, false);
-document.addEventListener("keyup", keyUpHandler, false);
+  document.body.addEventListener("keyup", function(ev){
+    //console.log(ev.key)
+    if(ev.key == "Right" || ev.key == "ArrowRight") {
+      rightPressed = false;
+  }
+  else if(ev.key == "Left" || ev.key == "ArrowLeft") {
+      leftPressed = false;
+  }
+  ev.preventDefault() // cancels default actions
+  return false; // cancels this function only
+});
 
-// function keyDownHandler(e) {
-//     if(e.key == "Right" || e.key == "ArrowRight") {
-//         rightPressed = true;
-//         console.log("Right")
-//     }
-//     else if(e.key == "Left" || e.key == "ArrowLeft") {
-//         leftPressed = true;
-//         console.log("Left")
-//     }
-// }
-
-// function keyDownHandler(e) {
-//   switch (e.key) {
-//     case "Right":
-//     case "ArrowRight":
-//       rightPressed = true;
-//       console.log("Right")
-//       break;
-//     case "Left":
-//     case "ArrowLeft":
-//       leftPressed = true;
-//       console.log("Left")
-//   }
-// }
-
-function keyUpHandler(e) {
-    if(e.key == "Right" || e.key == "ArrowRight") {
-        rightPressed = false;
-    }
-    else if(e.key == "Left" || e.key == "ArrowLeft") {
-        leftPressed = false;
-    }
-}
+ 
 function collisionDetection() {
   for(let c=0; c<brickColumnCount; c++) {
     for(let r=0; r<brickRowCount; r++) {
@@ -222,12 +228,12 @@ function collisionDetection() {
       if(b.status == 1) {
         if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
           dy = -dy;
-          b.status = 0;
+          //b.status = 0;
           score++;
-          if(score == brickRowCount*brickColumnCount) {
-            alert("YOU WIN, CONGRATS!");
-            document.location.reload();
-          }
+          // if(score == brickRowCount*brickColumnCount) {
+          //   alert("YOU WIN, CONGRATS!");
+          //   document.location.reload();
+          // }
         }
       }
     }
@@ -248,23 +254,80 @@ function drawPaddle() {
   ctx.fill();
   ctx.closePath();
 }
-function drawBricks() {
-  for(let c=0; c<brickColumnCount; c++) {
+
+let bricks = [];
+for(let c=0; c<brickColumnCount; c++) {
+    bricks[c] = [];
     for(let r=0; r<brickRowCount; r++) {
-      if(bricks[c][r].status == 1) {
-        let brickX = (r*(brickWidth+brickPadding))+brickOffsetLeft;
-        let brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
-        bricks[c][r].x = brickX;
-        bricks[c][r].y = brickY;
-        ctx.beginPath();
-        ctx.rect(brickX, brickY, brickWidth, brickHeight);
-        ctx.fillStyle = "#0095DD";
-        ctx.fill();
-        ctx.closePath();
-      }
+        bricks[c][r] = { x: 0, y: 0 };
     }
+}
+
+function drawKeys(keys){
+  for(let i = 0; i < keys.length; i ++){
+    let k = keys[i].name
+    let w = keys[i].segments * brickWidth
+    let h = brickHeight
+    let x = w * i
+    let y = keys[i].row * brickHeight
+    drawKey(k,x,y,w,h)
   }
 }
+
+// function drawKeys(keys){
+  
+//   //console.log(`keys = ${keys}`)
+//   //console.log(`keys.length = ${keys.length}`)
+//   for(key in keys){
+//     let k = key
+//     let y = keys[key].row * topRow
+//     let w = keys[key].segments * brickWidth
+//     let x = w
+//     let h = brickHeight
+//     //console.log(`key = ${key}`)
+//     //console.log(`keys[key].row = ${keys[key].row}`)
+//     drawKey(k,x,y,w,h)
+//   }
+//   // for(let i = 0; i < keys.length; i++){
+//   //   let key = keys[i]
+//   //   console.log(`key = ${key}`)
+//   //   //let x = 
+//   //   //let y = 
+//   //   let width = keys[i].row
+//   //   console.log(`width = ${width}`)
+//   //   //let height = 
+//   //   drawKey()
+//   // }
+//   //console.log(`keys = ${keys}`)
+//   //console.log(`keys["1"].row = ${keys["1"].row}`)
+//   //for(key in keys){
+//     //console.log(`key = ${key}`)
+//     //console.log(`${key[:row]}`)
+//     //console.log(`key["row"] = ${key["row"]}`)
+//     //console.log(`key["segments"] * brickWidth = ${key["segments"] * brickWidth}`)
+    
+//   //}
+//   //drawKey('`', 50, 50, 50, 50)
+// }
+
+const row1 = ['`', '1', '2','3', '0','-','=', 'Backspace']
+
+function drawKey(key, brickX, brickY, brickWidth, brickHeight){
+  ctx.beginPath();
+  ctx.rect(brickX, brickY, brickWidth, brickHeight);
+  ctx.fillStyle = "#0095DD";
+  ctx.fill();
+  ctx.closePath();
+  ctx.id = key
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#000000";
+  ctx.fillText(key, (brickX+brickWidth/2), (brickY+brickHeight/2));
+  //console.log(`key = ${key}`)
+}
+
+//drawKey('`', 50, 50, 50, 50)
+//drawKey('1', 100, 50, 50, 50)
+
 function drawScore() {
   ctx.font = "16px Arial";
   ctx.fillStyle = "#0095DD";
@@ -279,11 +342,12 @@ function drawLives() {
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBricks();
+  drawKeys(keys);
   drawBall();
   drawPaddle();
   drawScore();
   drawLives()
+  
   collisionDetection();
 
   if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
@@ -299,7 +363,8 @@ function draw() {
     else {
       lives--;
       if(!lives) {
-          alert("GAME OVER");
+          //alert("GAME OVER");
+          console.log("GAME OVER")
           document.location.reload();
       }
       else {
@@ -325,7 +390,7 @@ function draw() {
   requestAnimationFrame(draw)    
 }
 
-draw();
+
 
     // Semitransparant blue stroke rect
     // ctx.beginPath();
@@ -338,20 +403,7 @@ draw();
 
     
     
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const browser = navigator.appName
-    const platform = navigator.platform
-    //const browser = document.getElementById("browser")
-    //const platform = document.getElementById("platform")
-
-
-    let width = document.getElementById("window-width")
-    let height = document.getElementById("window-height")
-    width.innerText += w
-    height.innerText += h
-    //browser.innerText += browser
-    //platform.innerText += platform
+    
     
     
 
