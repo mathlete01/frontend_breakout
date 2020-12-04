@@ -168,12 +168,6 @@ let brickHeight = brickWidth
 let topRow = 100
 
 
-// let keyboards = {
-//   macbook: {
-//     row0: [],
-//     row1: []
-//   },
-//
 let score = 0;
 let lives = 3
 
@@ -181,11 +175,7 @@ const input = document.querySelector('input');
 const log = document.getElementById('log');
 //document.addEventListener('keydown', logKey);
    
-// const keys = {
-//   "`": {row: 1, segments: 1},
-//   "1": {row: 1, segments: 1},
-//   "2": {row: 1, segments: 1}
-// }
+
 const keys = [
   {name: 'Tab', row: 1, segments:2},
   {name: 'q', row: 1, segments:1},
@@ -222,22 +212,16 @@ const keys = [
 
  
 function collisionDetection() {
-  for(let c=0; c<brickColumnCount; c++) {
-    for(let r=0; r<brickRowCount; r++) {
-      let b = bricks[c][r];
-      if(b.status == 1) {
-        if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
-          dy = -dy;
-          //b.status = 0;
-          score++;
-          // if(score == brickRowCount*brickColumnCount) {
-          //   alert("YOU WIN, CONGRATS!");
-          //   document.location.reload();
-          // }
-        }
+  for(let i=0; i<KEY_ARRAY.length; i++) {
+    let b = KEY_ARRAY[i];
+    //if(b.status == 1) {
+      if(x > b.x && x < b.x+b.w && y > b.y && y < b.y+brickHeight) {
+        dy = -dy;
+        //b.status = 0;
+        score++;
       }
     }
-  }
+  //}
 }
 
 function drawBall() {
@@ -262,55 +246,22 @@ for(let c=0; c<brickColumnCount; c++) {
         bricks[c][r] = { x: 0, y: 0 };
     }
 }
+KEY_ARRAY = []
 
 function drawKeys(keys){
+  KEY_ARRAY = []
   for(let i = 0; i < keys.length; i ++){
     let k = keys[i].name
     let w = keys[i].segments * brickWidth
     let h = brickHeight
     let x = w * i
     let y = keys[i].row * brickHeight
+    KEY_ARRAY.push({name: k, x:x, y:y, w:w, h:h})
+    console.dir(KEY_ARRAY)
     drawKey(k,x,y,w,h)
   }
 }
 
-// function drawKeys(keys){
-  
-//   //console.log(`keys = ${keys}`)
-//   //console.log(`keys.length = ${keys.length}`)
-//   for(key in keys){
-//     let k = key
-//     let y = keys[key].row * topRow
-//     let w = keys[key].segments * brickWidth
-//     let x = w
-//     let h = brickHeight
-//     //console.log(`key = ${key}`)
-//     //console.log(`keys[key].row = ${keys[key].row}`)
-//     drawKey(k,x,y,w,h)
-//   }
-//   // for(let i = 0; i < keys.length; i++){
-//   //   let key = keys[i]
-//   //   console.log(`key = ${key}`)
-//   //   //let x = 
-//   //   //let y = 
-//   //   let width = keys[i].row
-//   //   console.log(`width = ${width}`)
-//   //   //let height = 
-//   //   drawKey()
-//   // }
-//   //console.log(`keys = ${keys}`)
-//   //console.log(`keys["1"].row = ${keys["1"].row}`)
-//   //for(key in keys){
-//     //console.log(`key = ${key}`)
-//     //console.log(`${key[:row]}`)
-//     //console.log(`key["row"] = ${key["row"]}`)
-//     //console.log(`key["segments"] * brickWidth = ${key["segments"] * brickWidth}`)
-    
-//   //}
-//   //drawKey('`', 50, 50, 50, 50)
-// }
-
-const row1 = ['`', '1', '2','3', '0','-','=', 'Backspace']
 
 function drawKey(key, brickX, brickY, brickWidth, brickHeight){
   ctx.beginPath();
@@ -325,8 +276,6 @@ function drawKey(key, brickX, brickY, brickWidth, brickHeight){
   //console.log(`key = ${key}`)
 }
 
-//drawKey('`', 50, 50, 50, 50)
-//drawKey('1', 100, 50, 50, 50)
 
 function drawScore() {
   ctx.font = "16px Arial";
