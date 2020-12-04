@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(PLAYERS_URL, configObjSave)
         .then(res => res.json())
-        .then(obj => console.log(obj))
+        //.then(obj => console.log(obj))
         .catch(errors => alert(errors))
     
   }
@@ -133,7 +133,6 @@ const platform = navigator.platform
 //const browser = document.getElementById("browser")
 //const platform = document.getElementById("platform")
 
-
 let width = document.getElementById("window-width")
 let height = document.getElementById("window-height")
 width.innerText += w
@@ -167,14 +166,12 @@ let brickWidth = w/keySegments
 let brickHeight = brickWidth
 let topRow = 100
 
-
 let score = 0;
 let lives = 3
 
 const input = document.querySelector('input');
 const log = document.getElementById('log');
 //document.addEventListener('keydown', logKey);
-   
 
 const keys = [
   {name: 'Tab', row: 1, segments:2},
@@ -209,7 +206,6 @@ const keys = [
   ev.preventDefault() // cancels default actions
   return false; // cancels this function only
 });
-
  
 function collisionDetection() {
   for(let i=0; i<KEY_ARRAY.length; i++) {
@@ -239,13 +235,6 @@ function drawPaddle() {
   ctx.closePath();
 }
 
-let bricks = [];
-for(let c=0; c<brickColumnCount; c++) {
-    bricks[c] = [];
-    for(let r=0; r<brickRowCount; r++) {
-        bricks[c][r] = { x: 0, y: 0 };
-    }
-}
 KEY_ARRAY = []
 
 function drawKeys(keys){
@@ -257,11 +246,9 @@ function drawKeys(keys){
     let x = w * i
     let y = keys[i].row * brickHeight
     KEY_ARRAY.push({name: k, x:x, y:y, w:w, h:h})
-    console.dir(KEY_ARRAY)
     drawKey(k,x,y,w,h)
   }
 }
-
 
 function drawKey(key, brickX, brickY, brickWidth, brickHeight){
   ctx.beginPath();
@@ -275,7 +262,6 @@ function drawKey(key, brickX, brickY, brickWidth, brickHeight){
   ctx.fillText(key, (brickX+brickWidth/2), (brickY+brickHeight/2));
   //console.log(`key = ${key}`)
 }
-
 
 function drawScore() {
   ctx.font = "16px Arial";
@@ -296,7 +282,6 @@ function draw() {
   drawPaddle();
   drawScore();
   drawLives()
-  
   collisionDetection();
 
   if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
@@ -338,22 +323,4 @@ function draw() {
 
   requestAnimationFrame(draw)    
 }
-
-
-
-    // Semitransparant blue stroke rect
-    // ctx.beginPath();
-    // ctx.rect(160, 10, 100, 40);
-    // ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
-    // ctx.stroke();
-    // ctx.closePath();
-
-    // DETECTING KEY PRESSES
-
-    
-    
-    
-    
-    
-
 });
