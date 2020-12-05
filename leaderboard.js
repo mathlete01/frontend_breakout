@@ -10,12 +10,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
     });
 
   function renderLeaderboard(arr) {
+    let h1 = document.createElement("h1")
+    h1.innerText="Top Scores"
     let ol = document.createElement("ol");
     for (element of arr) {
       let li = document.createElement("li");
       li.innerText = `${element.name}......${element.score}`;
       ol.append(li);
     }
+    leaderboard.append(h1)
     leaderboard.append(ol);
   }
 });

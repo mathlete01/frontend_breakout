@@ -58,17 +58,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .catch((errors) => alert(errors));
   }
 
-  const w = window.innerWidth;
-  const h = window.innerHeight;
+  
 
   function renderInterface() {
     const browser = navigator.appName;
     const platform = navigator.platform;
-
-    let width = document.getElementById("window-width");
-    let height = document.getElementById("window-height");
-    width.innerText += w;
-    height.innerText += h;
+    
     const btnStart = document.createElement("button");
     btnStart.setAttribute("id", "btn-start");
     btnStart.innerHTML = "Start Game";
@@ -130,14 +125,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "#0095DD";
+    ctx.fillStyle = "black";
     ctx.fill();
     ctx.closePath();
   }
   function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-    ctx.fillStyle = "#0095DD";
+    ctx.fillStyle = "black";
     ctx.fill();
     ctx.closePath();
   }
@@ -161,24 +156,24 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function drawKey(key, brickX, brickY, brickWidth, brickHeight) {
     ctx.beginPath();
     ctx.rect(brickX, brickY, brickWidth, brickHeight);
-    ctx.fillStyle = "#0095DD";
+    ctx.fillStyle = "black";
     ctx.fill();
     ctx.closePath();
     ctx.id = key;
     ctx.font = "16px Arial";
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = "white";
     ctx.fillText(key, brickX + brickWidth / 2, brickY + brickHeight / 2);
   }
 
   function drawScore() {
     ctx.font = "16px Arial";
-    ctx.fillStyle = "#0095DD";
+    ctx.fillStyle = "black";
     ctx.fillText("Score: " + score, 8, 20);
   }
 
   function drawLives() {
     ctx.font = "16px Arial";
-    ctx.fillStyle = "#0095DD";
+    ctx.fillStyle = "black";
     ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
   }
 
@@ -227,6 +222,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     requestAnimationFrame(draw);
   }
 
+  const w = window.innerWidth;
+  const h = window.innerHeight;
   let canvas = document.getElementById("myCanvas");
   let ctx = canvas.getContext("2d");
   let ballRadius = 10;
@@ -267,5 +264,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     { name: "\\", row: 1, segments: 1, status: 1 },
     { name: "CapsLock", row: 2, segments: 3, status: 1 },
     { name: "Enter", row: 2, segments: 1, status: 1 },
+    { name: "ArrowLeft", row: 4, segments: 1, status: 1 },
+    { name: "ArrowRight", row: 4, segments: 1, status: 1 }
   ];
 });
