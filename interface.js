@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let formData = {
       id: CURRENT_GAME,
       score: score,
-      player_id: CURRENT_PLAYER
+      //player_id: CURRENT_PLAYER
     };
 
     let configObj = {
@@ -140,8 +140,33 @@ document.addEventListener("DOMContentLoaded", (event) => {
     fetch(PLAYERS_URL, configOb)
       .then((res) => res.json())
       .then(obj => console.log(obj))
-      .then(document.location.reload())
+      .then(updateGame(name))
+      //.then(document.location.reload())
       .catch((errors) => console.log(`savePlayer: ${errors}`));
+  }
+
+  function updateGame(name){
+    console.log(`updateGame called: name = ${name}`);
+    console.log(`updateGame called: CURRENT_GAME = ${CURRENT_GAME}`);
+    let formData = {
+      id: CURRENT_GAME,
+      name: name
+    };
+
+    let configOb = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify(formData),
+    };
+
+    fetch(GAMES_URL, configOb)
+      .then((res) => res.json())
+      .then(obj => console.log(obj))
+      .then(document.location.reload())
+      .catch((errors) => console.log(`updateGame: ${errors}`));
   }
 
   function renderForm() {
