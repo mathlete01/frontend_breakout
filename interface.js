@@ -72,12 +72,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
       //.then(document.location.reload())
       //.then(renderForm())
       .then(obj => setCurrentGame(obj))
-      .then(draw())
+      //.then(draw())
+      .then(startGame())
       .catch((errors) => console.log(`createGame: ${errors}`));
       //.catch((errors) => console.log(errors));
   }
 
+  function startGame(){
+    //draw()
+    interval = setInterval(draw, 10)
+  }
+
   function endGame() {
+    clearInterval(interval)
+    interval = ""
     console.log(`endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`);
     //console.log(`CURRENT_GAME = ${CURRENT_GAME}`)
     // console.log(`event.target = ${event.target}`)
@@ -102,6 +110,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .then((res) => res.json())
       //.then(obj => console.log(obj))
       //.then(document.location.reload())
+      //.then(interval = "")
+      //.then(clearInterval(interval))
       //.then(renderForm())
       .catch((errors) => console.log(`endGame: ${errors}`));
   }
@@ -130,6 +140,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     fetch(PLAYERS_URL, configOb)
       .then((res) => res.json())
       .then(obj => console.log(obj))
+      .then(document.location.reload())
       .catch((errors) => console.log(`savePlayer: ${errors}`));
   }
 
@@ -305,7 +316,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     x += dx;
     y += dy;
 
-    myReq = window.requestAnimationFrame(draw);
+    //myReq = window.requestAnimationFrame(draw);
   }
 
   const w = window.innerWidth;
@@ -331,6 +342,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   let brickWidth = w / keySegments;
   let brickHeight = brickWidth;
   let topRow = 100
+  let interval = ""
   let score = 0;
   let lives = 1;
   const keys = [
