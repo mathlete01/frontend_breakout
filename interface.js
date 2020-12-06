@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function endGame() {
-    console.log(`endGame called, CURRENT_GAME = ${CURRENT_GAME}`);
+    console.log(`endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`);
     //console.log(`CURRENT_GAME = ${CURRENT_GAME}`)
     // console.log(`event.target = ${event.target}`)
     // console.log(`event.target.playername = ${event.target.playername}`)
@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let formData = {
       id: CURRENT_GAME,
       score: score,
+      player_id: CURRENT_PLAYER
     };
 
     let configObj = {
@@ -97,11 +98,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
       body: JSON.stringify(formData),
     };
 
-    fetch(PLAYERS_URL, configObj)
+    fetch(GAMES_URL, configObj)
       .then((res) => res.json())
       //.then(obj => console.log(obj))
-      .then(renderForm())
-      .catch((errors) => alert(`endGame: ${errors}`));
+      //.then(document.location.reload())
+      //.then(renderForm())
+      .catch((errors) => console.log(`endGame: ${errors}`));
   }
 
   function savePlayer(name) {
