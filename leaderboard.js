@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", (event) => {
   const leaderboard = document.getElementById("leaderboard");
-  const form = document.getElementById("form");
+  //const form = document.getElementById("form");
 
   fetch("http://localhost:3000/players")
     .then((res) => res.json())

@@ -3,31 +3,105 @@ const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
 
 document.addEventListener("DOMContentLoaded", (event) => {
+  
   function setCurrentPlayer(obj) {
+    console.log("setCurrentPlayer called")
+    console.dir(obj)
     CURRENT_PLAYER = obj.id;
+    console.log(`CURRENT_PLAYER = ${CURRENT_PLAYER}`)
+    createGame(CURRENT_PLAYER)
+  }
+
+  function setCurrentGame(obj) {
+    console.log("setCurrentGame called")
+    console.log(`setCurrentGame: obj = ${obj}`)
+    console.dir(obj)
+    CURRENT_GAME = obj.id;
+    console.log(`CURRENT_GAME = ${CURRENT_GAME}`)
   }
 
   function createPlayer() {
-    draw();
-    let formDataCreate = {
-      score: 0,
-      lives: 3,
-    };
+    
+    // let formDataCreate = {
+    //   score: 0,
+    //   lives: 3,
+    // };
 
     let configObjCreate = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(formDataCreate),
+        "Accept": "application/json",
+      }
+      // body: JSON.stringify(formDataCreate),
     };
 
     fetch(PLAYERS_URL, configObjCreate)
       .then((res) => res.json())
       //.then(obj => console.log(obj))
+      
       .then((data) => setCurrentPlayer(data))
-      .catch((errors) => alert(errors));
+      //.then(obj => createGame(obj))
+      //.then(draw())
+      //.catch((errors) => alert(`createPlayer: ${errors}`));
+      .catch((errors) => console.log(`createPlayer: ${errors}`));
+  }
+
+  function createGame(id) {
+    console.log(`createGame id = ${id}`)
+    let formData = {
+      //score: score
+      player_id: id
+    };
+    //document.location.reload()
+    //window.cancelAnimationFrame(myReq)
+    let configObj = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(formData),
+    };
+
+    fetch(GAMES_URL, configObj)
+      .then((res) => res.json())
+      //.then(obj => console.log(obj))
+      //.then((data) => console.log(data))
+      //.then(cancelAnimationFrame(myReq))
+      //.then(document.location.reload())
+      //.then(renderForm())
+      .then(obj => setCurrentGame(obj))
+      .then(draw())
+      .catch((errors) => console.log(`createGame: ${errors}`));
+      //.catch((errors) => console.log(errors));
+  }
+
+  function endGame() {
+    console.log(`endGame called, CURRENT_GAME = ${CURRENT_GAME}`);
+    //console.log(`CURRENT_GAME = ${CURRENT_GAME}`)
+    // console.log(`event.target = ${event.target}`)
+    // console.log(`event.target.playername = ${event.target.playername}`)
+    // console.log(`event.target.playername.value = ${event.target.playername.value}`)
+    let formData = {
+      id: CURRENT_GAME,
+      score: score,
+    };
+
+    let configObj = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify(formData),
+    };
+
+    fetch(PLAYERS_URL, configObj)
+      .then((res) => res.json())
+      //.then(obj => console.log(obj))
+      .then(renderForm())
+      .catch((errors) => alert(`endGame: ${errors}`));
   }
 
   function savePlayer(name) {
@@ -47,7 +121,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
       },
       body: JSON.stringify(saveData),
     };
@@ -55,10 +129,25 @@ document.addEventListener("DOMContentLoaded", (event) => {
     fetch(PLAYERS_URL, configObjSave)
       .then((res) => res.json())
       //.then(obj => console.log(obj))
-      .catch((errors) => alert(errors));
+      .catch((errors) => alert(`savePlayer: ${errors}`));
   }
 
-  
+  function renderForm() {
+    console.log("renderForm called")
+    //window.cancelAnimationFrame()
+    //ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const playername = document.createElement("input");
+    playername.setAttribute("name", "playername");
+    playername.placeholder = "enter name";
+
+    const btnSave = document.createElement("button");
+    btnSave.innerText = "Save Game";
+    btnSave.addEventListener("click", () => savePlayer(playername.value));
+
+    const form = document.getElementById("form");
+    form.append(playername);
+    form.append(btnSave);
+  }
 
   function renderInterface() {
     const browser = navigator.appName;
@@ -69,21 +158,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     btnStart.innerHTML = "Start Game";
     btnStart.addEventListener("click", () => createPlayer());
 
-    const playername = document.createElement("input");
-    playername.setAttribute("name", "playername");
-    playername.placeholder = "enter name";
-
-    const btnSave = document.createElement("button");
-    btnSave.innerText = "Save Game";
-    btnSave.addEventListener("click", () => savePlayer(playername.value));
-
     const interface = document.getElementById("interface");
     interface.append(btnStart);
-    interface.append(playername);
-    interface.append(btnSave);
   }
 
   renderInterface();
+  renderForm()
 
   document.body.addEventListener("keydown", function (ev) {
     let keyPressed = ev.key;
@@ -177,6 +257,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
   }
 
+  let myReq
+
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawKeys(keys);
@@ -199,7 +281,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
         if (!lives) {
           //alert("GAME OVER");
           console.log("GAME OVER");
-          document.location.reload();
+          //createGame();
+          endGame()
+          //document.location.reload();
+          //renderForm()
         } else {
           x = canvas.width / 2;
           y = canvas.height - 30;
@@ -219,7 +304,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     x += dx;
     y += dy;
 
-    requestAnimationFrame(draw);
+    myReq = window.requestAnimationFrame(draw);
   }
 
   const w = window.innerWidth;
