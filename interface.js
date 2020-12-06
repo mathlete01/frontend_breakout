@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       //.then(document.location.reload())
       //.then(interval = "")
       //.then(clearInterval(interval))
-      //.then(renderForm())
+      .then(renderForm())
       .catch((errors) => console.log(`endGame: ${errors}`));
   }
 
@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   renderInterface();
-  renderForm()
+  //renderForm()
 
   document.body.addEventListener("keydown", function (ev) {
     let keyPressed = ev.key;
