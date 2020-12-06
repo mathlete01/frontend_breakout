@@ -1,33 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Breakout</title>
     <style>
-    	* { padding: 0; margin: 0; }
-    	canvas { background: #eee; display: block; margin: 0 auto; }
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      canvas {
+        background:gray;
+        display: block;
+        margin: 0 auto;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body bgcolor="gray">
     <canvas id="myCanvas" width="480" height="320"></canvas>
     <div id="interface"></div>
+    
     <div id="form"></div>
-    <p id="log"></p>
     <div id="leaderboard"></div>
-    <script src="index.js"></script>
-    <h1>Check out these stats</h1>
-    <ul>
-        <li id=browser>Browser:</li>
-        <li id=platform>Platform:</li>
-        <li>Keyboard Layout:</li>
-        <li id=window-width>Window Width: </li>
-        <li id=window-height>Window Height: </li>
-    </ul>
-
-</body>
-
+    <script src="leaderboard.js"></script>
+    <script src="interface.js"></script>
+  </body>
 </html>
