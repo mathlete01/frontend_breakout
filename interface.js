@@ -108,30 +108,29 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function savePlayer(name) {
     console.log(`savePlayer:name = ${name}`);
+    console.log(`savePlayer:CURRENT_PLAYER = ${CURRENT_PLAYER}`);
     //console.log(`CURRENT_PLAYER = ${CURRENT_PLAYER}`)
     // console.log(`event.target = ${event.target}`)
     // console.log(`event.target.playername = ${event.target.playername}`)
     // console.log(`event.target.playername.value = ${event.target.playername.value}`)
-    let saveData = {
+    let formData = {
       id: CURRENT_PLAYER,
-      name: name,
-      score: 100,
-      lives: 0,
+      name: name
     };
 
-    let configObjSave = {
+    let configOb = {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
       },
-      body: JSON.stringify(saveData),
+      body: JSON.stringify(formData),
     };
 
-    fetch(PLAYERS_URL, configObjSave)
+    fetch(PLAYERS_URL, configOb)
       .then((res) => res.json())
-      //.then(obj => console.log(obj))
-      .catch((errors) => alert(`savePlayer: ${errors}`));
+      .then(obj => console.log(obj))
+      .catch((errors) => console.log(`savePlayer: ${errors}`));
   }
 
   function renderForm() {
@@ -333,7 +332,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   let brickHeight = brickWidth;
   let topRow = 100
   let score = 0;
-  let lives = 3;
+  let lives = 1;
   const keys = [
     { name: "Tab", row: 1, segments: 2, status: 1 },
     { name: "q", row: 1, segments: 1, status: 1 },
