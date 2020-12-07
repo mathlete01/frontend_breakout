@@ -1,6 +1,11 @@
 const BASE_URL = "http://localhost:3000";
 const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
+const interface = document.getElementById("interface");
+const leaderboard = document.getElementById("leaderboard");
+const browser = navigator.appName;
+const platform = navigator.platform;
+
 
 document.addEventListener("DOMContentLoaded", (event) => {
   function setCurrentPlayer(obj) {
@@ -31,6 +36,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function createGame(id) {
     console.log(`createGame id = ${id}`);
+    leaderboard.innerHTML = ""
     let formData = {
       player_id: id,
     };
@@ -132,7 +138,46 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .then((res) => res.json())
       .then((obj) => console.log(obj))
       .then(document.location.reload())
+      //.then(getLeaderboard())
       .catch((errors) => console.log(`updateGame: ${errors}`));
+  }
+
+  function getLeaderboard(){
+    fetch("http://localhost:3000/games")
+    .then((res) => res.json())
+    .then((json) => {
+      const objs = json;
+      renderLeaderboard(objs);
+    });
+  }
+
+  getLeaderboard()
+
+  function renderLeaderboard(arr) {
+    arr.sort((a, b) => (a.score < b.score) ? 1 : -1)
+    let h1 = document.createElement("h1")
+    h1.innerText="Top Ten Scores"
+    let ol = document.createElement("ol");
+    ol.setAttribute("padding-left", 30)
+    ol.setAttribute("list-style-position", "inside")
+    ol.setAttribute("margin-left", "20px")
+    for(let i = 0; i < 10; i ++){
+      let li = document.createElement("li");
+      li.setAttribute("display", "list-item")
+      li.setAttribute("list-style-position", "inside")
+      let element = arr[i]
+      let s = element["score"]
+      let p = element["player"]["name"]
+      li.innerText = `${p}......${s} points`;
+      ol.append(li);
+    }
+    leaderboard.append(h1)
+    leaderboard.append(ol);
+    const btnStart = document.createElement("button");
+    btnStart.setAttribute("id", "btn-start");
+    btnStart.innerHTML = "Start Game";
+    btnStart.addEventListener("click", () => createPlayer());
+    leaderboard.append(btnStart);
   }
 
   function renderForm() {
@@ -151,21 +196,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     form.append(playername);
     form.append(btnSave);
   }
-
-  function renderInterface() {
-    const browser = navigator.appName;
-    const platform = navigator.platform;
-
-    const btnStart = document.createElement("button");
-    btnStart.setAttribute("id", "btn-start");
-    btnStart.innerHTML = "Start Game";
-    btnStart.addEventListener("click", () => createPlayer());
-
-    const interface = document.getElementById("interface");
-    interface.append(btnStart);
-  }
-
-  renderInterface();
 
   function renderGameboard() {
     ctx.width = window.innerWidth;
