@@ -80,6 +80,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function startGame(){
     //draw()
+    initKeys(keys)
     interval = setInterval(draw, 10)
   }
 
@@ -204,28 +205,35 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   document.body.addEventListener("keydown", function (ev) {
     let keyPressed = ev.key;
-    console.log(`keyPressed = ${keyPressed}`);
+    //console.log(`keyPressed = ${keyPressed}`);
     let keyObj = KEY_ARRAY.find(({ name }) => name === keyPressed);
-    keyObj.s = 0;
-    console.dir(keyObj);
-    if (ev.key == "Right" || ev.key == "ArrowRight") {
-      rightPressed = true;
-    } else if (ev.key == "Left" || ev.key == "ArrowLeft") {
-      leftPressed = true;
-    }
+    keyObj.s = 1;
+    //console.log(`${keyObj.name} = ${keyObj.s}`)
+    //console.dir(keyObj);
+    // if (ev.key == "Right" || ev.key == "ArrowRight") {
+    //   rightPressed = true;
+    // } else if (ev.key == "Left" || ev.key == "ArrowLeft") {
+    //   leftPressed = true;
+    // }
     ev.preventDefault(); // cancels default actions
     return false; // cancels this function only
   });
 
   document.body.addEventListener("keyup", function (ev) {
-    if (ev.key == "Right" || ev.key == "ArrowRight") {
-      rightPressed = false;
-    } else if (ev.key == "Left" || ev.key == "ArrowLeft") {
-      leftPressed = false;
-    }
+    let keyReleased = ev.key;
+    //console.log(`keyReleased = ${keyReleased}`);
+    let keyObj = KEY_ARRAY.find(({ name }) => name === keyReleased);
+    keyObj.s = 0;
+    //console.log(`${keyObj.name} = ${keyObj.s}`)
+    //console.dir(keyObj);
+    // if (ev.key == "Right" || ev.key == "ArrowRight") {
+    //   rightReleased = true;
+    // } else if (ev.key == "Left" || ev.key == "ArrowLeft") {
+    //   leftReleased = true;
+    // }
     ev.preventDefault(); // cancels default actions
     return false; // cancels this function only
-  });
+  }); 
 
   function collisionDetection() {
     for (let i = 0; i < KEY_ARRAY.length; i++) {
@@ -255,9 +263,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   KEY_ARRAY = [];
+  
 
-  function drawKeys(keys) {
-    KEY_ARRAY = [];
+  function initKeys(keys) {
+    //KEY_ARRAY = [];
     for (let i = 0; i < keys.length; i++) {
       let k = keys[i].name;
       let w = keys[i].segments * brickWidth;
@@ -265,21 +274,33 @@ document.addEventListener("DOMContentLoaded", (event) => {
       let x = w * i;
       let y = keys[i].row * brickHeight;
       let s = keys[i].status;
+      console.log(`${k} = ${s}`)
       KEY_ARRAY.push({ name: k, x: x, y: y, w: w, h: h, s: s });
-      drawKey(k, x, y, w, h);
     }
   }
 
-  function drawKey(key, brickX, brickY, brickWidth, brickHeight) {
+  function drawKeys(array){
+    //for(key of array){
+    for(let i = 0;i < array.length; i ++){
+      let key = array[i]
+      console.dir(`key.name = ${key.name}`)
+      console.dir(`key.s = ${key.s}`)
+      if(key.s == 1){
+        drawKey(key.k, key.x, key.y, key.w, key.h);
+     }
+    }
+  }
+
+  function drawKey(name, brickX, brickY, brickWidth, brickHeight) {
     ctx.beginPath();
     ctx.rect(brickX, brickY, brickWidth, brickHeight);
     ctx.fillStyle = "black";
     ctx.fill();
     ctx.closePath();
-    ctx.id = key;
+    ctx.id = name;
     ctx.font = "16px Arial";
     ctx.fillStyle = "white";
-    ctx.fillText(key, brickX + brickWidth / 2, brickY + brickHeight / 2);
+    ctx.fillText(name, brickX + brickWidth / 2, brickY + brickHeight / 2);
   }
 
   function drawScore() {
@@ -298,9 +319,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawKeys(keys);
+    drawKeys(KEY_ARRAY);
+    //drawKeys(keys);
     drawBall();
-    drawPaddle();
+    //drawPaddle();
     drawScore();
     drawLives();
     collisionDetection();
@@ -369,25 +391,25 @@ document.addEventListener("DOMContentLoaded", (event) => {
   let topRow = 100
   let interval = ""
   let score = 0;
-  let lives = 1;
+  let lives = 3;
   const keys = [
-    { name: "Tab", row: 1, segments: 2, status: 1 },
-    { name: "q", row: 1, segments: 1, status: 1 },
-    { name: "w", row: 1, segments: 1, status: 1 },
-    { name: "e", row: 1, segments: 1, status: 1 },
-    { name: "r", row: 1, segments: 1, status: 1 },
-    { name: "t", row: 1, segments: 1, status: 1 },
-    { name: "y", row: 1, segments: 1, status: 1 },
-    { name: "u", row: 1, segments: 1, status: 1 },
-    { name: "i", row: 1, segments: 1, status: 1 },
-    { name: "o", row: 1, segments: 1, status: 1 },
-    { name: "p", row: 1, segments: 1, status: 1 },
-    { name: "[", row: 1, segments: 1, status: 1 },
-    { name: "]", row: 1, segments: 1, status: 1 },
-    { name: "\\", row: 1, segments: 1, status: 1 },
-    { name: "CapsLock", row: 2, segments: 3, status: 1 },
-    { name: "Enter", row: 2, segments: 1, status: 1 },
-    { name: "ArrowLeft", row: 4, segments: 1, status: 1 },
-    { name: "ArrowRight", row: 4, segments: 1, status: 1 }
+    { name: "Tab", row: 1, segments: 2, status: 0 },
+    // { name: "q", row: 1, segments: 1, status: 0 },
+    // { name: "w", row: 1, segments: 1, status: 0 },
+    // { name: "e", row: 1, segments: 1, status: 0 },
+    // { name: "r", row: 1, segments: 1, status: 0 },
+    // { name: "t", row: 1, segments: 1, status: 0 },
+    // { name: "y", row: 1, segments: 1, status: 0 },
+    // { name: "u", row: 1, segments: 1, status: 0 },
+    // { name: "i", row: 1, segments: 1, status: 0 },
+    // { name: "o", row: 1, segments: 1, status: 0 },
+    // { name: "p", row: 1, segments: 1, status: 0 },
+    // { name: "[", row: 1, segments: 1, status: 0 },
+    // { name: "]", row: 1, segments: 1, status: 0 },
+    // { name: "\\", row: 1, segments: 1, status: 0 },
+    // { name: "CapsLock", row: 2, segments: 3, status: 0 },
+    // { name: "Enter", row: 2, segments: 1, status: 0 },
+    // { name: "ArrowLeft", row: 4, segments: 1, status: 0 },
+    // { name: "ArrowRight", row: 4, segments: 1, status: 0 }
   ];
 });
