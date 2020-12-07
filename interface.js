@@ -52,7 +52,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function startGame() {
-    initKeys(keys);
+    initKeys(row0);
+    initKeys(row1);
+    initKeys(row2);
+    initKeys(row3);
+    initKeys(row4);
     interval = setInterval(draw, 10);
   }
 
@@ -166,18 +170,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   document.body.addEventListener("keydown", function (ev) {
+    ev.preventDefault(); // cancels default actions
     let keyPressed = ev.key;
+    console.log(`ev = ${ev}`)
     let keyObj = KEY_ARRAY.find(({ name }) => name === keyPressed);
     keyObj.s = 1;
-    ev.preventDefault(); // cancels default actions
+    // ev.preventDefault(); // cancels default actions
     return false; // cancels this function only
   });
 
   document.body.addEventListener("keyup", function (ev) {
+    ev.preventDefault(); // cancels default actions
     let keyReleased = ev.key;
     let keyObj = KEY_ARRAY.find(({ name }) => name === keyReleased);
     keyObj.s = 0;
-    ev.preventDefault(); // cancels default actions
+    //ev.preventDefault(); // cancels default actions
     return false; // cancels this function only
   });
 
@@ -226,14 +233,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function drawKeys(array) {
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
-      if (key.s == 1) {
+     if (key.s == 1) {
         drawKey(key.name, key.x, key.y, key.w, key.h);
-      }
+     }
     }
   }
 
   function drawKey(name, keyX, keyY, keyWidth, keyHeight) {
-    console.log(`Drawing = ${name}`)
+    //console.log(`Drawing = ${name}`)
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
     ctx.fillStyle = "black";
@@ -335,7 +342,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
   let interval = "";
   let score = 0;
   let lives = 3;
-  const keys = [
+  const row0 = [
+    { name: "`", row: 0, segments: 2, status: 0 },
+    { name: "1", row: 0, segments: 1, status: 0 },
+    { name: "2", row: 0, segments: 1, status: 0 },
+    { name: "3", row: 0, segments: 1, status: 0 },
+    { name: "4", row: 0, segments: 1, status: 0 },
+    { name: "5", row: 0, segments: 1, status: 0 },
+    { name: "6", row: 0, segments: 1, status: 0 },
+    { name: "7", row: 0, segments: 1, status: 0 },
+    { name: "8", row: 0, segments: 1, status: 0 },
+    { name: "9", row: 0, segments: 1, status: 0 },
+    { name: "0", row: 0, segments: 1, status: 0 },
+    { name: "-", row: 0, segments: 1, status: 0 },
+    { name: "=", row: 0, segments: 1, status: 0 },
+    { name: "Backspace", row: 0, segments: 1, status: 0 }]
+  const row1 = [
     { name: "Tab", row: 1, segments: 2, status: 0 },
     { name: "q", row: 1, segments: 1, status: 0 },
     { name: "w", row: 1, segments: 1, status: 0 },
@@ -349,7 +371,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     { name: "p", row: 1, segments: 1, status: 0 },
     { name: "[", row: 1, segments: 1, status: 0 },
     { name: "]", row: 1, segments: 1, status: 0 },
-    { name: "\\", row: 1, segments: 1, status: 0 },
+    { name: "\\", row: 1, segments: 1, status: 0 }]
+  const row2 = [
     { name: "CapsLock", row: 2, segments: 3, status: 0 },
     { name: "a", row: 2, segments: 1, status: 0 },
     { name: "s", row: 2, segments: 1, status: 0 },
@@ -362,9 +385,34 @@ document.addEventListener("DOMContentLoaded", (event) => {
     { name: "l", row: 2, segments: 1, status: 0 },
     { name: ":", row: 2, segments: 1, status: 0 },
     { name: "'", row: 2, segments: 1, status: 0 },
-    { name: "Enter", row: 2, segments: 1, status: 0 },
-    { name: "ArrowLeft", row: 4, segments: 1, status: 0 },
-    { name: "ArrowRight", row: 4, segments: 1, status: 0 }
+    { name: "Enter", row: 2, segments: 2, status: 0 },
   ];
+  const row3 = [
+    { name: "Shift", row: 3, segments: 3, status: 0 },
+    { name: "z", row: 3, segments: 1, status: 0 },
+    { name: "x", row: 3, segments: 1, status: 0 },
+    { name: "c", row: 3, segments: 1, status: 0 },
+    { name: "v", row: 3, segments: 1, status: 0 },
+    { name: "b", row: 3, segments: 1, status: 0 },
+    { name: "n", row: 3, segments: 1, status: 0 },
+    { name: "m", row: 3, segments: 1, status: 0 },
+    { name: ",", row: 3, segments: 1, status: 0 },
+    { name: ".", row: 3, segments: 1, status: 0 },
+    { name: "/", row: 3, segments: 1, status: 0 },
+    { name: "Shift", row: 3, segments: 3, status: 0 },
+  ];
+  const row4 = [
+    { name: "Function", row: 4, segments: 1, status: 0 },
+    { name: "Control", row: 4, segments: 1, status: 0 },
+    { name: "Alt", row: 4, segments: 1, status: 0 },
+    { name: "Meta", row: 4, segments: 1.5, status: 0 },
+    { name: " ", row: 4, segments: 5, status: 0 },
+    { name: "Meta", row: 4, segments: 1.5, status: 0 },
+    { name: "Alt", row: 4, segments: 1, status: 0 },
+    { name: "ArrowLeft", row: 4, segments: 1, status: 0 },
+    { name: "ArrowUp", row: 4, segments: 1, status: 0 },
+    { name: "ArrowDown", row: 4, segments: 1, status: 0 },
+    { name: "ArrowRight", row: 4, segments: 1, status: 0 },
+  ]
 
 });
