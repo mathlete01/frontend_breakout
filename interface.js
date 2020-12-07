@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderForm() {
-    deactivateKeyListeners();
+    //deactivateKeyListeners();
     console.log("renderForm called");
     const playername = document.createElement("input");
     playername.setAttribute("name", "playername");
@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function captureKeyDown(ev) {
     if (ev.code != "KeyM") {
-      ev.preventDefault();
+      //ev.preventDefault();
       let keyPressed = ev.code;
       let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
       keyObj.s = 1;
@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function captureKeyUp(ev) {
     if (ev.code != "KeyM") {
-      ev.preventDefault();
+      //ev.preventDefault();
       let keyReleased = ev.code;
       let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
       keyObj.s = 0;
