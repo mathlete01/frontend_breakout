@@ -3,176 +3,137 @@ const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  
   function setCurrentPlayer(obj) {
-    console.log("setCurrentPlayer called")
-    console.dir(obj)
     CURRENT_PLAYER = obj.id;
-    console.log(`CURRENT_PLAYER = ${CURRENT_PLAYER}`)
-    createGame(CURRENT_PLAYER)
+    console.log(`CURRENT_PLAYER = ${CURRENT_PLAYER}`);
+    createGame(CURRENT_PLAYER);
   }
 
   function setCurrentGame(obj) {
-    console.log("setCurrentGame called")
-    console.log(`setCurrentGame: obj = ${obj}`)
-    console.dir(obj)
     CURRENT_GAME = obj.id;
-    console.log(`CURRENT_GAME = ${CURRENT_GAME}`)
+    console.log(`CURRENT_GAME = ${CURRENT_GAME}`);
   }
 
   function createPlayer() {
-    
-    // let formDataCreate = {
-    //   score: 0,
-    //   lives: 3,
-    // };
 
     let configObjCreate = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
-      }
-      // body: JSON.stringify(formDataCreate),
+        Accept: "application/json",
+      },
     };
 
     fetch(PLAYERS_URL, configObjCreate)
       .then((res) => res.json())
-      //.then(obj => console.log(obj))
-      
       .then((data) => setCurrentPlayer(data))
-      //.then(obj => createGame(obj))
-      //.then(draw())
-      //.catch((errors) => alert(`createPlayer: ${errors}`));
       .catch((errors) => console.log(`createPlayer: ${errors}`));
   }
 
   function createGame(id) {
-    console.log(`createGame id = ${id}`)
+    console.log(`createGame id = ${id}`);
     let formData = {
-      //score: score
-      player_id: id
+      player_id: id,
     };
-    //document.location.reload()
-    //window.cancelAnimationFrame(myReq)
     let configObj = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json"
+        Accept: "application/json",
       },
       body: JSON.stringify(formData),
     };
 
     fetch(GAMES_URL, configObj)
       .then((res) => res.json())
-      //.then(obj => console.log(obj))
-      //.then((data) => console.log(data))
-      //.then(cancelAnimationFrame(myReq))
-      //.then(document.location.reload())
-      //.then(renderForm())
-      .then(obj => setCurrentGame(obj))
-      //.then(draw())
+      .then((obj) => setCurrentGame(obj))
       .then(startGame())
       .catch((errors) => console.log(`createGame: ${errors}`));
-      //.catch((errors) => console.log(errors));
   }
 
-  function startGame(){
-    //draw()
-    interval = setInterval(draw, 10)
+  function startGame() {
+    initKeys(row0);
+    initKeys(row1);
+    initKeys(row2);
+    initKeys(row3);
+    initKeys(row4);
+    interval = setInterval(draw, 10);
   }
 
   function endGame() {
-    clearInterval(interval)
-    interval = ""
-    console.log(`endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`);
-    //console.log(`CURRENT_GAME = ${CURRENT_GAME}`)
-    // console.log(`event.target = ${event.target}`)
-    // console.log(`event.target.playername = ${event.target.playername}`)
-    // console.log(`event.target.playername.value = ${event.target.playername.value}`)
+    clearInterval(interval);
+    interval = "";
+    console.log(
+      `endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
+    );
     let formData = {
       id: CURRENT_GAME,
       score: score,
-      //player_id: CURRENT_PLAYER
     };
 
     let configObj = {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(formData),
     };
 
     fetch(GAMES_URL, configObj)
       .then((res) => res.json())
-      //.then(obj => console.log(obj))
-      //.then(document.location.reload())
-      //.then(interval = "")
-      //.then(clearInterval(interval))
       .then(renderForm())
       .catch((errors) => console.log(`endGame: ${errors}`));
   }
 
   function savePlayer(name) {
     console.log(`savePlayer:name = ${name}`);
-    console.log(`savePlayer:CURRENT_PLAYER = ${CURRENT_PLAYER}`);
-    //console.log(`CURRENT_PLAYER = ${CURRENT_PLAYER}`)
-    // console.log(`event.target = ${event.target}`)
-    // console.log(`event.target.playername = ${event.target.playername}`)
-    // console.log(`event.target.playername.value = ${event.target.playername.value}`)
     let formData = {
       id: CURRENT_PLAYER,
-      name: name
+      name: name,
     };
 
     let configOb = {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(formData),
     };
 
     fetch(PLAYERS_URL, configOb)
       .then((res) => res.json())
-      .then(obj => console.log(obj))
+      .then((obj) => console.log(obj))
       .then(updateGame(name))
-      //.then(document.location.reload())
       .catch((errors) => console.log(`savePlayer: ${errors}`));
   }
 
-  function updateGame(name){
+  function updateGame(name) {
     console.log(`updateGame called: name = ${name}`);
-    console.log(`updateGame called: CURRENT_GAME = ${CURRENT_GAME}`);
     let formData = {
       id: CURRENT_GAME,
-      name: name
+      name: name,
     };
 
     let configOb = {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(formData),
     };
 
     fetch(GAMES_URL, configOb)
       .then((res) => res.json())
-      .then(obj => console.log(obj))
+      .then((obj) => console.log(obj))
       .then(document.location.reload())
       .catch((errors) => console.log(`updateGame: ${errors}`));
   }
 
   function renderForm() {
-    console.log("renderForm called")
-    //window.cancelAnimationFrame()
-    //ctx.clearRect(0, 0, canvas.width, canvas.height);
+    console.log("renderForm called");
     const playername = document.createElement("input");
     playername.setAttribute("name", "playername");
     playername.placeholder = "enter name";
@@ -189,7 +150,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function renderInterface() {
     const browser = navigator.appName;
     const platform = navigator.platform;
-    
+
     const btnStart = document.createElement("button");
     btnStart.setAttribute("id", "btn-start");
     btnStart.innerHTML = "Start Game";
@@ -200,44 +161,46 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   renderInterface();
-  //renderForm()
+
+  function renderGameboard(){
+    ctx.width = window.innerWidth
+    ctx.height = window.innerHeight
+    console.log(`ctx.width = ${ctx.width}`)
+    console.log(`window.innerWidth = ${window.innerWidth}`)
+  }
 
   document.body.addEventListener("keydown", function (ev) {
-    let keyPressed = ev.key;
-    console.log(`keyPressed = ${keyPressed}`);
-    let keyObj = KEY_ARRAY.find(({ name }) => name === keyPressed);
-    keyObj.s = 0;
-    console.dir(keyObj);
-    if (ev.key == "Right" || ev.key == "ArrowRight") {
-      rightPressed = true;
-    } else if (ev.key == "Left" || ev.key == "ArrowLeft") {
-      leftPressed = true;
-    }
     ev.preventDefault(); // cancels default actions
+    let keyPressed = ev.code;
+    console.log(`keyPressed = ${keyPressed}`)
+    let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
+    keyObj.s = 1;
+    // ev.preventDefault(); // cancels default actions
     return false; // cancels this function only
   });
 
   document.body.addEventListener("keyup", function (ev) {
-    if (ev.key == "Right" || ev.key == "ArrowRight") {
-      rightPressed = false;
-    } else if (ev.key == "Left" || ev.key == "ArrowLeft") {
-      leftPressed = false;
-    }
     ev.preventDefault(); // cancels default actions
+    let keyReleased = ev.code;
+    console.log(`keyReleased = ${keyReleased}`)
+    let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
+    keyObj.s = 0;
+    //ev.preventDefault(); // cancels default actions
     return false; // cancels this function only
   });
 
-  function collisionDetection() {
+  function collisionDetection(KEY_ARRAY) {
     for (let i = 0; i < KEY_ARRAY.length; i++) {
       let b = KEY_ARRAY[i];
-      //if(b.status == 1) {
-      if (x > b.x && x < b.x + b.w && y > b.y && y < b.y + brickHeight) {
-        dy = -dy;
-        //b.status = 0;
-        score++;
+      if (b.s == 1) {
+        if (x > b.x && x < b.x + b.w && y > b.y && y < b.y + keyHeight) {
+          dy = -dy;
+          score++;
+          releaseAllKeys(KEY_ARRAY)
+          speed = speed + 0.1
+        }
       }
     }
-    //}
   }
   function drawBall() {
     ctx.beginPath();
@@ -256,30 +219,61 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   KEY_ARRAY = [];
 
-  function drawKeys(keys) {
-    KEY_ARRAY = [];
+  function initKeys(keys) {
+    //console.log(`keys.length = ${keys.length}`)
     for (let i = 0; i < keys.length; i++) {
       let k = keys[i].name;
-      let w = keys[i].segments * brickWidth;
-      let h = brickHeight;
-      let x = w * i;
-      let y = keys[i].row * brickHeight;
+      let c = keys[i].code;
+      //console.log(`Drawing = ${k}`)
+      let w = Math.round(keys[i].segments * keyWidth);
+      let h = keyHeight;
+      let x = keys[i].position * keyWidth;
+      let y = keys[i].row * keyHeight;
       let s = keys[i].status;
-      KEY_ARRAY.push({ name: k, x: x, y: y, w: w, h: h, s: s });
-      drawKey(k, x, y, w, h);
+      KEY_ARRAY.push({ name: k, code:c, x: x, y: y, w: w, h: h, s: s });
+    }
+    console.dir(KEY_ARRAY)
+  }
+
+  function drawKeys(array) {
+    for (let i = 0; i < array.length; i++) {
+      let key = array[i];
+      drawKeyOutline(key.name, key.code, key.x, key.y, key.w, key.h);
+     if (key.s == 1) {
+        drawKey(key.name, key.code, key.x, key.y, key.w, key.h);
+     }
     }
   }
 
-  function drawKey(key, brickX, brickY, brickWidth, brickHeight) {
+  function drawKeyOutline(name, code, keyX, keyY, keyWidth, keyHeight) {
+    //console.log(`Drawing = ${name}`)
     ctx.beginPath();
-    ctx.rect(brickX, brickY, brickWidth, brickHeight);
+    ctx.rect(keyX, keyY, keyWidth, keyHeight);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.id = code;
+    //ctx.font = "16px Arial";
+    //ctx.fillStyle = "red";
+    //ctx.fillText(name, keyX + keyWidth / 2, keyY + keyHeight / 2);
+  }
+  
+  function drawKey(name, code, keyX, keyY, keyWidth, keyHeight) {
+    //console.log(`Drawing = ${name}`)
+    ctx.beginPath();
+    ctx.rect(keyX, keyY, keyWidth, keyHeight);
     ctx.fillStyle = "black";
     ctx.fill();
     ctx.closePath();
-    ctx.id = key;
+    ctx.id = code;
     ctx.font = "16px Arial";
     ctx.fillStyle = "white";
-    ctx.fillText(key, brickX + brickWidth / 2, brickY + brickHeight / 2);
+    ctx.fillText(name, keyX + keyWidth / 2, keyY + keyHeight / 2);
+  }
+
+  function releaseAllKeys(array){
+    for(key of array){
+      key.s = 0
+    }
   }
 
   function drawScore() {
@@ -291,19 +285,27 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function drawLives() {
     ctx.font = "16px Arial";
     ctx.fillStyle = "black";
-    ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
+    ctx.fillText("Lives: " + lives, canvas.width - 80, 20);
   }
 
-  let myReq
+  let myReq;
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawKeys(keys);
+    ctx.lineWidth = 2
+    ctx.strokeStyle = "#000000"
+    ctx.strokeRect(0,0,canvas.width, canvas.height)
+    //ctx.fillStyle = "#0000FF"
+    drawKeys(KEY_ARRAY);
     drawBall();
-    drawPaddle();
     drawScore();
     drawLives();
-    collisionDetection();
+    collisionDetection(KEY_ARRAY);
+
+    if (lives < 1) {
+      console.log("GAME OVER");
+      endGame();
+    }
 
     if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
       dx = -dx;
@@ -316,17 +318,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
       } else {
         lives--;
         if (!lives) {
-          //alert("GAME OVER");
           console.log("GAME OVER");
-          //createGame();
-          endGame()
-          //document.location.reload();
-          //renderForm()
+          endGame();
         } else {
           x = canvas.width / 2;
           y = canvas.height - 30;
-          dx = 2;
-          dy = -2;
+          dx = speed;
+          dy = -1 * speed;
           paddleX = (canvas.width - paddleWidth) / 2;
         }
       }
@@ -341,53 +339,111 @@ document.addEventListener("DOMContentLoaded", (event) => {
     x += dx;
     y += dy;
 
-    //myReq = window.requestAnimationFrame(draw);
   }
 
   const w = window.innerWidth;
   const h = window.innerHeight;
+  let speed = 0.3
   let canvas = document.getElementById("myCanvas");
+  let keySegments = 15;
+  const factor = 5/keySegments
+  canvas.width = w
+  canvas.height = factor * w
   let ctx = canvas.getContext("2d");
   let ballRadius = 10;
   let x = canvas.width / 2;
   let y = canvas.height - 30;
-  let dx = 2;
-  let dy = -2;
+  let dx = speed;
+  let dy = -1 * dx
   let paddleHeight = 10;
   let paddleWidth = 75;
   let paddleX = (canvas.width - paddleWidth) / 2;
   let rightPressed = false;
   let leftPressed = false;
-  let brickRowCount = 5;
-  let brickColumnCount = 10;
-  let brickPadding = 10;
-  let brickOffsetTop = 30;
-  let brickOffsetLeft = 30;
-  let keySegments = 15;
-  let brickWidth = w / keySegments;
-  let brickHeight = brickWidth;
-  let topRow = 100
-  let interval = ""
+  let keyRowCount = 5;
+  let keyColumnCount = 15;
+  let keyPadding = 10;
+  let keyOffsetTop = 30;
+  let keyOffsetLeft = 30;
+  let keyWidth = w / keySegments;
+  let keyHeight = keyWidth;
+  let topRow = 100;
+  let interval = "";
   let score = 0;
-  let lives = 1;
-  const keys = [
-    { name: "Tab", row: 1, segments: 2, status: 1 },
-    { name: "q", row: 1, segments: 1, status: 1 },
-    { name: "w", row: 1, segments: 1, status: 1 },
-    { name: "e", row: 1, segments: 1, status: 1 },
-    { name: "r", row: 1, segments: 1, status: 1 },
-    { name: "t", row: 1, segments: 1, status: 1 },
-    { name: "y", row: 1, segments: 1, status: 1 },
-    { name: "u", row: 1, segments: 1, status: 1 },
-    { name: "i", row: 1, segments: 1, status: 1 },
-    { name: "o", row: 1, segments: 1, status: 1 },
-    { name: "p", row: 1, segments: 1, status: 1 },
-    { name: "[", row: 1, segments: 1, status: 1 },
-    { name: "]", row: 1, segments: 1, status: 1 },
-    { name: "\\", row: 1, segments: 1, status: 1 },
-    { name: "CapsLock", row: 2, segments: 3, status: 1 },
-    { name: "Enter", row: 2, segments: 1, status: 1 },
-    { name: "ArrowLeft", row: 4, segments: 1, status: 1 },
-    { name: "ArrowRight", row: 4, segments: 1, status: 1 }
+  let lives = 3;
+  const row0 = [
+    { name: "`", code:"Backquote",row: 0, segments: 1, status: 0, position: 0},
+    { name: "1", code:"Digit1",row: 0, segments: 1, status: 0, position: 1},
+    { name: "2", code:"Digit2", row: 0, segments: 1, status: 0, position: 2},
+    { name: "3", code:"Digit3", row: 0, segments: 1, status: 0, position: 3},
+    { name: "4", code:"Digit4", row: 0, segments: 1, status: 0, position: 4},
+    { name: "5", code:"Digit5", row: 0, segments: 1, status: 0, position: 5},
+    { name: "6", code:"Digit6", row: 0, segments: 1, status: 0, position: 6},
+    { name: "7", code:"Digit7", row: 0, segments: 1, status: 0, position: 7},
+    { name: "8", code:"Digit8", row: 0, segments: 1, status: 0, position: 8},
+    { name: "9", code:"Digit9", row: 0, segments: 1, status: 0, position: 9},
+    { name: "0", code:"Digit0", row: 0, segments: 1, status: 0, position: 10},
+    { name: "-", code:"Minus",row: 0, segments: 1, status: 0, position: 11},
+    { name: "=", code:"Equal",row: 0, segments: 1, status: 0, position: 12},
+    { name: "Backspace", code:"Backspace",row: 0, segments: 2, status: 0, position: 13}
+  ]
+  const row1 = [
+    { name: "Tab", code:"Tab", row: 1, segments: 2, status: 0, position: 0},
+    { name: "q", code:"KeyQ", row: 1, segments: 1, status: 0, position: 2},
+    { name: "w", code:"KeyW", row: 1, segments: 1, status: 0, position: 3},
+    { name: "e", code:"KeyE", row: 1, segments: 1, status: 0, position: 4},
+    { name: "r", code:"KeyR", row: 1, segments: 1, status: 0, position: 5},
+    { name: "t", code:"KeyT", row: 1, segments: 1, status: 0, position: 6},
+    { name: "y", code:"KeyY", row: 1, segments: 1, status: 0, position: 7},
+    { name: "u", code:"KeyU", row: 1, segments: 1, status: 0, position: 8},
+    { name: "i", code:"KeyI", row: 1, segments: 1, status: 0, position: 9},
+    { name: "o", code:"KeyO", row: 1, segments: 1, status: 0, position: 10},
+    { name: "p", code:"KeyP", row: 1, segments: 1, status: 0, position: 11},
+    { name: "[", code:"BracketLeft", row: 1, segments: 1, status: 0, position: 12},
+    { name: "]", code:"BracketRight", row: 1, segments: 1, status: 0, position: 13},
+    { name: "\\", code:"Backslash", row: 1, segments: 1, status: 0, position: 14}
+  ]
+  const row2 = [
+    { name: "CapsLock", code:"CapsLock", row: 2, segments: 2, status: 0 , position:0 },
+    { name: "a", code:"KeyA", row: 2, segments: 1, status: 0 , position:2 },
+    { name: "s", code:"KeyS", row: 2, segments: 1, status: 0 , position:3 },
+    { name: "d", code:"KeyD", row: 2, segments: 1, status: 0 , position:4 },
+    { name: "f", code:"KeyF", row: 2, segments: 1, status: 0 , position:5 },
+    { name: "g", code:"KeyG", row: 2, segments: 1, status: 0 , position:6 },
+    { name: "h", code:"KeyH", row: 2, segments: 1, status: 0 , position:7},
+    { name: "j", code:"KeyJ", row: 2, segments: 1, status: 0 , position:8 },
+    { name: "k", code:"KeyK", row: 2, segments: 1, status: 0 , position:9 },
+    { name: "l", code:"KeyL", row: 2, segments: 1, status: 0 , position:10 },
+    { name: ":", code:"Semicolon", row: 2, segments: 1, status: 0 , position:11 },
+    { name: "'", code:"Quote", row: 2, segments: 1, status: 0 , position:12 },
+    { name: "Enter", code:"Enter", row: 2, segments: 2, status: 0 , position:13 },
   ];
+  const row3 = [
+    { name: "Shift", code:"ShiftLeft", row: 3, segments: 2.5, status: 0, position:0 },
+    { name: "z", code:"KeyZ", row: 3, segments: 1, status: 0, position:2.5 },
+    { name: "x", code:"KeyX", row: 3, segments: 1, status: 0, position:3.5 },
+    { name: "c", code:"KeyC", row: 3, segments: 1, status: 0, position:4.5 },
+    { name: "v", code:"KeyV", row: 3, segments: 1, status: 0, position:5.5 },
+    { name: "b", code:"KeyB", row: 3, segments: 1, status: 0, position:6.5 },
+    { name: "n", code:"KeyN", row: 3, segments: 1, status: 0, position:7.5 },
+    { name: "m", code:"KeyM", row: 3, segments: 1, status: 0, position:8.5 },
+    { name: ",", code:"Comma", row: 3, segments: 1, status: 0, position:9.5 },
+    { name: ".", code:"Period", row: 3, segments: 1, status: 0, position:10.5 },
+    { name: "/", code:"Slash", row: 3, segments: 1, status: 0, position:11.5 },
+    { name: "Shift", code:"ShiftRight", row: 3, segments: 2.5, status: 0, position:12.5 },
+  ];
+  const row4 = [
+    { name: "Function", code:"", row: 4, segments: 1, status: 0, position:0 },
+    { name: "Control", code:"ControlLeft", row: 4, segments: 1, status: 0, position:1 },
+    { name: "Alt", code:"AltLeft", row: 4, segments: 1, status: 0, position:2 },
+    { name: "⌘", code:"MetaLeft", row: 4, segments: 1.5, status: 0, position:3 },
+    { name: "Space", code:"Space", row: 4, segments: 5, status: 0, position:4.5 },
+    { name: "⌘", code:"MetaRight", row: 4, segments: 1.5, status: 0, position:9.5 },
+    { name: "Alt", code:"AltRight", row: 4, segments: 1, status: 0, position:11 },
+    { name: "←", code:"ArrowLeft", row: 4, segments: 1, status: 0, position:12 },
+    { name: "↑", code:"ArrowUp", row: 4, segments: 1, status: 0, position:13 },
+    { name: "↓", code:"ArrowDown", row: 4, segments: 1, status: 0, position:13 },
+    { name: "→", code:"ArrowRight", row: 4, segments: 1, status: 0, position:14 },
+  ]
+
 });
