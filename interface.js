@@ -171,9 +171,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   document.body.addEventListener("keydown", function (ev) {
     ev.preventDefault(); // cancels default actions
-    let keyPressed = ev.key;
-    console.log(`ev = ${ev}`)
-    let keyObj = KEY_ARRAY.find(({ name }) => name === keyPressed);
+    let keyPressed = ev.code;
+    console.log(`keyPressed = ${keyPressed}`)
+    let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
     keyObj.s = 1;
     // ev.preventDefault(); // cancels default actions
     return false; // cancels this function only
@@ -181,8 +181,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   document.body.addEventListener("keyup", function (ev) {
     ev.preventDefault(); // cancels default actions
-    let keyReleased = ev.key;
-    let keyObj = KEY_ARRAY.find(({ name }) => name === keyReleased);
+    let keyReleased = ev.code;
+    console.log(`keyReleased = ${keyReleased}`)
+    let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
     keyObj.s = 0;
     //ev.preventDefault(); // cancels default actions
     return false; // cancels this function only
@@ -220,37 +221,41 @@ document.addEventListener("DOMContentLoaded", (event) => {
     //console.log(`keys.length = ${keys.length}`)
     for (let i = 0; i < keys.length; i++) {
       let k = keys[i].name;
+      let c = keys[i].code;
       //console.log(`Drawing = ${k}`)
-      let w = keys[i].segments * keyWidth;
+      let w = Math.round(keys[i].segments * keyWidth);
       let h = keyHeight;
-      let x = w * i;
+      let x = keys[i].position * keyWidth;
       let y = keys[i].row * keyHeight;
       let s = keys[i].status;
-      KEY_ARRAY.push({ name: k, x: x, y: y, w: w, h: h, s: s });
+      KEY_ARRAY.push({ name: k, code:c, x: x, y: y, w: w, h: h, s: s });
     }
+    console.dir(KEY_ARRAY)
   }
 
   function drawKeys(array) {
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
      if (key.s == 1) {
-        drawKey(key.name, key.x, key.y, key.w, key.h);
+        drawKey(key.name, key.code, key.x, key.y, key.w, key.h);
      }
     }
   }
 
-  function drawKey(name, keyX, keyY, keyWidth, keyHeight) {
+  function drawKey(name, code, keyX, keyY, keyWidth, keyHeight) {
     //console.log(`Drawing = ${name}`)
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
     ctx.fillStyle = "black";
     ctx.fill();
     ctx.closePath();
-    ctx.id = name;
+    ctx.id = code;
     ctx.font = "16px Arial";
     ctx.fillStyle = "white";
     ctx.fillText(name, keyX + keyWidth / 2, keyY + keyHeight / 2);
   }
+
+
 
   function drawScore() {
     ctx.font = "16px Arial";
@@ -277,6 +282,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
     drawScore();
     drawLives();
     collisionDetection(KEY_ARRAY);
+
+    if (lives < 1) {
+      console.log("GAME OVER");
+      endGame();
+    }
 
     if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
       dx = -dx;
@@ -343,76 +353,78 @@ document.addEventListener("DOMContentLoaded", (event) => {
   let score = 0;
   let lives = 3;
   const row0 = [
-    { name: "`", row: 0, segments: 2, status: 0 },
-    { name: "1", row: 0, segments: 1, status: 0 },
-    { name: "2", row: 0, segments: 1, status: 0 },
-    { name: "3", row: 0, segments: 1, status: 0 },
-    { name: "4", row: 0, segments: 1, status: 0 },
-    { name: "5", row: 0, segments: 1, status: 0 },
-    { name: "6", row: 0, segments: 1, status: 0 },
-    { name: "7", row: 0, segments: 1, status: 0 },
-    { name: "8", row: 0, segments: 1, status: 0 },
-    { name: "9", row: 0, segments: 1, status: 0 },
-    { name: "0", row: 0, segments: 1, status: 0 },
-    { name: "-", row: 0, segments: 1, status: 0 },
-    { name: "=", row: 0, segments: 1, status: 0 },
-    { name: "Backspace", row: 0, segments: 1, status: 0 }]
+    { name: "`", code:"Backquote",row: 0, segments: 1, status: 0, position: 0},
+    { name: "1", code:"Digit1",row: 0, segments: 1, status: 0, position: 1},
+    { name: "2", code:"Digit2", row: 0, segments: 1, status: 0, position: 2},
+    { name: "3", code:"Digit3", row: 0, segments: 1, status: 0, position: 3},
+    { name: "4", code:"Digit4", row: 0, segments: 1, status: 0, position: 4},
+    { name: "5", code:"Digit5", row: 0, segments: 1, status: 0, position: 5},
+    { name: "6", code:"Digit6", row: 0, segments: 1, status: 0, position: 6},
+    { name: "7", code:"Digit7", row: 0, segments: 1, status: 0, position: 7},
+    { name: "8", code:"Digit8", row: 0, segments: 1, status: 0, position: 8},
+    { name: "9", code:"Digit9", row: 0, segments: 1, status: 0, position: 9},
+    { name: "0", code:"Digit0", row: 0, segments: 1, status: 0, position: 10},
+    { name: "-", code:"Minus",row: 0, segments: 1, status: 0, position: 11},
+    { name: "=", code:"Equal",row: 0, segments: 1, status: 0, position: 12},
+    { name: "Backspace", code:"Backspace",row: 0, segments: 2, status: 0, position: 13}
+  ]
   const row1 = [
-    { name: "Tab", row: 1, segments: 2, status: 0 },
-    { name: "q", row: 1, segments: 1, status: 0 },
-    { name: "w", row: 1, segments: 1, status: 0 },
-    { name: "e", row: 1, segments: 1, status: 0 },
-    { name: "r", row: 1, segments: 1, status: 0 },
-    { name: "t", row: 1, segments: 1, status: 0 },
-    { name: "y", row: 1, segments: 1, status: 0 },
-    { name: "u", row: 1, segments: 1, status: 0 },
-    { name: "i", row: 1, segments: 1, status: 0 },
-    { name: "o", row: 1, segments: 1, status: 0 },
-    { name: "p", row: 1, segments: 1, status: 0 },
-    { name: "[", row: 1, segments: 1, status: 0 },
-    { name: "]", row: 1, segments: 1, status: 0 },
-    { name: "\\", row: 1, segments: 1, status: 0 }]
+    { name: "Tab", code:"Tab", row: 1, segments: 2, status: 0, position: 0},
+    { name: "q", code:"KeyQ", row: 1, segments: 1, status: 0, position: 2},
+    { name: "w", code:"KeyW", row: 1, segments: 1, status: 0, position: 3},
+    { name: "e", code:"KeyE", row: 1, segments: 1, status: 0, position: 4},
+    { name: "r", code:"KeyR", row: 1, segments: 1, status: 0, position: 5},
+    { name: "t", code:"KeyT", row: 1, segments: 1, status: 0, position: 6},
+    { name: "y", code:"KeyY", row: 1, segments: 1, status: 0, position: 7},
+    { name: "u", code:"KeyU", row: 1, segments: 1, status: 0, position: 8},
+    { name: "i", code:"KeyI", row: 1, segments: 1, status: 0, position: 9},
+    { name: "o", code:"KeyO", row: 1, segments: 1, status: 0, position: 10},
+    { name: "p", code:"KeyP", row: 1, segments: 1, status: 0, position: 11},
+    { name: "[", code:"BracketLeft", row: 1, segments: 1, status: 0, position: 12},
+    { name: "]", code:"BracketRight", row: 1, segments: 1, status: 0, position: 13},
+    { name: "\\", code:"Backslash", row: 1, segments: 1, status: 0, position: 14}
+  ]
   const row2 = [
-    { name: "CapsLock", row: 2, segments: 3, status: 0 },
-    { name: "a", row: 2, segments: 1, status: 0 },
-    { name: "s", row: 2, segments: 1, status: 0 },
-    { name: "d", row: 2, segments: 1, status: 0 },
-    { name: "f", row: 2, segments: 1, status: 0 },
-    { name: "g", row: 2, segments: 1, status: 0 },
-    { name: "h", row: 2, segments: 1, status: 0 },
-    { name: "j", row: 2, segments: 1, status: 0 },
-    { name: "k", row: 2, segments: 1, status: 0 },
-    { name: "l", row: 2, segments: 1, status: 0 },
-    { name: ":", row: 2, segments: 1, status: 0 },
-    { name: "'", row: 2, segments: 1, status: 0 },
-    { name: "Enter", row: 2, segments: 2, status: 0 },
+    { name: "CapsLock", code:"CapsLock", row: 2, segments: 2, status: 0 , position:0 },
+    { name: "a", code:"KeyA", row: 2, segments: 1, status: 0 , position:2 },
+    { name: "s", code:"KeyS", row: 2, segments: 1, status: 0 , position:3 },
+    { name: "d", code:"KeyD", row: 2, segments: 1, status: 0 , position:4 },
+    { name: "f", code:"KeyF", row: 2, segments: 1, status: 0 , position:5 },
+    { name: "g", code:"KeyG", row: 2, segments: 1, status: 0 , position:6 },
+    { name: "h", code:"KeyH", row: 2, segments: 1, status: 0 , position:7},
+    { name: "j", code:"KeyJ", row: 2, segments: 1, status: 0 , position:8 },
+    { name: "k", code:"KeyK", row: 2, segments: 1, status: 0 , position:9 },
+    { name: "l", code:"KeyL", row: 2, segments: 1, status: 0 , position:10 },
+    { name: ":", code:"Semicolon", row: 2, segments: 1, status: 0 , position:11 },
+    { name: "'", code:"Quote", row: 2, segments: 1, status: 0 , position:12 },
+    { name: "Enter", code:"Enter", row: 2, segments: 2, status: 0 , position:13 },
   ];
   const row3 = [
-    { name: "Shift", row: 3, segments: 3, status: 0 },
-    { name: "z", row: 3, segments: 1, status: 0 },
-    { name: "x", row: 3, segments: 1, status: 0 },
-    { name: "c", row: 3, segments: 1, status: 0 },
-    { name: "v", row: 3, segments: 1, status: 0 },
-    { name: "b", row: 3, segments: 1, status: 0 },
-    { name: "n", row: 3, segments: 1, status: 0 },
-    { name: "m", row: 3, segments: 1, status: 0 },
-    { name: ",", row: 3, segments: 1, status: 0 },
-    { name: ".", row: 3, segments: 1, status: 0 },
-    { name: "/", row: 3, segments: 1, status: 0 },
-    { name: "Shift", row: 3, segments: 3, status: 0 },
+    { name: "Shift", code:"ShiftLeft", row: 3, segments: 2.5, status: 0, position:0 },
+    { name: "z", code:"KeyZ", row: 3, segments: 1, status: 0, position:2.5 },
+    { name: "x", code:"KeyX", row: 3, segments: 1, status: 0, position:3.5 },
+    { name: "c", code:"KeyC", row: 3, segments: 1, status: 0, position:4.5 },
+    { name: "v", code:"KeyV", row: 3, segments: 1, status: 0, position:5.5 },
+    { name: "b", code:"KeyB", row: 3, segments: 1, status: 0, position:6.5 },
+    { name: "n", code:"KeyN", row: 3, segments: 1, status: 0, position:7.5 },
+    { name: "m", code:"KeyM", row: 3, segments: 1, status: 0, position:8.5 },
+    { name: ",", code:"Comma", row: 3, segments: 1, status: 0, position:9.5 },
+    { name: ".", code:"Period", row: 3, segments: 1, status: 0, position:10.5 },
+    { name: "/", code:"Slash", row: 3, segments: 1, status: 0, position:11.5 },
+    { name: "Shift", code:"ShiftRight", row: 3, segments: 2.5, status: 0, position:12.5 },
   ];
   const row4 = [
-    { name: "Function", row: 4, segments: 1, status: 0 },
-    { name: "Control", row: 4, segments: 1, status: 0 },
-    { name: "Alt", row: 4, segments: 1, status: 0 },
-    { name: "Meta", row: 4, segments: 1.5, status: 0 },
-    { name: " ", row: 4, segments: 5, status: 0 },
-    { name: "Meta", row: 4, segments: 1.5, status: 0 },
-    { name: "Alt", row: 4, segments: 1, status: 0 },
-    { name: "ArrowLeft", row: 4, segments: 1, status: 0 },
-    { name: "ArrowUp", row: 4, segments: 1, status: 0 },
-    { name: "ArrowDown", row: 4, segments: 1, status: 0 },
-    { name: "ArrowRight", row: 4, segments: 1, status: 0 },
+    { name: "Function", code:"", row: 4, segments: 1, status: 0, position:0 },
+    { name: "Control", code:"ControlLeft", row: 4, segments: 1, status: 0, position:1 },
+    { name: "Alt", code:"AltLeft", row: 4, segments: 1, status: 0, position:2 },
+    { name: "⌘", code:"MetaLeft", row: 4, segments: 1.5, status: 0, position:3 },
+    { name: "Space", code:"Space", row: 4, segments: 5, status: 0, position:4.5 },
+    { name: "⌘", code:"MetaRight", row: 4, segments: 1.5, status: 0, position:9.5 },
+    { name: "Alt", code:"AltRight", row: 4, segments: 1, status: 0, position:11 },
+    { name: "←", code:"ArrowLeft", row: 4, segments: 1, status: 0, position:12 },
+    { name: "↑", code:"ArrowUp", row: 4, segments: 1, status: 0, position:13 },
+    { name: "↓", code:"ArrowDown", row: 4, segments: 1, status: 0, position:13 },
+    { name: "→", code:"ArrowRight", row: 4, segments: 1, status: 0, position:14 },
   ]
 
 });
