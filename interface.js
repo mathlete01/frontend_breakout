@@ -3,25 +3,23 @@ const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  
   function setCurrentPlayer(obj) {
-    console.log("setCurrentPlayer called")
-    console.dir(obj)
+    console.log("setCurrentPlayer called");
+    console.dir(obj);
     CURRENT_PLAYER = obj.id;
-    console.log(`CURRENT_PLAYER = ${CURRENT_PLAYER}`)
-    createGame(CURRENT_PLAYER)
+    console.log(`CURRENT_PLAYER = ${CURRENT_PLAYER}`);
+    createGame(CURRENT_PLAYER);
   }
 
   function setCurrentGame(obj) {
-    console.log("setCurrentGame called")
-    console.log(`setCurrentGame: obj = ${obj}`)
-    console.dir(obj)
+    console.log("setCurrentGame called");
+    console.log(`setCurrentGame: obj = ${obj}`);
+    console.dir(obj);
     CURRENT_GAME = obj.id;
-    console.log(`CURRENT_GAME = ${CURRENT_GAME}`)
+    console.log(`CURRENT_GAME = ${CURRENT_GAME}`);
   }
 
   function createPlayer() {
-    
     // let formDataCreate = {
     //   score: 0,
     //   lives: 3,
@@ -31,15 +29,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
-      }
+        Accept: "application/json",
+      },
       // body: JSON.stringify(formDataCreate),
     };
 
     fetch(PLAYERS_URL, configObjCreate)
       .then((res) => res.json())
       //.then(obj => console.log(obj))
-      
+
       .then((data) => setCurrentPlayer(data))
       //.then(obj => createGame(obj))
       //.then(draw())
@@ -48,10 +46,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function createGame(id) {
-    console.log(`createGame id = ${id}`)
+    console.log(`createGame id = ${id}`);
     let formData = {
       //score: score
-      player_id: id
+      player_id: id,
     };
     //document.location.reload()
     //window.cancelAnimationFrame(myReq)
@@ -59,7 +57,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json"
+        Accept: "application/json",
       },
       body: JSON.stringify(formData),
     };
@@ -71,23 +69,25 @@ document.addEventListener("DOMContentLoaded", (event) => {
       //.then(cancelAnimationFrame(myReq))
       //.then(document.location.reload())
       //.then(renderForm())
-      .then(obj => setCurrentGame(obj))
+      .then((obj) => setCurrentGame(obj))
       //.then(draw())
       .then(startGame())
       .catch((errors) => console.log(`createGame: ${errors}`));
-      //.catch((errors) => console.log(errors));
+    //.catch((errors) => console.log(errors));
   }
 
-  function startGame(){
+  function startGame() {
     //draw()
-    initKeys(keys)
-    interval = setInterval(draw, 10)
+    initKeys(keys);
+    interval = setInterval(draw, 10);
   }
 
   function endGame() {
-    clearInterval(interval)
-    interval = ""
-    console.log(`endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`);
+    clearInterval(interval);
+    interval = "";
+    console.log(
+      `endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
+    );
     //console.log(`CURRENT_GAME = ${CURRENT_GAME}`)
     // console.log(`event.target = ${event.target}`)
     // console.log(`event.target.playername = ${event.target.playername}`)
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(formData),
     };
@@ -126,52 +126,52 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log(`event.target.playername.value = ${event.target.playername.value}`)
     let formData = {
       id: CURRENT_PLAYER,
-      name: name
+      name: name,
     };
 
     let configOb = {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(formData),
     };
 
     fetch(PLAYERS_URL, configOb)
       .then((res) => res.json())
-      .then(obj => console.log(obj))
+      .then((obj) => console.log(obj))
       .then(updateGame(name))
       //.then(document.location.reload())
       .catch((errors) => console.log(`savePlayer: ${errors}`));
   }
 
-  function updateGame(name){
+  function updateGame(name) {
     console.log(`updateGame called: name = ${name}`);
     console.log(`updateGame called: CURRENT_GAME = ${CURRENT_GAME}`);
     let formData = {
       id: CURRENT_GAME,
-      name: name
+      name: name,
     };
 
     let configOb = {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(formData),
     };
 
     fetch(GAMES_URL, configOb)
       .then((res) => res.json())
-      .then(obj => console.log(obj))
+      .then((obj) => console.log(obj))
       .then(document.location.reload())
       .catch((errors) => console.log(`updateGame: ${errors}`));
   }
 
   function renderForm() {
-    console.log("renderForm called")
+    console.log("renderForm called");
     //window.cancelAnimationFrame()
     //ctx.clearRect(0, 0, canvas.width, canvas.height);
     const playername = document.createElement("input");
@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function renderInterface() {
     const browser = navigator.appName;
     const platform = navigator.platform;
-    
+
     const btnStart = document.createElement("button");
     btnStart.setAttribute("id", "btn-start");
     btnStart.innerHTML = "Start Game";
@@ -233,19 +233,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // }
     ev.preventDefault(); // cancels default actions
     return false; // cancels this function only
-  }); 
+  });
 
-  function collisionDetection() {
+  function collisionDetection(KEY_ARRAY) {
     for (let i = 0; i < KEY_ARRAY.length; i++) {
       let b = KEY_ARRAY[i];
-      //if(b.status == 1) {
-      if (x > b.x && x < b.x + b.w && y > b.y && y < b.y + brickHeight) {
-        dy = -dy;
-        //b.status = 0;
-        score++;
+      console.log(`b = ${b}`);
+      console.log(`b.s = ${b.s}`);
+      if (b.s == 1) {
+        if (x > b.x && x < b.x + b.w && y > b.y && y < b.y + brickHeight) {
+          dy = -dy;
+          //b.status = 0;
+          score++;
+        }
       }
     }
-    //}
   }
   function drawBall() {
     ctx.beginPath();
@@ -263,7 +265,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   KEY_ARRAY = [];
-  
 
   function initKeys(keys) {
     //KEY_ARRAY = [];
@@ -274,20 +275,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
       let x = w * i;
       let y = keys[i].row * brickHeight;
       let s = keys[i].status;
-      console.log(`${k} = ${s}`)
+      // console.log(`${k} = ${s}`)
       KEY_ARRAY.push({ name: k, x: x, y: y, w: w, h: h, s: s });
     }
   }
 
-  function drawKeys(array){
+  function drawKeys(array) {
     //for(key of array){
-    for(let i = 0;i < array.length; i ++){
-      let key = array[i]
-      console.dir(`key.name = ${key.name}`)
-      console.dir(`key.s = ${key.s}`)
-      if(key.s == 1){
+    for (let i = 0; i < array.length; i++) {
+      let key = array[i];
+      // console.dir(`key.name = ${key.name}`)
+      // console.dir(`key.s = ${key.s}`)
+      if (key.s == 1) {
         drawKey(key.k, key.x, key.y, key.w, key.h);
-     }
+      }
     }
   }
 
@@ -315,7 +316,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
   }
 
-  let myReq
+  let myReq;
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -325,7 +326,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     //drawPaddle();
     drawScore();
     drawLives();
-    collisionDetection();
+    collisionDetection(KEY_ARRAY);
 
     if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
       dx = -dx;
@@ -341,7 +342,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
           //alert("GAME OVER");
           console.log("GAME OVER");
           //createGame();
-          endGame()
+          endGame();
           //document.location.reload();
           //renderForm()
         } else {
@@ -388,8 +389,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   let keySegments = 15;
   let brickWidth = w / keySegments;
   let brickHeight = brickWidth;
-  let topRow = 100
-  let interval = ""
+  let topRow = 100;
+  let interval = "";
   let score = 0;
   let lives = 3;
   const keys = [
