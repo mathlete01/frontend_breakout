@@ -197,6 +197,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
           dy = -dy;
           score++;
           releaseAllKeys(KEY_ARRAY)
+          speed = speed + 0.1
         }
       }
     }
@@ -237,12 +238,25 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function drawKeys(array) {
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
+      drawKeyOutline(key.name, key.code, key.x, key.y, key.w, key.h);
      if (key.s == 1) {
         drawKey(key.name, key.code, key.x, key.y, key.w, key.h);
      }
     }
   }
 
+  function drawKeyOutline(name, code, keyX, keyY, keyWidth, keyHeight) {
+    //console.log(`Drawing = ${name}`)
+    ctx.beginPath();
+    ctx.rect(keyX, keyY, keyWidth, keyHeight);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.id = code;
+    //ctx.font = "16px Arial";
+    //ctx.fillStyle = "red";
+    //ctx.fillText(name, keyX + keyWidth / 2, keyY + keyHeight / 2);
+  }
+  
   function drawKey(name, code, keyX, keyY, keyWidth, keyHeight) {
     //console.log(`Drawing = ${name}`)
     ctx.beginPath();
