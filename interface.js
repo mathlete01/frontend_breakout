@@ -158,6 +158,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   renderInterface();
 
+  function renderGameboard(){
+    ctx.width = window.innerWidth
+    ctx.height = window.innerHeight
+    console.log(`ctx.width = ${ctx.width}`)
+    console.log(`window.innerWidth = ${window.innerWidth}`)
+  }
+
   document.body.addEventListener("keydown", function (ev) {
     let keyPressed = ev.key;
     let keyObj = KEY_ARRAY.find(({ name }) => name === keyPressed);
@@ -177,10 +184,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function collisionDetection(KEY_ARRAY) {
     for (let i = 0; i < KEY_ARRAY.length; i++) {
       let b = KEY_ARRAY[i];
-      console.log(`b = ${b}`);
-      console.log(`b.s = ${b.s}`);
       if (b.s == 1) {
-        if (x > b.x && x < b.x + b.w && y > b.y && y < b.y + brickHeight) {
+        if (x > b.x && x < b.x + b.w && y > b.y && y < b.y + keyHeight) {
           dy = -dy;
           score++;
         }
@@ -207,10 +212,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function initKeys(keys) {
     for (let i = 0; i < keys.length; i++) {
       let k = keys[i].name;
-      let w = keys[i].segments * brickWidth;
-      let h = brickHeight;
+      let w = keys[i].segments * keyWidth;
+      let h = keyHeight;
       let x = w * i;
-      let y = keys[i].row * brickHeight;
+      let y = keys[i].row * keyHeight;
       let s = keys[i].status;
       KEY_ARRAY.push({ name: k, x: x, y: y, w: w, h: h, s: s });
     }
@@ -225,16 +230,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  function drawKey(name, brickX, brickY, brickWidth, brickHeight) {
+  function drawKey(name, keyX, keyY, keyWidth, keyHeight) {
     ctx.beginPath();
-    ctx.rect(brickX, brickY, brickWidth, brickHeight);
+    ctx.rect(keyX, keyY, keyWidth, keyHeight);
     ctx.fillStyle = "black";
     ctx.fill();
     ctx.closePath();
     ctx.id = name;
     ctx.font = "16px Arial";
     ctx.fillStyle = "white";
-    ctx.fillText(name, brickX + brickWidth / 2, brickY + brickHeight / 2);
+    ctx.fillText(name, keyX + keyWidth / 2, keyY + keyHeight / 2);
   }
 
   function drawScore() {
@@ -246,13 +251,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function drawLives() {
     ctx.font = "16px Arial";
     ctx.fillStyle = "black";
-    ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
+    ctx.fillText("Lives: " + lives, canvas.width - 80, 20);
   }
 
   let myReq;
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 2
+    ctx.strokeStyle = "#000000"
+    ctx.strokeRect(0,0,canvas.width, canvas.height)
+    //ctx.fillStyle = "#0000FF"
     drawKeys(KEY_ARRAY);
     drawBall();
     drawScore();
@@ -297,6 +306,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const h = window.innerHeight;
   let speed = 0.3
   let canvas = document.getElementById("myCanvas");
+  let keySegments = 15;
+  const factor = 5/keySegments
+  canvas.width = w
+  canvas.height = factor * w
   let ctx = canvas.getContext("2d");
   let ballRadius = 10;
   let x = canvas.width / 2;
@@ -308,14 +321,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
   let paddleX = (canvas.width - paddleWidth) / 2;
   let rightPressed = false;
   let leftPressed = false;
-  let brickRowCount = 5;
-  let brickColumnCount = 10;
-  let brickPadding = 10;
-  let brickOffsetTop = 30;
-  let brickOffsetLeft = 30;
-  let keySegments = 15;
-  let brickWidth = w / keySegments;
-  let brickHeight = brickWidth;
+  let keyRowCount = 5;
+  let keyColumnCount = 15;
+  let keyPadding = 10;
+  let keyOffsetTop = 30;
+  let keyOffsetLeft = 30;
+  let keyWidth = w / keySegments;
+  let keyHeight = keyWidth;
   let topRow = 100;
   let interval = "";
   let score = 0;
@@ -340,4 +352,5 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // { name: "ArrowLeft", row: 4, segments: 1, status: 0 },
     // { name: "ArrowRight", row: 4, segments: 1, status: 0 }
   ];
+
 });
