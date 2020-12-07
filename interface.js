@@ -63,10 +63,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function endGame() {
     clearInterval(interval);
     interval = "";
-    alert(`endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`)
-    console.log(
-      `endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
-    );
+    //alert(`endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`)
+    // console.log(
+    //   `endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
+    // );
     let formData = {
       id: CURRENT_GAME,
       score: score,
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function savePlayer(name) {
-    alert(`savePlayer:name = ${name}`)
+    //alert(`savePlayer:name = ${name}`)
     console.log(`savePlayer:name = ${name}`);
     let formData = {
       id: CURRENT_PLAYER,
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function updateGame(name) {
-    alert(`updateGame called: name = ${name}`)
+    //alert(`updateGame called: name = ${name}`)
     console.log(`updateGame called: name = ${name}`);
     let formData = {
       id: CURRENT_GAME,
@@ -180,23 +180,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function captureKeyDown(ev) {
-    if (ev.code != "KeyM") {
-      //ev.preventDefault();
-      let keyPressed = ev.code;
-      let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
-      keyObj.s = 1;
-      return false;
-    }
+    //ev.preventDefault();
+    let keyPressed = ev.code;
+    let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
+    keyObj.s = 1;
+    return false;
   }
 
   function captureKeyUp(ev) {
-    if (ev.code != "KeyM") {
-      //ev.preventDefault();
-      let keyReleased = ev.code;
-      let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
-      keyObj.s = 0;
-      return false;
-    }
+    //ev.preventDefault();
+    let keyReleased = ev.code;
+    let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
+    keyObj.s = 0;
+    return false;
   }
 
   function deactivateKeyListeners() {
@@ -522,7 +518,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     { name: "v", code: "KeyV", row: 3, segments: 1, status: 0, position: 5.5 },
     { name: "b", code: "KeyB", row: 3, segments: 1, status: 0, position: 6.5 },
     { name: "n", code: "KeyN", row: 3, segments: 1, status: 0, position: 7.5 },
-    //{ name: "m", code: "KeyM", row: 3, segments: 1, status: 0, position: 8.5 },
+    { name: "m", code: "KeyM", row: 3, segments: 1, status: 0, position: 8.5 },
     { name: ",", code: "Comma", row: 3, segments: 1, status: 0, position: 9.5 },
     {
       name: ".",
