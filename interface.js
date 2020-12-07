@@ -196,6 +196,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         if (x > b.x && x < b.x + b.w && y > b.y && y < b.y + keyHeight) {
           dy = -dy;
           score++;
+          releaseAllKeys(KEY_ARRAY)
         }
       }
     }
@@ -255,7 +256,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.fillText(name, keyX + keyWidth / 2, keyY + keyHeight / 2);
   }
 
-
+  function releaseAllKeys(array){
+    for(key of array){
+      key.s = 0
+    }
+  }
 
   function drawScore() {
     ctx.font = "16px Arial";
