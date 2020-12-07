@@ -210,8 +210,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   KEY_ARRAY = [];
 
   function initKeys(keys) {
+    //console.log(`keys.length = ${keys.length}`)
     for (let i = 0; i < keys.length; i++) {
       let k = keys[i].name;
+      //console.log(`Drawing = ${k}`)
       let w = keys[i].segments * keyWidth;
       let h = keyHeight;
       let x = w * i;
@@ -225,12 +227,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
       if (key.s == 1) {
-        drawKey(key.k, key.x, key.y, key.w, key.h);
+        drawKey(key.name, key.x, key.y, key.w, key.h);
       }
     }
   }
 
   function drawKey(name, keyX, keyY, keyWidth, keyHeight) {
+    console.log(`Drawing = ${name}`)
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
     ctx.fillStyle = "black";
@@ -347,10 +350,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
     { name: "[", row: 1, segments: 1, status: 0 },
     { name: "]", row: 1, segments: 1, status: 0 },
     { name: "\\", row: 1, segments: 1, status: 0 },
-    // { name: "CapsLock", row: 2, segments: 3, status: 0 },
-    // { name: "Enter", row: 2, segments: 1, status: 0 },
-    // { name: "ArrowLeft", row: 4, segments: 1, status: 0 },
-    // { name: "ArrowRight", row: 4, segments: 1, status: 0 }
+    { name: "CapsLock", row: 2, segments: 3, status: 0 },
+    { name: "a", row: 2, segments: 1, status: 0 },
+    { name: "s", row: 2, segments: 1, status: 0 },
+    { name: "d", row: 2, segments: 1, status: 0 },
+    { name: "f", row: 2, segments: 1, status: 0 },
+    { name: "g", row: 2, segments: 1, status: 0 },
+    { name: "h", row: 2, segments: 1, status: 0 },
+    { name: "j", row: 2, segments: 1, status: 0 },
+    { name: "k", row: 2, segments: 1, status: 0 },
+    { name: "l", row: 2, segments: 1, status: 0 },
+    { name: ":", row: 2, segments: 1, status: 0 },
+    { name: "'", row: 2, segments: 1, status: 0 },
+    { name: "Enter", row: 2, segments: 1, status: 0 },
+    { name: "ArrowLeft", row: 4, segments: 1, status: 0 },
+    { name: "ArrowRight", row: 4, segments: 1, status: 0 }
   ];
 
 });
