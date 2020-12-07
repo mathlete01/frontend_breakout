@@ -24,10 +24,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
         li.setAttribute("list-style-position", "inside")
         let element = arr[i]
         let s = element["score"]
-        let p = element["player_id"]
+        //let p = element["player_id"]
+        let p = element["player"]["name"]
         // console.log(`element["score"] = ${element["score"]}`)
         // console.log(`element["player_id"] = ${element["player_id"]}`)
-        li.innerText = `${p}......${s}`;
+        li.innerText = `${p}......${s} points`;
         ol.append(li);
       }
       
