@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function startGame() {
-    activateKeyListeners()
+    activateKeyListeners();
     initKeys(row0);
     initKeys(row1);
     initKeys(row2);
@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function endGame() {
     clearInterval(interval);
     interval = "";
+    alert(`endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`)
     console.log(
       `endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
     );
@@ -87,6 +88,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function savePlayer(name) {
+    alert(`savePlayer:name = ${name}`)
     console.log(`savePlayer:name = ${name}`);
     let formData = {
       id: CURRENT_PLAYER,
@@ -110,6 +112,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function updateGame(name) {
+    alert(`updateGame called: name = ${name}`)
     console.log(`updateGame called: name = ${name}`);
     let formData = {
       id: CURRENT_GAME,
@@ -133,11 +136,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderForm() {
-    //deactivateKeyListeners()
+    deactivateKeyListeners();
     console.log("renderForm called");
     const playername = document.createElement("input");
     playername.setAttribute("name", "playername");
     playername.placeholder = "enter name";
+    playername.focus();
 
     const btnSave = document.createElement("button");
     btnSave.innerText = "Save Game";
@@ -171,28 +175,33 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function activateKeyListeners() {
-    document.body.addEventListener("keydown", function (ev) {
-      ev.preventDefault(); // cancels default actions
+    document.body.addEventListener("keydown", (ev) => captureKeyDown(ev));
+    document.body.addEventListener("keyup", (ev) => captureKeyUp(ev));
+  }
+
+  function captureKeyDown(ev) {
+    if (ev.code != "KeyM") {
+      ev.preventDefault();
       let keyPressed = ev.code;
-      console.log(`keyPressed = ${keyPressed}`);
       let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
       keyObj.s = 1;
-      return false; // cancels this function only
-    });
+      return false;
+    }
+  }
 
-    document.body.addEventListener("keyup", function (ev) {
-      ev.preventDefault(); // cancels default actions
+  function captureKeyUp(ev) {
+    if (ev.code != "KeyM") {
+      ev.preventDefault();
       let keyReleased = ev.code;
-      console.log(`keyReleased = ${keyReleased}`);
       let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
       keyObj.s = 0;
-      return false; // cancels this function only
-    });
+      return false;
+    }
   }
 
   function deactivateKeyListeners() {
-    document.body.removeEventListener("keydown")
-    document.body.removeEventListener("keyup")
+    document.body.removeEventListener("keydown", captureKeyDown);
+    document.body.removeEventListener("keyup", captureKeyUp);
   }
 
   function collisionDetection(KEY_ARRAY) {
@@ -225,19 +234,24 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   KEY_ARRAY = [];
 
-  hotkeys('ctrl+a,ctrl+b,r,f', function (event, handler){
-  switch (handler.key) {
-    case 'ctrl+a': alert('you pressed ctrl+a!');
-      break;
-    case 'ctrl+b': alert('you pressed ctrl+b!');
-      break;
-    case 'r': alert('you pressed r!');
-      break;
-    case 'f': alert('you pressed f!');
-      break;
-    default: alert(event);
-  }
-});
+  hotkeys("ctrl+a,ctrl+b,r,f", function (event, handler) {
+    switch (handler.key) {
+      case "ctrl+a":
+        alert("you pressed ctrl+a!");
+        break;
+      case "ctrl+b":
+        alert("you pressed ctrl+b!");
+        break;
+      case "r":
+        alert("you pressed r!");
+        break;
+      case "f":
+        alert("you pressed f!");
+        break;
+      default:
+        alert(event);
+    }
+  });
 
   function initKeys(keys) {
     //console.log(`keys.length = ${keys.length}`)
@@ -252,7 +266,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       let s = keys[i].status;
       KEY_ARRAY.push({ name: k, code: c, x: x, y: y, w: w, h: h, s: s });
     }
-    console.dir(KEY_ARRAY);
+    //console.dir(KEY_ARRAY);
   }
 
   function drawKeys(array) {
@@ -363,6 +377,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const w = window.innerWidth;
   const h = window.innerHeight;
   let speed = 0.9;
+  let lives = 1;
   let canvas = document.getElementById("myCanvas");
   let keySegments = 15;
   const factor = 5 / keySegments;
@@ -389,7 +404,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
   let topRow = 100;
   let interval = "";
   let score = 0;
-  let lives = 3;
   const row0 = [
     {
       name: "`",
@@ -508,7 +522,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     { name: "v", code: "KeyV", row: 3, segments: 1, status: 0, position: 5.5 },
     { name: "b", code: "KeyB", row: 3, segments: 1, status: 0, position: 6.5 },
     { name: "n", code: "KeyN", row: 3, segments: 1, status: 0, position: 7.5 },
-    { name: "m", code: "KeyM", row: 3, segments: 1, status: 0, position: 8.5 },
+    //{ name: "m", code: "KeyM", row: 3, segments: 1, status: 0, position: 8.5 },
     { name: ",", code: "Comma", row: 3, segments: 1, status: 0, position: 9.5 },
     {
       name: ".",
