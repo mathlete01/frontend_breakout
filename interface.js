@@ -3,6 +3,7 @@ const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
 const interface = document.getElementById("interface");
 const leaderboard = document.getElementById("leaderboard");
+const form = document.getElementById("form");
 const browser = navigator.appName;
 const platform = navigator.platform;
 const w = window.innerWidth;
@@ -10,7 +11,7 @@ const h = window.innerHeight;
 const keyColorLight = "#d9d9d9";
 const keyColorDark = "#000000";
 let speed = 0.9;
-let lives = 1;
+let lives = 3;
 let canvas = document.getElementById("myCanvas");
 let keySegments = 15;
 const factor = 5 / keySegments;
@@ -375,7 +376,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(PLAYERS_URL, configOb)
       .then((res) => res.json())
-      .then((obj) => console.log(obj))
+      //.then((obj) => console.log(obj))
       .then(updateGame(name))
       .catch((errors) => console.log(`savePlayer: ${errors}`));
   }
@@ -441,9 +442,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(GAMES_URL, configOb)
       .then((res) => res.json())
-      .then((obj) => console.log(obj))
-      .then(document.location.reload())
-      //.then(getLeaderboard())
+      //.then((obj) => console.log(obj))
+      //.then(document.location.reload())
+      .then(getPersonalLeaderboard())
       .catch((errors) => console.log(`updateGame: ${errors}`));
   }
 
@@ -458,19 +459,42 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   getLeaderboard();
 
+  function getPersonalLeaderboard() {
+    form.innerHTML = "";
+    fetch("http://localhost:3000/games")
+      .then((res) => res.json())
+      .then((json) => {
+        const objs = json;
+        renderPersonalLeaderboard(objs);
+      });
+  }
+
+  function getMax(arr, max) {
+    if (arr.length < max) {
+      return arr.length;
+    } else {
+      return max;
+    }
+  }
+
   function renderLeaderboard(arr) {
-    console.dir(`arr = ${arr}`);
+    // console.dir(`arr.length = ${arr.length}`);
     let h1 = document.createElement("h1");
     h1.innerText = "Top Ten Scores";
     arr.sort((a, b) => (a.score < b.score ? 1 : -1));
     let ol = document.createElement("ol");
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < getMax(arr, 10); i++) {
       let li = document.createElement("li");
       let element = arr[i];
+      // console.log(`arr[i] = ${arr[i]}`)
       if (arr.length > 0) {
-        //let s = element["score"];
-        //let p = element["player"]["name"];
-        //li.innerText = `${p}......${s} points`;
+        // console.log(`element = ${element}`)
+        // console.log(`element["score"] = ${element["score"]}`)
+        let s = element["score"];
+        // console.log(`s = ${s}`)
+        let p = element["player"]["name"];
+        // console.log(`p = ${p}`)
+        li.innerText = `${p}......${s} points`;
       }
       ol.append(li);
     }
@@ -481,6 +505,38 @@ document.addEventListener("DOMContentLoaded", (event) => {
     btnStart.innerHTML = "Start Game";
     btnStart.addEventListener("click", () => createPlayer());
     leaderboard.append(btnStart);
+    bringToFront(leaderboard);
+  }
+
+  function renderPersonalLeaderboard(arr) {
+    // console.dir(`arr.length = ${arr.length}`);
+    console.log(`CURRENT_GAME[player_id] = ${CURRENT_GAME[player_id]}`);
+    let h1 = document.createElement("h1");
+    h1.innerText = "Your Top 3 Scores";
+    arr.sort((a, b) => (a.score < b.score ? 1 : -1));
+    let ol = document.createElement("ol");
+    for (let i = 0; i < getMax(arr, 3); i++) {
+      let li = document.createElement("li");
+      let element = arr[i];
+      // console.log(`arr[i] = ${arr[i]}`)
+      if (arr.length > 0) {
+        // console.log(`element = ${element}`)
+        // console.log(`element["score"] = ${element["score"]}`)
+        let s = element["score"];
+        // console.log(`s = ${s}`)
+        let p = element["player"]["name"];
+        // console.log(`p = ${p}`)
+        li.innerText = `${p}......${s} points`;
+      }
+      ol.append(li);
+    }
+    leaderboard.append(h1);
+    leaderboard.append(ol);
+    const btnOK = document.createElement("button");
+    btnOK.setAttribute("id", "btn-ok");
+    btnOK.innerHTML = "Okay";
+    btnOK.addEventListener("click", () => document.location.reload());
+    leaderboard.append(btnOK);
     bringToFront(leaderboard);
   }
 
@@ -498,9 +554,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     const btnCancel = document.createElement("button");
     btnCancel.innerText = "Skip This";
-    btnCancel.addEventListener("click", () => cancelPlayer());
+    btnCancel.addEventListener("click", () => document.location.reload());
 
-    const form = document.getElementById("form");
     form.append(playername);
     form.append(btnSave);
     form.append(btnCancel);
@@ -511,6 +566,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     document.body.addEventListener("keydown", (ev) => captureKeyDown(ev));
     document.body.addEventListener("keyup", (ev) => captureKeyUp(ev));
   }
+
+  // GAMEPLAY
 
   function captureKeyDown(ev) {
     //ev.preventDefault();
@@ -537,8 +594,37 @@ document.addEventListener("DOMContentLoaded", (event) => {
     for (let i = 0; i < KEY_ARRAY.length; i++) {
       let b = KEY_ARRAY[i];
       if (b.s == 1) {
-        if (x > b.x && x < b.x + b.w && y > b.y && y < b.y + keyHeight) {
-          dy = -dy;
+        if (x > b.x && x < b.x + b.w && y > b.y && y < b.y + b.h) {
+          let myHash = {};
+          myHash[Math.round(Math.abs(x - (b.x - ballRadius)))] = "leftEdge";
+          myHash[Math.round(Math.abs(x - (b.x + b.w + ballRadius)))] =
+            "rightEdge";
+          myHash[Math.round(Math.abs(y - (b.y - ballRadius)))] = "topEdge";
+          myHash[Math.round(Math.abs(y - (b.y + b.h + ballRadius)))] =
+            "bottomEdge";
+          myArrayOfKeys = Object.keys(myHash);
+          let min = Math.min.apply(Math, myArrayOfKeys);
+
+          //console.log(`min = ${min}`)
+          //debugger
+          // console.log(`ball x = ${Math.round(x)}`)
+          // console.log(`ball y = ${Math.round(y)}`)
+          // console.log(`leftEdge = ${leftEdge}`)
+          // console.log(`rightEdge = ${rightEdge}`)
+          // console.log(`topEdge = ${topEdge}`)
+          // console.log(`bottomEdge = ${bottomEdge}`)
+          switch (myHash[min]) {
+            case "topEdge":
+            case "bottomEdge":
+              dy = -dy;
+              break;
+            case "leftEdge":
+            case "rightEdge":
+              dx = -dx;
+              break;
+            // default:
+            //   console.log("This animal will not.");
+          }
           score++;
           releaseAllKeys(KEY_ARRAY);
           speed = speed + 0.1;
@@ -546,6 +632,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
     }
   }
+
+  // function collisionDetection(KEY_ARRAY) {
+  //   for (let i = 0; i < KEY_ARRAY.length; i++) {
+  //     let b = KEY_ARRAY[i];
+  //     if (b.s == 1) {
+  //       if (x > b.x && x < (b.x + b.w) && y > b.y && y < (b.y + b.h)) {
+  //         dy = -dy;
+  //         score++;
+  //         releaseAllKeys(KEY_ARRAY);
+  //         speed = speed + 0.1;
+  //       }
+  //     }
+  //   }
+  // }
   function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
