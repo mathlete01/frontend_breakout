@@ -605,7 +605,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
           score++;
           releaseAllKeys(KEY_ARRAY);
           speed = speed + 0.1;
-          dx = speed
+          //dx = speed
         }
       }
     }
