@@ -11,7 +11,7 @@ const h = window.innerHeight;
 const keyColorLight = "#d9d9d9";
 const keyColorDark = "#000000";
 let speed = 0.3;
-let lives = 3;
+let lives = 1;
 let canvas = document.getElementById("myCanvas");
 let keySegments = 15;
 const factor = 5 / keySegments;
@@ -501,15 +501,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderPersonalLeaderboard(arr, id) {
+    //console.log(`arr = ${arr}`)
+    //console.log(`id = ${id}`)
     let filteredList = arr.filter((element) => element["player_id"] == id);
+    console.log(`filteredList = ${filteredList}`)
     let h1 = document.createElement("h1");
     h1.innerText = "Your Top 3 Scores";
-    arr.sort((a, b) => (a.score < b.score ? 1 : -1));
+    filteredList.sort((a, b) => (a.score < b.score ? 1 : -1));
     let ol = document.createElement("ol");
-    for (let i = 0; i < getMax(arr, 3); i++) {
+    console.log(`filteredList = ${filteredList}`)
+    for (let i = 0; i < getMax(filteredList, 3); i++) {
       let li = document.createElement("li");
+      console.log(`filteredList[i] = ${filteredList[i]}`)
       let element = filteredList[i];
-      if (arr.length > 0) {
+      console.log(`element = ${element}`)
+      if (filteredList.length > 0) {
         let s = element["score"];
         let p = element["player"]["name"];
         li.innerText = `${p}......${s} points`;
@@ -604,7 +610,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
           }
           score++;
           releaseAllKeys(KEY_ARRAY);
-          speed = speed + 0.1;
+          //speed = speed + 0.1;
+          dx = dx * 1.3;
           //dx = speed
         }
       }
