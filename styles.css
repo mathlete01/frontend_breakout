@@ -17,6 +17,9 @@ body {
   .container {
     background-color: gray;
   }
+  ol#leaderboard {
+    list-style-type:decimal;
+  }
 
   .foo {
     position: absolute;
@@ -57,10 +60,10 @@ body {
   }
   
   button {
-    font-size: .65em;
-    color: #fff;
-    background-color: green;
-    border-radius: 10px;
+    /* font-size: .65em; */
+    /* color: #fff; */
+    /* background-color: green; */
+    /* border-radius: 10px; */
   }
   
   button.release {
