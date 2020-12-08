@@ -7,8 +7,8 @@ const browser = navigator.appName;
 const platform = navigator.platform;
 const w = window.innerWidth;
 const h = window.innerHeight;
-const keyColorLight = "#d9d9d9"
-const keyColorDark = "#000000"
+const keyColorLight = "#d9d9d9";
+const keyColorDark = "#000000";
 let speed = 0.9;
 let lives = 1;
 let canvas = document.getElementById("myCanvas");
@@ -380,6 +380,48 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .catch((errors) => console.log(`savePlayer: ${errors}`));
   }
 
+  function cancelPlayer() {
+    let formData = {
+      id: CURRENT_PLAYER,
+    };
+
+    let configOb = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(formData),
+    };
+
+    fetch(PLAYERS_URL, configOb)
+      .then((res) => res.json())
+      .then((obj) => console.log(obj))
+      .then(deleteGame())
+      .catch((errors) => console.log(`cancelPlayer: ${errors}`));
+  }
+
+  function deleteGame() {
+    let formData = {
+      id: CURRENT_GAME,
+    };
+
+    let configOb = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(formData),
+    };
+
+    fetch(GAMES_URL, configOb)
+      .then((res) => res.json())
+      .then((obj) => console.log(obj))
+      .then(document.location.reload())
+      .catch((errors) => console.log(`deleteGame: ${errors}`));
+  }
+
   function updateGame(name) {
     //alert(`updateGame called: name = ${name}`)
     console.log(`updateGame called: name = ${name}`);
@@ -417,21 +459,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
   getLeaderboard();
 
   function renderLeaderboard(arr) {
-    arr.sort((a, b) => (a.score < b.score ? 1 : -1));
+    console.dir(`arr = ${arr}`);
     let h1 = document.createElement("h1");
     h1.innerText = "Top Ten Scores";
+    arr.sort((a, b) => (a.score < b.score ? 1 : -1));
     let ol = document.createElement("ol");
-    ol.setAttribute("padding-left", 30);
-    ol.setAttribute("list-style-position", "inside");
-    ol.setAttribute("margin-left", "20px");
     for (let i = 0; i < 10; i++) {
       let li = document.createElement("li");
-      li.setAttribute("display", "list-item");
-      li.setAttribute("list-style-position", "inside");
       let element = arr[i];
-      let s = element["score"];
-      let p = element["player"]["name"];
-      li.innerText = `${p}......${s} points`;
+      if (arr.length > 0) {
+        //let s = element["score"];
+        //let p = element["player"]["name"];
+        //li.innerText = `${p}......${s} points`;
+      }
       ol.append(li);
     }
     leaderboard.append(h1);
@@ -441,7 +481,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     btnStart.innerHTML = "Start Game";
     btnStart.addEventListener("click", () => createPlayer());
     leaderboard.append(btnStart);
-    bringToFront(leaderboard)
+    bringToFront(leaderboard);
   }
 
   function renderForm() {
@@ -456,10 +496,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
     btnSave.innerText = "Save Game";
     btnSave.addEventListener("click", () => savePlayer(playername.value));
 
+    const btnCancel = document.createElement("button");
+    btnCancel.innerText = "Skip This";
+    btnCancel.addEventListener("click", () => cancelPlayer());
+
     const form = document.getElementById("form");
     form.append(playername);
     form.append(btnSave);
-    bringToFront(form)
+    form.append(btnCancel);
+    bringToFront(form);
   }
 
   function activateKeyListeners() {
