@@ -741,42 +741,36 @@ document.addEventListener("DOMContentLoaded", (event) => {
     collisionDetection(KEY_ARRAY);
 
     if (lives < 1) {
-      console.log("GAME OVER");
-      endGame();
+      fail();
     }
 
     if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-      dx = -dx;
+      fail();
     }
-    if (y + dy < ballRadius) {
-      dy = -dy;
-    } else if (y + dy > canvas.height - ballRadius) {
-      if (x > paddleX && x < paddleX + paddleWidth) {
-        dy = -dy;
+
+    if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+      fail();
+    }
+
+    x += dx;
+    y += dy;
+
+    function fail() {
+      lives--;
+      if (!lives) {
+        console.log("GAME OVER");
+        endGame();
       } else {
-        lives--;
-        if (!lives) {
-          console.log("GAME OVER");
-          endGame();
-        } else {
-          x = canvas.width / 2;
-          y = canvas.height - 30;
-          dx = speed;
-          dy = -1 * speed;
-          paddleX = (canvas.width - paddleWidth) / 2;
-        }
+        x = canvas.width / 2;
+        y = canvas.height - 30;
+        dx = speed;
+        dy = -1 * speed;
       }
     }
 
-    if (rightPressed && paddleX < canvas.width - paddleWidth) {
-      paddleX += 7;
-    } else if (leftPressed && paddleX > 0) {
-      paddleX -= 7;
-    }
-
     //dx = speed
-    x += dx;
-    y += dy;
+    // x += dx;
+    // y += dy;
     console.log(`dx = ${dx}, speed = ${speed}`);
   }
 
