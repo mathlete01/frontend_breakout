@@ -7,6 +7,8 @@ const browser = navigator.appName;
 const platform = navigator.platform;
 const w = window.innerWidth;
 const h = window.innerHeight;
+const keyColorLight = "#d9d9d9"
+const keyColorDark = "#000000"
 let speed = 0.9;
 let lives = 1;
 let canvas = document.getElementById("myCanvas");
@@ -502,7 +504,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "black";
+    ctx.fillStyle = keyColorDark;
     ctx.fill();
     ctx.closePath();
   }
@@ -516,24 +518,24 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   KEY_ARRAY = [];
 
-  hotkeys("ctrl+a,ctrl+b,r,f", function (event, handler) {
-    switch (handler.key) {
-      case "ctrl+a":
-        alert("you pressed ctrl+a!");
-        break;
-      case "ctrl+b":
-        alert("you pressed ctrl+b!");
-        break;
-      case "r":
-        alert("you pressed r!");
-        break;
-      case "f":
-        alert("you pressed f!");
-        break;
-      default:
-        alert(event);
-    }
-  });
+  // hotkeys("ctrl+a,ctrl+b,r,f", function (event, handler) {
+  //   switch (handler.key) {
+  //     case "ctrl+a":
+  //       alert("you pressed ctrl+a!");
+  //       break;
+  //     case "ctrl+b":
+  //       alert("you pressed ctrl+b!");
+  //       break;
+  //     case "r":
+  //       alert("you pressed r!");
+  //       break;
+  //     case "f":
+  //       alert("you pressed f!");
+  //       break;
+  //     default:
+  //       alert(event);
+  //   }
+  // });
 
   function initKeys(keys) {
     //console.log(`keys.length = ${keys.length}`)
@@ -554,9 +556,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function drawKeys(array) {
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
-      drawKeyOutline(key.name, key.code, key.x, key.y, key.w, key.h);
+      //drawSingleOutline(key.name, key.code, key.x, key.y, key.w, key.h);
       if (key.s == 1) {
-        drawKey(key.name, key.code, key.x, key.y, key.w, key.h);
+        drawSingleKey(key.name, key.code, key.x, key.y, key.w, key.h);
       }
     }
   }
@@ -564,33 +566,35 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function drawOutlines(array) {
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
-      drawKeyOutline(key.name, key.code, key.x, key.y, key.w, key.h);
+      drawSingleOutline(key.name, key.code, key.x, key.y, key.w, key.h);
     }
   }
 
-  function drawKeyOutline(name, code, keyX, keyY, keyWidth, keyHeight) {
-    console.log(`Drawing = ${name}`);
+  function drawSingleOutline(name, code, keyX, keyY, keyWidth, keyHeight) {
+    //console.log(`Drawing = ${name}`);
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
+    ctx.strokeStyle = keyColorLight;
     ctx.stroke();
     ctx.closePath();
     ctx.id = code;
-    ctx.strokeStyle = "#d9d9d9";
-    //ctx.font = "16px Arial";
-    //ctx.fillStyle = "red";
-    //ctx.fillText(name, keyX + keyWidth / 2, keyY + keyHeight / 2);
+    // BELOW DOESN'T APPEAR TO DO ANYTHING
+    //ctx.strokeStyle = "blue";
+    ctx.font = "16px Arial";
+    ctx.fillStyle = keyColorLight;
+    ctx.fillText(name, keyX + keyWidth / 2, keyY + keyHeight / 2);
   }
 
-  function drawKey(name, code, keyX, keyY, keyWidth, keyHeight) {
+  function drawSingleKey(name, code, keyX, keyY, keyWidth, keyHeight) {
     //console.log(`Drawing = ${name}`)
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
-    ctx.fillStyle = "black";
+    ctx.fillStyle = keyColorDark;
     ctx.fill();
     ctx.closePath();
     ctx.id = code;
     ctx.font = "16px Arial";
-    ctx.fillStyle = "white";
+    ctx.fillStyle = keyColorLight;
     ctx.fillText(name, keyX + keyWidth / 2, keyY + keyHeight / 2);
   }
 
@@ -621,6 +625,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
     //ctx.fillStyle = "#0000FF"
     drawKeys(KEY_ARRAY);
+    drawOutlines(KEY_ARRAY);
     drawBall();
     drawScore();
     drawLives();
