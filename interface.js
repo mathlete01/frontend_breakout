@@ -8,7 +8,7 @@ const platform = navigator.platform;
 const w = window.innerWidth;
 const h = window.innerHeight;
 let speed = 0.9;
-let lives = 3;
+let lives = 1;
 let canvas = document.getElementById("myCanvas");
 let keySegments = 15;
 const factor = 5 / keySegments;
@@ -20,6 +20,9 @@ let x = canvas.width / 2;
 let y = canvas.height - 30;
 let dx = speed;
 let dy = -1 * dx;
+let paddleHeight = 10;
+let paddleWidth = 75;
+let paddleX = (canvas.width - paddleWidth) / 2;
 let rightPressed = false;
 let leftPressed = false;
 let keyRowCount = 5;
@@ -436,7 +439,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     btnStart.innerHTML = "Start Game";
     btnStart.addEventListener("click", () => createPlayer());
     leaderboard.append(btnStart);
-    bringToFront(leaderboard);
+    bringToFront(leaderboard)
   }
 
   function renderForm() {
@@ -454,7 +457,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const form = document.getElementById("form");
     form.append(playername);
     form.append(btnSave);
-    bringToFront(form);
+    bringToFront(form)
   }
 
   function activateKeyListeners() {
@@ -499,6 +502,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+    ctx.fillStyle = "black";
+    ctx.fill();
+    ctx.closePath();
+  }
+  function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
     ctx.fillStyle = "black";
     ctx.fill();
     ctx.closePath();
@@ -559,7 +569,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawKeyOutline(name, code, keyX, keyY, keyWidth, keyHeight) {
-    //console.log(`Drawing = ${name}`);
+    console.log(`Drawing = ${name}`);
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
     ctx.stroke();
@@ -617,32 +627,41 @@ document.addEventListener("DOMContentLoaded", (event) => {
     collisionDetection(KEY_ARRAY);
 
     if (lives < 1) {
-      fail();
+      console.log("GAME OVER");
+      endGame();
     }
 
     if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-      fail();
+      dx = -dx;
+    }
+    if (y + dy < ballRadius) {
+      dy = -dy;
+    } else if (y + dy > canvas.height - ballRadius) {
+      if (x > paddleX && x < paddleX + paddleWidth) {
+        dy = -dy;
+      } else {
+        lives--;
+        if (!lives) {
+          console.log("GAME OVER");
+          endGame();
+        } else {
+          x = canvas.width / 2;
+          y = canvas.height - 30;
+          dx = speed;
+          dy = -1 * speed;
+          paddleX = (canvas.width - paddleWidth) / 2;
+        }
+      }
     }
 
-    if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
-      fail();
+    if (rightPressed && paddleX < canvas.width - paddleWidth) {
+      paddleX += 7;
+    } else if (leftPressed && paddleX > 0) {
+      paddleX -= 7;
     }
 
     x += dx;
     y += dy;
-
-    function fail() {
-      lives--;
-      if (!lives) {
-        console.log("GAME OVER");
-        endGame()
-      } else {
-        x = canvas.width / 2;
-        y = canvas.height - 30;
-        dx = speed;
-        dy = -1 * speed;
-      }
-    }
   }
 
   function renderGameboard() {
