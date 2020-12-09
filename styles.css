@@ -3,10 +3,12 @@ body {
     padding: 0;
   }
   
-  header {
-    background-color: #4caf50;
-    margin: 0 auto;
-    height: 50px;
+  .header {
+    /* background-color: #ff0000; */
+    font-family: Arial;
+    margin: auto;
+    text-align: center;
+    /* position: 0,0; */
   }
   
   header h2 {
@@ -16,6 +18,10 @@ body {
   
   .container {
     background-color: gray;
+  }
+  ol#leaderboard {
+    list-style-type:decimal;
+    text-align: center;
   }
 
   .foo {
@@ -27,12 +33,12 @@ body {
     
   }
   .boo {
-    position: absolute;
+    position: relative;
     margin: auto;
     padding: 70px 0;
     font-family: Arial;
     list-style-type:decimal;
-    
+    text-align: center;
   }
   
   div.card {
@@ -57,10 +63,10 @@ body {
   }
   
   button {
-    font-size: .65em;
-    color: #fff;
-    background-color: green;
-    border-radius: 10px;
+    /* font-size: .65em; */
+    /* color: #fff; */
+    /* background-color: green; */
+    /* border-radius: 10px; */
   }
   
   button.release {
