@@ -11,6 +11,7 @@ const h = window.innerHeight;
 const keyColorLight = "#d9d9d9";
 const keyColorDark = "#000000";
 let speed = 0.3;
+// let speed = 0.1;
 let lives = 3;
 let canvas = document.getElementById("myCanvas");
 let keySegments = 15;
@@ -38,6 +39,9 @@ let keyHeight = keyWidth;
 let topRow = 100;
 let interval = "";
 let score = 0;
+let directionV = "north";
+let directionH = "east";
+
 const row0 = [
   {
     name: "`",
@@ -268,6 +272,32 @@ const row4 = [
 ];
 
 document.addEventListener("DOMContentLoaded", (event) => {
+  function toggleDirectionV() {
+    switch (directionV) {
+      case "north":
+        directionV = "south";
+        break;
+      case "south":
+        directionV = "north";
+        break;
+      default:
+        return null;
+    }
+  }
+
+  function toggleDirectionH() {
+    switch (directionH) {
+      case "east":
+        directionH = "west";
+        break;
+      case "west":
+        directionH = "east";
+        break;
+      default:
+        return null;
+    }
+  }
+
   function bringToFront(obj) {
     obj.style.zIndex = "1";
   }
@@ -299,7 +329,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function createGame(id) {
-    console.log(`createGame id = ${id}`);
+    // console.log(`createGame id = ${id}`);
     leaderboard.innerHTML = "";
     let formData = {
       player_id: id,
@@ -328,6 +358,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     initKeys(row3);
     initKeys(row4);
     interval = setInterval(draw, 10);
+    console.log(`directionV = `, directionV);
+    console.log(`directionH = `, directionH);
   }
 
   function endGame() {
@@ -504,17 +536,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
     //console.log(`arr = ${arr}`)
     //console.log(`id = ${id}`)
     let filteredList = arr.filter((element) => element["player_id"] == id);
-    console.log(`filteredList = ${filteredList}`)
+    console.log(`filteredList = ${filteredList}`);
     let h1 = document.createElement("h1");
     h1.innerText = "Your Top 3 Scores";
     filteredList.sort((a, b) => (a.score < b.score ? 1 : -1));
     let ol = document.createElement("ol");
-    console.log(`filteredList = ${filteredList}`)
+    console.log(`filteredList = ${filteredList}`);
     for (let i = 0; i < getMax(filteredList, 3); i++) {
       let li = document.createElement("li");
-      console.log(`filteredList[i] = ${filteredList[i]}`)
+      console.log(`filteredList[i] = ${filteredList[i]}`);
       let element = filteredList[i];
-      console.log(`element = ${element}`)
+      console.log(`element = ${element}`);
       if (filteredList.length > 0) {
         let s = element["score"];
         let p = element["player"]["name"];
@@ -534,7 +566,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function renderForm() {
     //deactivateKeyListeners();
-    console.log("renderForm called");
+    // console.log("renderForm called");
     const playername = document.createElement("input");
     playername.setAttribute("name", "playername");
     playername.placeholder = "enter name";
@@ -594,29 +626,43 @@ document.addEventListener("DOMContentLoaded", (event) => {
           myHash[Math.round(Math.abs(y - (b.y - ballRadius)))] = "topEdge";
           myHash[Math.round(Math.abs(y - (b.y + b.h + ballRadius)))] =
             "bottomEdge";
+          // console.log(`myHash = `, myHash)
           myArrayOfKeys = Object.keys(myHash);
           let min = Math.min.apply(Math, myArrayOfKeys);
-          switch (myHash[min]) {
-            case "topEdge":
-            case "bottomEdge":
-              dy = -dy;
-              break;
-            case "leftEdge":
-            case "rightEdge":
-              dx = -dx;
-              break;
-            // default:
-            //   console.log("This animal will not.");
+          console.log(
+            `directionH = `,
+            directionH,
+            `| directionV = `,
+            directionV,
+            `| myHash[min] = `,
+            myHash[min]
+          );
+          if (
+            (myHash[min] === "topEdge" && directionV === "south") ||
+            (myHash[min] === "bottomEdge" && directionV === "north")
+          ) {
+            dy = -dy;
+            toggleDirectionV();
+            releaseAllKeys(KEY_ARRAY);
+            score++;
+            dx = dx * 1.3;
           }
-          score++;
+          if (
+            (myHash[min] === "leftEdge" && directionH === "east") ||
+            (myHash[min] === "rightEdge" && directionH === "west")
+          ) {
+            dx = -dx;
+            toggleDirectionH();
+            releaseAllKeys(KEY_ARRAY);
+            score++;
+            dx = dx * 1.3;
+          }
           releaseAllKeys(KEY_ARRAY);
-          //speed = speed + 0.1;
-          dx = dx * 1.3;
-          //dx = speed
         }
       }
     }
   }
+
   function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
@@ -624,6 +670,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.fill();
     ctx.closePath();
   }
+
   function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
@@ -778,14 +825,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
     //dx = speed
     // x += dx;
     // y += dy;
-    console.log(`dx = ${dx}, speed = ${speed}`);
+    // console.log(`dx = ${dx}, speed = ${speed}`);
   }
 
   function renderGameboard() {
     ctx.width = window.innerWidth;
     ctx.height = window.innerHeight;
-    console.log(`ctx.width = ${ctx.width}`);
-    console.log(`window.innerWidth = ${window.innerWidth}`);
+    // console.log(`ctx.width = ${ctx.width}`);
+    // console.log(`window.innerWidth = ${window.innerWidth}`);
     initKeys(row0);
     initKeys(row1);
     initKeys(row2);
