@@ -67,20 +67,20 @@
                     class="form-control"
                     placeholder="Name"
                     aria-label="Name"
-                    id="nameField"
+                    id="XnameField"
                   />
                 </div>
                 <button
                   type="submit"
                   class="btn btn-block btn-secondary"
-                  id="skipButton"
+                  id="XskipButton"
                 >
                   Skip This
                 </button>
                 <button
                   type="submit"
                   class="btn btn-block btn-primary"
-                  id="saveButton"
+                  id="XsaveButton"
                 >
                   Save Score
                 </button>
@@ -101,7 +101,7 @@
       <div class="modal-dialog">
         <form action="#" class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Register account</h5>
+            <h5 class="modal-title">Save Your Score</h5>
             <button
               type="button"
               class="close"
@@ -113,45 +113,26 @@
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label for="email" class="form-label">Email address</label>
+              <label for="email" class="form-label">Name</label>
               <input
-                type="email"
+                type="name"
                 class="form-control"
-                id="email"
-                placeholder="name@example.com"
+                id="nameField"
+                placeholder="name"
                 required
               />
             </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label for="confirmPassword" class="form-label"
-                >Confirm password</label
-              >
-              <input
-                type="password"
-                class="form-control"
-                id="confirmPassword"
-                required
-              />
-            </div>
+            
+            
           </div>
           <div class="modal-footer">
             <button
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
+              id="skipButton"
+            >Skip This</button>
+            <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
           </div>
         </form>
       </div>
