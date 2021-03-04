@@ -526,17 +526,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
     leaderboard.append(h1);
     leaderboard.append(ol);
 
-    // const btnStart = document.createElement("button");
-    // btnStart.setAttribute("id", "btn-start");
-    // btnStart.innerHTML = "Start Game";
-    // btnStart.addEventListener("click", () => createPlayer());
-    // leaderboard.append(btnStart);
+    const btnStart = document.createElement("button");
+    btnStart.setAttribute("id", "btn-start");
+    btnStart.setAttribute("class", "btn btn-primary");
+    btnStart.innerHTML = "Start Game";
+    btnStart.addEventListener("click", () => createPlayer());
+    leaderboard.append(btnStart);
     bringToFront(leaderboard);
 
-    var playButton = document.getElementById('playButton');
-    playButton.addEventListener('click', function () {
-      createPlayer()
-    })
+    var playButton = document.getElementById("playButton");
+    playButton.addEventListener("click", function () {
+      createPlayer();
+    });
   }
 
   function renderPersonalLeaderboard(arr, id) {
@@ -574,28 +575,30 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function renderForm() {
     //deactivateKeyListeners();
     // console.log("renderForm called");
-    // const playername = document.createElement("input");
-    // playername.setAttribute("name", "playername");
-    // playername.placeholder = "enter name";
-    // playername.focus();
+    const playername = document.createElement("input");
+    playername.setAttribute("name", "playername");
+    playername.setAttribute("class", "form-control");
+    playername.placeholder = "enter name";
+    playername.focus();
 
     var nameField = document.getElementById("nameField");
 
-    // const btnSave = document.createElement("button");
-    // btnSave.innerText = "Save Game";
-    // btnSave.addEventListener("click", () => savePlayer(playername.value));
-    
+    const btnSave = document.createElement("button");
+    btnSave.innerText = "Save Game";
+    btnSave.setAttribute("class", "btn btn-block btn-primary");
+    btnSave.addEventListener("click", () => savePlayer(playername.value));
+
     var saveButton = document.getElementById("saveButton");
-    // saveButton.addEventListener("click", () => savePlayer(playername.value));
     saveButton.addEventListener("click", () => savePlayer(nameField.value));
 
     const btnCancel = document.createElement("button");
+    btnCancel.setAttribute("class", "btn btn-block btn-secondary");
     btnCancel.innerText = "Skip This";
     btnCancel.addEventListener("click", () => document.location.reload());
 
-    // form.append(playername);
-    // form.append(btnSave);
-    // form.append(btnCancel);
+    form.append(playername);
+    form.append(btnSave);
+    form.append(btnCancel);
     bringToFront(form);
   }
 
@@ -856,6 +859,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
     h1.innerText = "KEYBOARD DESTROYER";
     header.append(h1);
   }
+
+  var registerAccountButton = document.getElementById("registerAccountButton");
+  var registerAccountModal = new bootstrap.Modal(
+    document.getElementById("registerAccountModal"),
+    {
+      keyboard: false,
+    }
+  );
+  registerAccountButton.addEventListener("click", function () {
+    registerAccountModal.toggle();
+  });
 
   renderGameboard();
 });
