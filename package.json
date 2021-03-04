@@ -1,0 +1,27 @@
+{
+  "name": "keyboard_destroyer",
+  "version": "1.0.0",
+  "description": "Keyboard Breakout is a little browser game built with a Javascript frontend and a Ruby on Rails backend.",
+  "main": "interface.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mathlete01/frontend_breakout.git"
+  },
+  "author": "Matty Sallin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mathlete01/frontend_breakout/issues"
+  },
+  "homepage": "https://github.com/mathlete01/frontend_breakout#readme",
+  "devDependencies": {
+    "browser-sync": "^2.26.14",
+    "gulp": "^4.0.2",
+    "gulp-sass": "^4.1.0"
+  },
+  "dependencies": {
+    "bootstrap": "^5.0.0-beta2"
+  }
+}

@@ -524,12 +524,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
     leaderboard.append(h1);
     leaderboard.append(ol);
+    // <button type="button" class="btn btn-dark" id="btn-start" onClick={createPlayer()} >Start Game</button>
     const btnStart = document.createElement("button");
     btnStart.setAttribute("id", "btn-start");
     btnStart.innerHTML = "Start Game";
     btnStart.addEventListener("click", () => createPlayer());
     leaderboard.append(btnStart);
     bringToFront(leaderboard);
+
+    var playButton = document.getElementById('playButton');
+    playButton.addEventListener('click', function () {
+      createPlayer()
+    })
   }
 
   function renderPersonalLeaderboard(arr, id) {
