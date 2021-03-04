@@ -10,7 +10,8 @@ const w = window.innerWidth;
 const h = window.innerHeight;
 const keyColorLight = "#d9d9d9";
 const keyColorDark = "#000000";
-let speed = 0.3;
+// let speed = 0.3;
+let speed = 3;
 // let speed = 0.1;
 let lives = 3;
 let canvas = document.getElementById("myCanvas");
@@ -524,12 +525,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
     leaderboard.append(h1);
     leaderboard.append(ol);
-    // <button type="button" class="btn btn-dark" id="btn-start" onClick={createPlayer()} >Start Game</button>
-    const btnStart = document.createElement("button");
-    btnStart.setAttribute("id", "btn-start");
-    btnStart.innerHTML = "Start Game";
-    btnStart.addEventListener("click", () => createPlayer());
-    leaderboard.append(btnStart);
+
+    // const btnStart = document.createElement("button");
+    // btnStart.setAttribute("id", "btn-start");
+    // btnStart.innerHTML = "Start Game";
+    // btnStart.addEventListener("click", () => createPlayer());
+    // leaderboard.append(btnStart);
     bringToFront(leaderboard);
 
     var playButton = document.getElementById('playButton');
@@ -573,22 +574,28 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function renderForm() {
     //deactivateKeyListeners();
     // console.log("renderForm called");
-    const playername = document.createElement("input");
-    playername.setAttribute("name", "playername");
-    playername.placeholder = "enter name";
-    playername.focus();
+    // const playername = document.createElement("input");
+    // playername.setAttribute("name", "playername");
+    // playername.placeholder = "enter name";
+    // playername.focus();
 
-    const btnSave = document.createElement("button");
-    btnSave.innerText = "Save Game";
-    btnSave.addEventListener("click", () => savePlayer(playername.value));
+    var nameField = document.getElementById("nameField");
+
+    // const btnSave = document.createElement("button");
+    // btnSave.innerText = "Save Game";
+    // btnSave.addEventListener("click", () => savePlayer(playername.value));
+    
+    var saveButton = document.getElementById("saveButton");
+    // saveButton.addEventListener("click", () => savePlayer(playername.value));
+    saveButton.addEventListener("click", () => savePlayer(nameField.value));
 
     const btnCancel = document.createElement("button");
     btnCancel.innerText = "Skip This";
     btnCancel.addEventListener("click", () => document.location.reload());
 
-    form.append(playername);
-    form.append(btnSave);
-    form.append(btnCancel);
+    // form.append(playername);
+    // form.append(btnSave);
+    // form.append(btnCancel);
     bringToFront(form);
   }
 
