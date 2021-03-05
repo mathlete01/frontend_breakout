@@ -343,6 +343,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const playButton = document.getElementById("playButton");
   playButton.addEventListener("click", () => createPlayer());
 
+  let nameField = document.getElementById("nameField");
+  nameField.placeholder = "Enter your name"
+
+  const skipButton = document.getElementById("skipButton");
+  skipButton.addEventListener("click", () => document.location.reload());
+
+  const saveButton = document.getElementById("saveButton");
+    // saveButton.addEventListener("click", () => savePlayer(playername.value));
+    saveButton.addEventListener("click", () => savePlayer(nameField.value));
+
   function doNothing() {
     console.log("doNothing()")
   }
@@ -553,13 +563,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
     leaderboard.append(h1);
     leaderboard.append(ol);
-    // <button type="button" class="btn btn-dark" id="btn-start" onClick={createPlayer()} >Start Game</button>
 
-    const btnStart = document.createElement("button");
-    btnStart.setAttribute("id", "btn-start");
-    btnStart.innerHTML = "Start Game";
-    btnStart.addEventListener("click", () => createPlayer());
-    leaderboard.append(btnStart);
+    // REMOVE
+    // const btnStart = document.createElement("button");
+    // btnStart.setAttribute("id", "btn-start");
+    // btnStart.innerHTML = "Start Game";
+    // btnStart.addEventListener("click", () => createPlayer());
+    // leaderboard.append(btnStart);
     bringToFront(leaderboard);
   }
 
@@ -608,18 +618,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
     playername.placeholder = "enter name";
     playername.focus();
 
-    var nameField = document.getElementById("nameField");
+    
 
     const btnSave = document.createElement("button");
     btnSave.innerText = "Save Game";
     btnSave.addEventListener("click", () => savePlayer(playername.value));
 
-    var saveButton = document.getElementById("saveButton");
-    // saveButton.addEventListener("click", () => savePlayer(playername.value));
-    saveButton.addEventListener("click", () => savePlayer(nameField.value));
+    
 
-    var skipButton = document.getElementById("skipButton");
-    skipButton.addEventListener("click", () => document.location.reload());
+   
 
     const btnCancel = document.createElement("button");
     btnCancel.innerText = "Skip This";
@@ -921,9 +928,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
       keyboard: false,
     }
   );
-  registerAccountButton.addEventListener("click", function () {
-    registerAccountModal.toggle();
-  });
+  // registerAccountButton.addEventListener("click", function () {
+  //   registerAccountModal.toggle();
+  // });
 
   renderGameboard();
 });
