@@ -387,6 +387,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     fetch(GAMES_URL, configObj)
       .then((res) => res.json())
       .then(renderForm())
+      // .then(registerAccountModal.toggle())
       .catch((errors) => console.log(`endGame: ${errors}`));
   }
 
@@ -525,19 +526,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
     leaderboard.append(h1);
     leaderboard.append(ol);
-
+    // <button type="button" class="btn btn-dark" id="btn-start" onClick={createPlayer()} >Start Game</button>
     const btnStart = document.createElement("button");
     btnStart.setAttribute("id", "btn-start");
-    btnStart.setAttribute("class", "btn btn-primary");
     btnStart.innerHTML = "Start Game";
     btnStart.addEventListener("click", () => createPlayer());
     leaderboard.append(btnStart);
     bringToFront(leaderboard);
 
-    var playButton = document.getElementById("playButton");
-    playButton.addEventListener("click", function () {
-      createPlayer();
-    });
+    var playButton = document.getElementById('playButton');
+    playButton.addEventListener('click', function () {
+      createPlayer()
+    })
   }
 
   function renderPersonalLeaderboard(arr, id) {
@@ -577,7 +577,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log("renderForm called");
     const playername = document.createElement("input");
     playername.setAttribute("name", "playername");
-    playername.setAttribute("class", "form-control");
     playername.placeholder = "enter name";
     playername.focus();
 
@@ -585,14 +584,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     const btnSave = document.createElement("button");
     btnSave.innerText = "Save Game";
-    btnSave.setAttribute("class", "btn btn-block btn-primary");
     btnSave.addEventListener("click", () => savePlayer(playername.value));
-
+    
     var saveButton = document.getElementById("saveButton");
+    // saveButton.addEventListener("click", () => savePlayer(playername.value));
     saveButton.addEventListener("click", () => savePlayer(nameField.value));
 
+    var skipButton = document.getElementById("skipButton");
+    skipButton.addEventListener("click",() => document.location.reload());
+
     const btnCancel = document.createElement("button");
-    btnCancel.setAttribute("class", "btn btn-block btn-secondary");
     btnCancel.innerText = "Skip This";
     btnCancel.addEventListener("click", () => document.location.reload());
 

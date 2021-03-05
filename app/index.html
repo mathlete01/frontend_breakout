@@ -51,12 +51,12 @@
                 The most chaotic breakout game you've every played
               </h5>
               <p class="card-text">...but maybe the most fun!</p>
-              <!-- <a href="#" class="btn btn-primary" id="playButton">Play</a> -->
+              <a href="#" class="btn btn-primary" id="playButton">Play</a>
             </div>
           </div>
         </div>
         <!-- Sidebar (related articles, newsletter signup etc) -->
-        <div class="col-12 col-lg-4">
+        <div class="modal" tabindex="-1"  id="yourMom">
           <div class="card">
             <div class="card-body">
               <h5>Enter your name to save your score</h5>
@@ -67,20 +67,20 @@
                     class="form-control"
                     placeholder="Name"
                     aria-label="Name"
-                    id="XnameField"
+                    id="nameField"
                   />
                 </div>
                 <button
                   type="submit"
                   class="btn btn-block btn-secondary"
-                  id="XskipButton"
+                  id="skipButton"
                 >
                   Skip This
                 </button>
                 <button
                   type="submit"
                   class="btn btn-block btn-primary"
-                  id="XsaveButton"
+                  id="saveButton"
                 >
                   Save Score
                 </button>
@@ -117,7 +117,7 @@
               <input
                 type="name"
                 class="form-control"
-                id="nameField"
+                id="XnameField"
                 placeholder="name"
                 required
               />
@@ -130,9 +130,9 @@
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
-              id="skipButton"
+              id="XskipButton"
             >Skip This</button>
-            <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
+            <button type="submit" class="btn btn-primary" id="XsaveButton">Save</button>
           </div>
         </form>
       </div>
