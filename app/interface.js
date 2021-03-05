@@ -1,3 +1,4 @@
+// debugger
 const BASE_URL = "http://localhost:3000";
 const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
@@ -274,6 +275,7 @@ const row4 = [
 
 document.addEventListener("DOMContentLoaded", (event) => {
   function toggleDirectionV() {
+    console.log("toggleDirectionV()")
     switch (directionV) {
       case "north":
         directionV = "south";
@@ -287,6 +289,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function toggleDirectionH() {
+    console.log("toggleDirectionH()")
     switch (directionH) {
       case "east":
         directionH = "west";
@@ -300,21 +303,29 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function bringToFront(obj) {
+    console.log("bringToFront()")
     obj.style.zIndex = "1";
   }
 
   function setCurrentPlayer(obj) {
+    console.log(`2. setCurrentPlayer(): obj = ${obj}`);
+    console.log(obj);
     CURRENT_PLAYER = obj.id;
-    console.log(`CURRENT_PLAYER = ${CURRENT_PLAYER}`);
+    console.log(`2. setCurrentPlayer(): obj.id = ${obj.id}`);
     createGame(CURRENT_PLAYER);
   }
 
   function setCurrentGame(obj) {
+    console.log(`4. setCurrentGame(): obj = ${obj}`);
+    console.log(obj);
     CURRENT_GAME = obj.id;
-    console.log(`CURRENT_GAME = ${CURRENT_GAME}`);
+    console.log(`4. setCurrentGame(): obj.id = ${obj.id}`);
+    startGame()
   }
 
   function createPlayer() {
+    // debugger;
+    console.log(`1. createPlayer()`);
     let configObjCreate = {
       method: "POST",
       headers: {
@@ -322,15 +333,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
         Accept: "application/json",
       },
     };
-
     fetch(PLAYERS_URL, configObjCreate)
       .then((res) => res.json())
       .then((data) => setCurrentPlayer(data))
       .catch((errors) => console.log(`createPlayer: ${errors}`));
   }
 
+  // debugger
+  const playButton = document.getElementById("playButton");
+  playButton.addEventListener("click", () => createPlayer());
+
+  function doNothing() {
+    console.log("doNothing()")
+  }
+
   function createGame(id) {
-    // console.log(`createGame id = ${id}`);
+    console.log(`3. createGame()`);
     leaderboard.innerHTML = "";
     let formData = {
       player_id: id,
@@ -347,11 +365,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     fetch(GAMES_URL, configObj)
       .then((res) => res.json())
       .then((obj) => setCurrentGame(obj))
-      .then(startGame())
-      .catch((errors) => console.log(`createGame: ${errors}`));
+      // .then(startGame())
+      .catch((errors) => console.log(`createGame Failed: ${errors}`));
   }
 
   function startGame() {
+    console.log(`5. startGame()`);
     activateKeyListeners();
     initKeys(row0);
     initKeys(row1);
@@ -359,17 +378,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
     initKeys(row3);
     initKeys(row4);
     interval = setInterval(draw, 10);
-    console.log(`directionV = `, directionV);
-    console.log(`directionH = `, directionH);
+    // console.log(`directionV = `, directionV);
+    // console.log(`directionH = `, directionH);
   }
 
   function endGame() {
+    console.log("endGame()")
     clearInterval(interval);
     interval = "";
     //alert(`endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`)
-    // console.log(
-    //   `endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
-    // );
+    console.log(
+      `endGame: CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
+    );
     let formData = {
       id: CURRENT_GAME,
       score: score,
@@ -416,6 +436,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function cancelPlayer() {
+    console.log("cancelPlayer()")
     let formData = {
       id: CURRENT_PLAYER,
     };
@@ -437,6 +458,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function deleteGame() {
+    console.log("deleteGame()")
     let formData = {
       id: CURRENT_GAME,
     };
@@ -459,7 +481,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function updateGame(name) {
     //alert(`updateGame called: name = ${name}`)
-    console.log(`updateGame called: name = ${name}`);
+    console.log(`updateGame(): name = ${name}`);
     let formData = {
       id: CURRENT_GAME,
       name: name,
@@ -481,6 +503,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function getLeaderboard() {
+    console.log("getLeaderboard()")
     fetch("http://localhost:3000/games")
       .then((res) => res.json())
       .then((json) => {
@@ -492,6 +515,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   getLeaderboard();
 
   function getPersonalLeaderboard(id) {
+    console.log("getPersonalLeaderboard()")
     form.innerHTML = "";
     fetch("http://localhost:3000/games")
       .then((res) => res.json())
@@ -502,6 +526,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function getMax(arr, max) {
+    console.log("getMax()")
     if (arr.length < max) {
       return arr.length;
     } else {
@@ -510,6 +535,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderLeaderboard(arr) {
+    console.log("renderLeaderboard()")
+
     let h1 = document.createElement("h1");
     h1.innerText = "Top Ten Scores";
     arr.sort((a, b) => (a.score < b.score ? 1 : -1));
@@ -527,20 +554,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
     leaderboard.append(h1);
     leaderboard.append(ol);
     // <button type="button" class="btn btn-dark" id="btn-start" onClick={createPlayer()} >Start Game</button>
+
     const btnStart = document.createElement("button");
     btnStart.setAttribute("id", "btn-start");
     btnStart.innerHTML = "Start Game";
     btnStart.addEventListener("click", () => createPlayer());
     leaderboard.append(btnStart);
     bringToFront(leaderboard);
-
-    var playButton = document.getElementById('playButton');
-    playButton.addEventListener('click', function () {
-      createPlayer()
-    })
   }
 
   function renderPersonalLeaderboard(arr, id) {
+    console.log("renderPersonalLeaderboard()")
+
     //console.log(`arr = ${arr}`)
     //console.log(`id = ${id}`)
     let filteredList = arr.filter((element) => element["player_id"] == id);
@@ -573,8 +598,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderForm() {
+    console.log("renderForm()")
+
     //deactivateKeyListeners();
     // console.log("renderForm called");
+    registerAccountModal.toggle();
     const playername = document.createElement("input");
     playername.setAttribute("name", "playername");
     playername.placeholder = "enter name";
@@ -585,13 +613,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const btnSave = document.createElement("button");
     btnSave.innerText = "Save Game";
     btnSave.addEventListener("click", () => savePlayer(playername.value));
-    
+
     var saveButton = document.getElementById("saveButton");
     // saveButton.addEventListener("click", () => savePlayer(playername.value));
     saveButton.addEventListener("click", () => savePlayer(nameField.value));
 
     var skipButton = document.getElementById("skipButton");
-    skipButton.addEventListener("click",() => document.location.reload());
+    skipButton.addEventListener("click", () => document.location.reload());
 
     const btnCancel = document.createElement("button");
     btnCancel.innerText = "Skip This";
@@ -604,6 +632,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function activateKeyListeners() {
+    console.log("activateKeyListeners()")
     document.body.addEventListener("keydown", (ev) => captureKeyDown(ev));
     document.body.addEventListener("keyup", (ev) => captureKeyUp(ev));
   }
@@ -611,6 +640,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // GAMEPLAY
 
   function captureKeyDown(ev) {
+    console.log("captureKeyDown()")
+
     //ev.preventDefault();
     let keyPressed = ev.code;
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
@@ -619,6 +650,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function captureKeyUp(ev) {
+    console.log("captureKeyUp()")
+
     //ev.preventDefault();
     let keyReleased = ev.code;
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
@@ -627,11 +660,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function deactivateKeyListeners() {
+    console.log("deactivateKeyListeners()")
+
     document.body.removeEventListener("keydown", captureKeyDown);
     document.body.removeEventListener("keyup", captureKeyUp);
   }
 
   function collisionDetection(KEY_ARRAY) {
+    console.log("CollisionDetection()")
     for (let i = 0; i < KEY_ARRAY.length; i++) {
       let b = KEY_ARRAY[i];
       if (b.s == 1) {
@@ -646,14 +682,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
           // console.log(`myHash = `, myHash)
           myArrayOfKeys = Object.keys(myHash);
           let min = Math.min.apply(Math, myArrayOfKeys);
-          console.log(
-            `directionH = `,
-            directionH,
-            `| directionV = `,
-            directionV,
-            `| myHash[min] = `,
-            myHash[min]
-          );
+          // console.log(
+          //   `directionH = `,
+          //   directionH,
+          //   `| directionV = `,
+          //   directionV,
+          //   `| myHash[min] = `,
+          //   myHash[min]
+          // );
           if (
             (myHash[min] === "topEdge" && directionV === "south") ||
             (myHash[min] === "bottomEdge" && directionV === "north")
@@ -681,6 +717,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawBall() {
+    console.log("drawBall()")
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
     ctx.fillStyle = keyColorDark;
@@ -689,6 +726,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawPaddle() {
+    console.log("drawPaddle()")
+
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
     ctx.fillStyle = "black";
@@ -718,6 +757,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // });
 
   function initKeys(keys) {
+    console.log("initKeys()")
+
     //console.log(`keys.length = ${keys.length}`)
     for (let i = 0; i < keys.length; i++) {
       let k = keys[i].name;
@@ -734,6 +775,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawKeys(array) {
+    console.log("drawKeys()")
+
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
       //drawSingleOutline(key.name, key.code, key.x, key.y, key.w, key.h);
@@ -744,6 +787,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawOutlines(array) {
+    console.log("drawOutlines()")
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
       drawSingleOutline(key.name, key.code, key.x, key.y, key.w, key.h);
@@ -751,6 +795,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawSingleOutline(name, code, keyX, keyY, keyWidth, keyHeight) {
+    console.log("drawSingleOutline()")
     //console.log(`Drawing = ${name}`);
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
@@ -766,6 +811,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawSingleKey(name, code, keyX, keyY, keyWidth, keyHeight) {
+    console.log("drawSingleKey()")
+
     //console.log(`Drawing = ${name}`)
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
@@ -779,18 +826,24 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function releaseAllKeys(array) {
+    console.log("releaseAllKeys()")
+
     for (key of array) {
       key.s = 0;
     }
   }
 
   function drawScore() {
+    console.log("drawScore()")
+
     ctx.font = "16px Arial";
     ctx.fillStyle = "black";
     ctx.fillText("Score: " + score, 8, 20);
   }
 
   function drawLives() {
+    console.log("drawLives()")
+
     ctx.font = "16px Arial";
     ctx.fillStyle = "black";
     ctx.fillText("Lives: " + lives, canvas.width - 80, 20);
@@ -799,6 +852,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   let myReq;
 
   function draw() {
+    console.log("draw()")
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.lineWidth = 1;
     ctx.strokeStyle = "#000000";
@@ -829,7 +884,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     function fail() {
       lives--;
       if (!lives) {
-        console.log("GAME OVER");
+        // console.log("GAME OVER");
         endGame();
       } else {
         x = canvas.width / 2;
@@ -846,6 +901,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderGameboard() {
+    console.log(`renderGameboard()`);
     ctx.width = window.innerWidth;
     ctx.height = window.innerHeight;
     // console.log(`ctx.width = ${ctx.width}`);
@@ -856,9 +912,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     initKeys(row3);
     initKeys(row4);
     drawOutlines(KEY_ARRAY);
-    let h1 = document.createElement("h1");
-    h1.innerText = "KEYBOARD DESTROYER";
-    header.append(h1);
   }
 
   var registerAccountButton = document.getElementById("registerAccountButton");
