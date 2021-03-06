@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/myStyles.css" />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #000000">
       <div class="d-flex flex-grow-1">
         <div class="w-100 text-right">
           <button
@@ -24,7 +24,7 @@
         class="collapse navbar-collapse flex-grow-1 text-right"
         id="myNavbar"
       ></div>
-      <div><h1 class="text-center">KEYBOARD DESTROYER</h1></div>
+      <div><h1 class="text-center" style="color:white;">KEYBOARD DESTROYER</h1></div>
       <div
         class="collapse navbar-collapse flex-grow-1 text-right"
         id="myNavbar"
@@ -45,15 +45,15 @@
     <div class="container">
       <div class="row">
         <div class="col-2">
-          <h4 id="livesText" class="text-left">&nbsp;</h4>
+          <h4 id="livesText" class="text-left"  style="color:white;">&nbsp;</h4>
         </div>
         <div class="col-8"></div>
         <div class="col-2">
-          <h4 id="scoreText" class="text-right">&nbsp;</h4>
+          <h4 id="scoreText" class="text-right"  style="color:white;">&nbsp;</h4>
         </div>
       </div>
     </div>
-    <div id="form" ></div>
+    <!-- <div id="form" ></div> -->
     <div id="playButtonDiv" >
       <a href="#" class="btn btn-dark btn-lg" id="playButton" name="playButton" >Play</a></div>
     <div id="interface" ></div>
@@ -77,14 +77,14 @@
             >
               Skip This
             </button>
-            <button type="submit" class="btn btn-primary" id="saveButton">
+            <button type="submit" class="btn btn-dark" id="saveButton">
               Save
             </button>
           </div>
         </form>
       </div>
     </div>
-    <div id="leaderboard"></div>
+    <div id="leaderboard"  style="color:black;"></div>
     <canvas id="myCanvas" ></canvas>
     <script src="interface.js"></script>
     <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>

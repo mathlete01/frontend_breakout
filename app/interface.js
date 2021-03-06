@@ -8,8 +8,14 @@ const browser = navigator.appName;
 const platform = navigator.platform;
 const w = window.innerWidth;
 const h = window.innerHeight;
-const keyColorLight = "#d9d9d9";
-const keyColorDark = "#000000";
+const colorKeyUpStroke = "#000000";
+const colorKeyUpFill = "#ffffff";
+const colorKeyFontUp = "#000000";
+const colorKeyDownStroke = "#ffffff"; 
+const colorKeyDownFill = "#000000";
+const colorKeyFontDown = "#ffffff"; 
+const colorBallFill = "#000000"; //red
+const colorBallStroke = "#000000"; //green
 const typeFont = "16pt Courier New";
 let speed = 0.3;
 // let speed = 3;
@@ -18,7 +24,7 @@ let lives = 3;
 const playButtonDiv = document.getElementById("playButtonDiv");
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
-const scoreIncrement = 1000
+const scoreIncrement = 1000;
 let canvas = document.getElementById("myCanvas");
 let keySegments = 15;
 const factor = 5 / keySegments;
@@ -349,7 +355,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     playNote(123.471, context.currentTime, 0.116, "square");
   }
 
-  function soundNext(){
+  function soundNext() {
     // Play a 'f3' now that lasts for 0.116 seconds
     playNote(174.614, context.currentTime, 0.116, "square");
 
@@ -357,10 +363,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
     playNote(195.998, context.currentTime + 0.116, 0.116, "square");
 
     // Play an 'a3' just as the previous note finishes, that lasts for 0.232 seconds
-    playNote(220.000, context.currentTime + 0.232, 0.232, "square");
+    playNote(220.0, context.currentTime + 0.232, 0.232, "square");
   }
 
-  function soundDie(){
+  function soundDie() {
     // Play a 'e2' now that lasts for 0.116 seconds
     playNote(82.407, context.currentTime, 0.116, "square");
 
@@ -455,8 +461,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .catch((errors) => console.log(`createPlayer: ${errors}`));
   }
 
-  function skip(){
-    document.location.reload()
+  function skip() {
+    document.location.reload();
     // soundNext()
   }
 
@@ -510,7 +516,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function endGame() {
     console.log("endGame()");
-    soundGameOver()
+    soundGameOver();
     clearInterval(interval);
     interval = "";
     console.log(
@@ -627,7 +633,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
       if (arr.length > 0) {
         let s = element["score"];
         let p = element["player"]["name"];
-        li.innerText = `${p}......${s} points`;
+        // li.innerText = `${p}......${s} points`;
+        li.innerText = `${s} points......${p}`;
       }
       ol.append(li);
     }
@@ -657,7 +664,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
       if (filteredList.length > 0) {
         let s = element["score"];
         let p = element["player"]["name"];
-        li.innerText = `${p}......${s} points`;
+        // li.innerText = `${p}......${s} points`;
+        li.innerText = `${s} points......${p}`;
       }
       ol.append(li);
     }
@@ -686,7 +694,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let keyPressed = ev.code;
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
     keyObj.s = 1;
-    soundPress();
+    // soundPress();
     return false;
   }
 
@@ -706,7 +714,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function collisionDetection(KEY_ARRAY) {
-    console.log("CollisionDetection()");
+    // console.log("CollisionDetection()");
     for (let i = 0; i < KEY_ARRAY.length; i++) {
       let b = KEY_ARRAY[i];
       if (b.s == 1) {
@@ -758,11 +766,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawBall() {
-    console.log("drawBall()");
+    // console.log("drawBall()");
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = keyColorDark;
+    ctx.fillStyle = colorBallFill;
     ctx.fill();
+    ctx.closePath();
+    ctx.strokeStyle = colorBallStroke;
+    ctx.stroke();
     ctx.closePath();
   }
 
@@ -788,7 +799,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // });
 
   function initKeys(keys) {
-    console.log("initKeys()");
+    // console.log("initKeys()");
     //console.log(`keys.length = ${keys.length}`)
     for (let i = 0; i < keys.length; i++) {
       let k = keys[i].name;
@@ -804,38 +815,41 @@ document.addEventListener("DOMContentLoaded", (event) => {
     //console.dir(KEY_ARRAY);
   }
 
-  function drawKeys(array) {
-    console.log("drawKeys()");
+  function drawKeysDown(array) {
+    // console.log("drawKeysDown()");
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
-      //drawSingleOutline(key.name, key.code, key.x, key.y, key.w, key.h);
+      // drawSingleKeyUp(key.name, key.code, key.x, key.y, key.w, key.h);
       if (key.s == 1) {
-        drawSingleKey(key.name, key.code, key.x, key.y, key.w, key.h);
+        drawSingleKeyDown(key.name, key.code, key.x, key.y, key.w, key.h);
       }
     }
   }
 
-  function drawOutlines(array) {
-    console.log("drawOutlines()");
+  function drawKeysUp(array) {
+    // console.log("drawKeysUp()");
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
-      drawSingleOutline(key.name, key.code, key.x, key.y, key.w, key.h);
+      drawSingleKeyUp(key.name, key.code, key.x, key.y, key.w, key.h);
     }
   }
 
-  function drawSingleOutline(name, code, keyX, keyY, keyWidth, keyHeight) {
-    console.log("drawSingleOutline()");
+  function drawSingleKeyUp(name, code, keyX, keyY, keyWidth, keyHeight) {
+    // console.log("drawSingleKeyUp()");
     //console.log(`Drawing = ${name}`);
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
-    ctx.strokeStyle = keyColorLight;
+    ctx.strokeStyle = colorKeyUpStroke;
     ctx.stroke();
+    ctx.closePath();
+    ctx.fillStyle = colorKeyUpFill;
+    ctx.fill();
     ctx.closePath();
     ctx.id = code;
     // BELOW DOESN'T APPEAR TO DO ANYTHING
     //ctx.strokeStyle = "blue";
     ctx.font = typeFont;
-    ctx.fillStyle = keyColorLight;
+    ctx.fillStyle = colorKeyFontUp;
     let capName = name.toUpperCase();
     ctx.fillText(
       capName,
@@ -844,17 +858,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
     );
   }
 
-  function drawSingleKey(name, code, keyX, keyY, keyWidth, keyHeight) {
-    console.log("drawSingleKey()");
+  function drawSingleKeyDown(name, code, keyX, keyY, keyWidth, keyHeight) {
+    console.log("drawSingleKeyDown()");
     //console.log(`Drawing = ${name}`)
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
-    ctx.fillStyle = keyColorDark;
+    ctx.strokeStyle = colorKeyDownStroke;
+    ctx.stroke();
+    ctx.closePath();
+    ctx.fillStyle = colorKeyDownFill;
     ctx.fill();
     ctx.closePath();
     ctx.id = code;
     ctx.font = typeFont;
-    ctx.fillStyle = keyColorLight;
+    ctx.fillStyle = colorKeyFontDown;
     let capName = name.toUpperCase();
     ctx.fillText(
       capName,
@@ -871,26 +888,26 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawScore() {
-    console.log("drawScore()");
+    // console.log("drawScore()");
     scoreText.innerText = "Score: " + score;
   }
 
   function drawLives() {
     livesText.innerText = "Lives: " + lives;
-    console.log("drawLives()");
+    // console.log("drawLives()");
   }
 
   let myReq;
 
   function draw() {
-    console.log("draw()");
+    // console.log("draw()");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.lineWidth = 1;
     ctx.strokeStyle = "#000000";
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
     //ctx.fillStyle = "#0000FF"
-    drawKeys(KEY_ARRAY);
-    drawOutlines(KEY_ARRAY);
+    drawKeysUp(KEY_ARRAY);
+    drawKeysDown(KEY_ARRAY);
     drawBall();
     drawScore();
     drawLives();
@@ -913,7 +930,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     function fail() {
       lives--;
-      soundDie()
+      soundDie();
       if (!lives) {
         // console.log("GAME OVER");
         endGame();
@@ -933,7 +950,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function renderGameboard() {
     console.log(`renderGameboard()`);
-    soundNext()
+    soundNext();
     ctx.width = window.innerWidth;
     ctx.height = window.innerHeight;
     // console.log(`ctx.width = ${ctx.width}`);
@@ -943,7 +960,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     initKeys(row2);
     initKeys(row3);
     initKeys(row4);
-    drawOutlines(KEY_ARRAY);
+    drawKeysUp(KEY_ARRAY);
   }
 
   // var registerAccountButton = document.getElementById("registerAccountButton");
