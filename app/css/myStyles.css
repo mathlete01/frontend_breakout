@@ -39,6 +39,35 @@
   :root {
     scroll-behavior: smooth; } }
 
+#leaderboard {
+  /* position: absolute;
+  top: 0;
+  left: 0; */
+  left:50%;
+   top:40%;
+   -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+   transform: translate(-50%, -50%);
+   position:absolute;
+}
+
+#playButtonDiv {
+  left:50%;
+   top:65%;
+   -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+   transform: translate(-50%, -50%);
+   position:absolute;
+}
+
+#playButtonDiv {
+  z-index: 11;
+}
+
+#leaderboard {
+  z-index: 10;
+}
+
 body {
   margin: 0;
   font-family: var(--bs-font-sans-serif);
@@ -3940,14 +3969,15 @@ textarea.form-control-lg {
 
 .modal {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 50;
+  left: 50;
   z-index: 1050;
   display: none;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  outline: 0; }
+  outline: 0; 
+}
 
 .modal-dialog {
   position: relative;

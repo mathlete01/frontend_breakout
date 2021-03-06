@@ -868,18 +868,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function drawScore() {
     console.log("drawScore()")
     scoreText.innerText = "Score: " + score
-    ctx.font = "16px Arial";
-    ctx.fillStyle = "black";
-    ctx.fillText("Score: " + score, 8, 20);
+    // ctx.font = "16px Arial";
+    // ctx.fillStyle = "black";
+    // ctx.fillText("Score: " + score, 8, 20);
   }
 
   function drawLives() {
     livesText.innerText = "Lives: " + lives
     console.log("drawLives()")
-
-    ctx.font = "16px Arial";
-    ctx.fillStyle = "black";
-    ctx.fillText("Lives: " + lives, canvas.width - 80, 20);
+    // ctx.font = "16px Arial";
+    // ctx.fillStyle = "black";
+    // ctx.fillText("Lives: " + lives, canvas.width - 80, 20);
   }
 
   let myReq;
