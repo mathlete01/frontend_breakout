@@ -15,6 +15,9 @@ const keyColorDark = "#000000";
 let speed = 3;
 // let speed = 0.1;
 let lives = 3;
+const playButtonDiv = document.getElementById("playButtonDiv")
+const livesText = document.getElementById("livesText")
+const scoreText = document.getElementById("scoreText")
 let canvas = document.getElementById("myCanvas");
 let keySegments = 15;
 const factor = 5 / keySegments;
@@ -288,6 +291,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
+  function toggleView(x) {
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+
   function toggleDirectionH() {
     console.log("toggleDirectionH()")
     switch (directionH) {
@@ -302,9 +313,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  function bringToFront(obj) {
+  function bringToFront1(obj) {
     console.log("bringToFront()")
     obj.style.zIndex = "1";
+  }
+
+  function bringToFront2(obj) {
+    console.log("bringToFront()")
+    obj.style.zIndex = "2";
+  }
+
+  function sendToBack(obj) {
+    console.log("sendToBack()")
+    obj.style.zIndex = "-10";
   }
 
   function setCurrentPlayer(obj) {
@@ -381,6 +402,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function startGame() {
     console.log(`5. startGame()`);
+    toggleView(playButtonDiv)
     activateKeyListeners();
     initKeys(row0);
     initKeys(row1);
@@ -571,7 +593,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // btnStart.innerHTML = "Start Game";
     // btnStart.addEventListener("click", () => createPlayer());
     // leaderboard.append(btnStart);
-    bringToFront(leaderboard);
+    bringToFront1(leaderboard);
+    bringToFront2(playButtonDiv);
   }
 
   function renderPersonalLeaderboard(arr, id) {
@@ -605,7 +628,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     btnOK.innerHTML = "Okay";
     btnOK.addEventListener("click", () => document.location.reload());
     leaderboard.append(btnOK);
-    bringToFront(leaderboard);
+    bringToFront1(leaderboard);
+    bringToFront2(playButtonDiv);
   }
 
   function renderForm() {
@@ -636,7 +660,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     form.append(playername);
     form.append(btnSave);
     form.append(btnCancel);
-    bringToFront(form);
+    bringToFront1(form);
   }
 
   function activateKeyListeners() {
@@ -843,13 +867,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function drawScore() {
     console.log("drawScore()")
-
+    scoreText.innerText = "Score: " + score
     ctx.font = "16px Arial";
     ctx.fillStyle = "black";
     ctx.fillText("Score: " + score, 8, 20);
   }
 
   function drawLives() {
+    livesText.innerText = "Lives: " + lives
     console.log("drawLives()")
 
     ctx.font = "16px Arial";
