@@ -39,6 +39,35 @@
   :root {
     scroll-behavior: smooth; } }
 
+#leaderboard {
+  /* position: absolute;
+  top: 0;
+  left: 0; */
+  left:50%;
+   top:50%;
+   -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+   transform: translate(-50%, -50%);
+   position:absolute;
+}
+
+#playButtonDiv {
+  left:50%;
+   top:25%;
+   -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+   transform: translate(-50%, -50%);
+   position:absolute;
+}
+
+#playButtonDiv {
+  z-index: 11;
+}
+
+#leaderboard {
+  z-index: 10;
+}
+
 body {
   margin: 0;
   font-family: var(--bs-font-sans-serif);

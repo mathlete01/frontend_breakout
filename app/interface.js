@@ -416,8 +416,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(GAMES_URL, configObj)
       .then((res) => res.json())
-      .then(renderForm())
-      // .then(saveModal.toggle())
+      // .then(renderForm())
+      .then(saveModal.toggle())
       .catch((errors) => console.log(`endGame: ${errors}`));
   }
 
@@ -526,6 +526,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function getPersonalLeaderboard(id) {
     console.log("getPersonalLeaderboard()")
+    saveModal.toggle();
     form.innerHTML = "";
     fetch("http://localhost:3000/games")
       .then((res) => res.json())
