@@ -10,14 +10,15 @@ const w = window.innerWidth;
 const h = window.innerHeight;
 const keyColorLight = "#d9d9d9";
 const keyColorDark = "#000000";
-const typeFont = "16pt Courier New"
-// let speed = 0.3;
-let speed = 3;
+const typeFont = "16pt Courier New";
+let speed = 0.3;
+// let speed = 3;
 // let speed = 0.1;
 let lives = 3;
-const playButtonDiv = document.getElementById("playButtonDiv")
-const livesText = document.getElementById("livesText")
-const scoreText = document.getElementById("scoreText")
+const playButtonDiv = document.getElementById("playButtonDiv");
+const livesText = document.getElementById("livesText");
+const scoreText = document.getElementById("scoreText");
+const scoreIncrement = 1000
 let canvas = document.getElementById("myCanvas");
 let keySegments = 15;
 const factor = 5 / keySegments;
@@ -46,6 +47,7 @@ let interval = "";
 let score = 0;
 let directionV = "north";
 let directionH = "east";
+const context = new AudioContext();
 
 const row0 = [
   {
@@ -277,8 +279,102 @@ const row4 = [
 ];
 
 document.addEventListener("DOMContentLoaded", (event) => {
+  // Audio
+  // Play oscillators at certain frequency and for a certain time
+  function playNote(frequency, startTime, duration, waveType) {
+    const osc1 = context.createOscillator();
+    const osc2 = context.createOscillator();
+    const volume = context.createGain();
+
+    // Set oscillator wave type
+    osc1.type = waveType;
+    osc2.type = waveType;
+
+    volume.gain.value = 0.1;
+
+    // Set up node routing
+    osc1.connect(volume);
+    osc2.connect(volume);
+    volume.connect(context.destination);
+
+    // Detune oscillators for chorus effect
+    osc1.frequency.value = frequency + 1;
+    osc2.frequency.value = frequency - 2;
+
+    // Fade out
+    volume.gain.setValueAtTime(0.1, startTime + duration - 0.05);
+    volume.gain.linearRampToValueAtTime(0, startTime + duration);
+
+    // Start oscillators
+    osc1.start(startTime);
+    osc2.start(startTime);
+
+    // Stop oscillators
+    osc1.stop(startTime + duration);
+    osc2.stop(startTime + duration);
+  }
+
+  function soundScore() {
+    // Play a 'B4' now that lasts for 0.116 seconds
+    playNote(493.883, context.currentTime, 0.116, "square");
+
+    // Play an 'E5' just as the previous note finishes, that lasts for 0.232 seconds
+    playNote(659.255, context.currentTime + 0.116, 0.232, "square");
+  }
+
+  function soundGameStart() {
+    // Play a 'G4' now that lasts for 0.116 seconds
+    playNote(391.995, context.currentTime, 0.116, "square");
+
+    // Play a 'G4' now that lasts for 0.116 seconds
+    playNote(391.995, context.currentTime + 0.116, 0.116, "square");
+
+    // Play an 'C5' just as the previous note finishes, that lasts for 0.232 seconds
+    playNote(523.251, context.currentTime + 0.232, 0.232, "square");
+  }
+
+  function soundGameOver() {
+    // Play a 'A Flat/G#' now that lasts for 0.116 seconds
+    playNote(207.652, context.currentTime, 0.116, "square");
+
+    // Play a 'F3' now that lasts for 0.116 seconds
+    playNote(174.614, context.currentTime + 0.116, 0.116, "square");
+
+    // Play an 'D3' just as the previous note finishes, that lasts for 0.232 seconds
+    playNote(146.832, context.currentTime + 0.232, 0.232, "square");
+  }
+
+  function soundPress() {
+    // Play a 'B2' now that lasts for 0.116 seconds
+    playNote(123.471, context.currentTime, 0.116, "square");
+  }
+
+  function soundNext(){
+    // Play a 'f3' now that lasts for 0.116 seconds
+    playNote(174.614, context.currentTime, 0.116, "square");
+
+    // Play a 'g3' now that lasts for 0.116 seconds
+    playNote(195.998, context.currentTime + 0.116, 0.116, "square");
+
+    // Play an 'a3' just as the previous note finishes, that lasts for 0.232 seconds
+    playNote(220.000, context.currentTime + 0.232, 0.232, "square");
+  }
+
+  function soundDie(){
+    // Play a 'e2' now that lasts for 0.116 seconds
+    playNote(82.407, context.currentTime, 0.116, "square");
+
+    // Play a 'd#' now that lasts for 0.116 seconds
+    playNote(77.782, context.currentTime + 0.116, 0.116, "square");
+
+    // Play an 'c#' just as the previous note finishes, that lasts for 0.232 seconds
+    playNote(69.296, context.currentTime + 0.232, 0.232, "square");
+  }
+
+  // ------------------------------------------------
+
   function toggleDirectionV() {
-    console.log("toggleDirectionV()")
+    console.log("toggleDirectionV()");
     switch (directionV) {
       case "north":
         directionV = "south";
@@ -300,7 +396,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function toggleDirectionH() {
-    console.log("toggleDirectionH()")
+    console.log("toggleDirectionH()");
     switch (directionH) {
       case "east":
         directionH = "west";
@@ -314,17 +410,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function bringToFront1(obj) {
-    console.log("bringToFront()")
+    console.log("bringToFront()");
     obj.style.zIndex = "1";
   }
 
   function bringToFront2(obj) {
-    console.log("bringToFront()")
+    console.log("bringToFront()");
     obj.style.zIndex = "2";
   }
 
   function sendToBack(obj) {
-    console.log("sendToBack()")
+    console.log("sendToBack()");
     obj.style.zIndex = "-10";
   }
 
@@ -341,7 +437,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     console.log(obj);
     CURRENT_GAME = obj.id;
     console.log(`4. setCurrentGame(): obj.id = ${obj.id}`);
-    startGame()
+    startGame();
   }
 
   function createPlayer() {
@@ -359,17 +455,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .catch((errors) => console.log(`createPlayer: ${errors}`));
   }
 
+  function skip(){
+    document.location.reload()
+    // soundNext()
+  }
+
   const playButton = document.getElementById("playButton");
   playButton.addEventListener("click", () => createPlayer());
 
   let nameField = document.getElementById("nameField");
-  nameField.placeholder = "Enter your name"
+  nameField.placeholder = "Enter your name";
 
   const skipButton = document.getElementById("skipButton");
-  skipButton.addEventListener("click", () => document.location.reload());
+  skipButton.addEventListener("click", () => skip());
 
   const saveButton = document.getElementById("saveButton");
-    saveButton.addEventListener("click", () => savePlayer(nameField.value));
+  saveButton.addEventListener("click", () => savePlayer(nameField.value));
 
   function createGame(id) {
     console.log(`3. createGame()`);
@@ -394,7 +495,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function startGame() {
     console.log(`5. startGame()`);
-    toggleView(playButtonDiv)
+    soundGameStart();
+    toggleView(playButtonDiv);
     activateKeyListeners();
     initKeys(row0);
     initKeys(row1);
@@ -407,7 +509,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function endGame() {
-    console.log("endGame()")
+    console.log("endGame()");
+    soundGameOver()
     clearInterval(interval);
     interval = "";
     console.log(
@@ -456,50 +559,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .catch((errors) => console.log(`savePlayer: ${errors}`));
   }
 
-  function cancelPlayer() {
-    console.log("cancelPlayer()")
-    let formData = {
-      id: CURRENT_PLAYER,
-    };
-
-    let configOb = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(formData),
-    };
-
-    fetch(PLAYERS_URL, configOb)
-      .then((res) => res.json())
-      .then((obj) => console.log(obj))
-      .then(deleteGame())
-      .catch((errors) => console.log(`cancelPlayer: ${errors}`));
-  }
-
-  function deleteGame() {
-    console.log("deleteGame()")
-    let formData = {
-      id: CURRENT_GAME,
-    };
-
-    let configOb = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(formData),
-    };
-
-    fetch(GAMES_URL, configOb)
-      .then((res) => res.json())
-      .then((obj) => console.log(obj))
-      .then(document.location.reload())
-      .catch((errors) => console.log(`deleteGame: ${errors}`));
-  }
-
   function updateGame(name) {
     console.log(`updateGame(): name = ${name}`);
     let formData = {
@@ -523,7 +582,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function getLeaderboard() {
-    console.log("getLeaderboard()")
+    console.log("getLeaderboard()");
     fetch("http://localhost:3000/games")
       .then((res) => res.json())
       .then((json) => {
@@ -535,7 +594,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   getLeaderboard();
 
   function getPersonalLeaderboard(id) {
-    console.log("getPersonalLeaderboard()")
+    console.log("getPersonalLeaderboard()");
     saveModal.toggle();
     form.innerHTML = "";
     fetch("http://localhost:3000/games")
@@ -547,7 +606,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function getMax(arr, max) {
-    console.log("getMax()")
+    console.log("getMax()");
     if (arr.length < max) {
       return arr.length;
     } else {
@@ -556,7 +615,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderLeaderboard(arr) {
-    console.log("renderLeaderboard()")
+    console.log("renderLeaderboard()");
 
     let h1 = document.createElement("h1");
     h1.innerText = "Top Ten Scores";
@@ -580,7 +639,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderPersonalLeaderboard(arr, id) {
-    console.log("renderPersonalLeaderboard()")
+    console.log("renderPersonalLeaderboard()");
     //console.log(`arr = ${arr}`)
     //console.log(`id = ${id}`)
     let filteredList = arr.filter((element) => element["player_id"] == id);
@@ -613,14 +672,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     bringToFront2(playButtonDiv);
   }
 
-  function renderForm() {
-    console.log("renderForm()")
-    //deactivateKeyListeners();
-    saveModal.toggle();
-  }
-
   function activateKeyListeners() {
-    console.log("activateKeyListeners()")
+    console.log("activateKeyListeners()");
     document.body.addEventListener("keydown", (ev) => captureKeyDown(ev));
     document.body.addEventListener("keyup", (ev) => captureKeyUp(ev));
   }
@@ -628,16 +681,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // GAMEPLAY
 
   function captureKeyDown(ev) {
-    console.log("captureKeyDown()")
+    console.log("captureKeyDown()");
     //ev.preventDefault();
     let keyPressed = ev.code;
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
     keyObj.s = 1;
+    soundPress();
     return false;
   }
 
   function captureKeyUp(ev) {
-    console.log("captureKeyUp()")
+    console.log("captureKeyUp()");
     //ev.preventDefault();
     let keyReleased = ev.code;
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
@@ -646,13 +700,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function deactivateKeyListeners() {
-    console.log("deactivateKeyListeners()")
+    console.log("deactivateKeyListeners()");
     document.body.removeEventListener("keydown", captureKeyDown);
     document.body.removeEventListener("keyup", captureKeyUp);
   }
 
   function collisionDetection(KEY_ARRAY) {
-    console.log("CollisionDetection()")
+    console.log("CollisionDetection()");
     for (let i = 0; i < KEY_ARRAY.length; i++) {
       let b = KEY_ARRAY[i];
       if (b.s == 1) {
@@ -682,7 +736,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
             dy = -dy;
             toggleDirectionV();
             releaseAllKeys(KEY_ARRAY);
-            score++;
+            soundScore();
+            score = score + scoreIncrement;
             dx = dx * 1.3;
           }
           if (
@@ -692,7 +747,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
             dx = -dx;
             toggleDirectionH();
             releaseAllKeys(KEY_ARRAY);
-            score++;
+            soundScore();
+            score = score + scoreIncrement;
             dx = dx * 1.3;
           }
           releaseAllKeys(KEY_ARRAY);
@@ -702,7 +758,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawBall() {
-    console.log("drawBall()")
+    console.log("drawBall()");
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
     ctx.fillStyle = keyColorDark;
@@ -732,7 +788,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // });
 
   function initKeys(keys) {
-    console.log("initKeys()")
+    console.log("initKeys()");
     //console.log(`keys.length = ${keys.length}`)
     for (let i = 0; i < keys.length; i++) {
       let k = keys[i].name;
@@ -749,7 +805,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawKeys(array) {
-    console.log("drawKeys()")
+    console.log("drawKeys()");
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
       //drawSingleOutline(key.name, key.code, key.x, key.y, key.w, key.h);
@@ -760,7 +816,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawOutlines(array) {
-    console.log("drawOutlines()")
+    console.log("drawOutlines()");
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
       drawSingleOutline(key.name, key.code, key.x, key.y, key.w, key.h);
@@ -768,7 +824,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawSingleOutline(name, code, keyX, keyY, keyWidth, keyHeight) {
-    console.log("drawSingleOutline()")
+    console.log("drawSingleOutline()");
     //console.log(`Drawing = ${name}`);
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
@@ -781,11 +837,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.font = typeFont;
     ctx.fillStyle = keyColorLight;
     let capName = name.toUpperCase();
-    ctx.fillText(capName, keyX + (keyWidth / 2) - ((capName.length/2)*12), keyY + (keyHeight / 2) +4 );
+    ctx.fillText(
+      capName,
+      keyX + keyWidth / 2 - (capName.length / 2) * 12,
+      keyY + keyHeight / 2 + 4
+    );
   }
 
   function drawSingleKey(name, code, keyX, keyY, keyWidth, keyHeight) {
-    console.log("drawSingleKey()")
+    console.log("drawSingleKey()");
     //console.log(`Drawing = ${name}`)
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
@@ -796,30 +856,34 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.font = typeFont;
     ctx.fillStyle = keyColorLight;
     let capName = name.toUpperCase();
-    ctx.fillText(capName, keyX + (keyWidth / 2)- ((capName.length/2)*12), keyY + (keyHeight / 2)+4);
+    ctx.fillText(
+      capName,
+      keyX + keyWidth / 2 - (capName.length / 2) * 12,
+      keyY + keyHeight / 2 + 4
+    );
   }
 
   function releaseAllKeys(array) {
-    console.log("releaseAllKeys()")
+    console.log("releaseAllKeys()");
     for (key of array) {
       key.s = 0;
     }
   }
 
   function drawScore() {
-    console.log("drawScore()")
-    scoreText.innerText = "Score: " + score
+    console.log("drawScore()");
+    scoreText.innerText = "Score: " + score;
   }
 
   function drawLives() {
-    livesText.innerText = "Lives: " + lives
-    console.log("drawLives()")
+    livesText.innerText = "Lives: " + lives;
+    console.log("drawLives()");
   }
 
   let myReq;
 
   function draw() {
-    console.log("draw()")
+    console.log("draw()");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.lineWidth = 1;
     ctx.strokeStyle = "#000000";
@@ -849,6 +913,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     function fail() {
       lives--;
+      soundDie()
       if (!lives) {
         // console.log("GAME OVER");
         endGame();
@@ -868,6 +933,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function renderGameboard() {
     console.log(`renderGameboard()`);
+    soundNext()
     ctx.width = window.innerWidth;
     ctx.height = window.innerHeight;
     // console.log(`ctx.width = ${ctx.width}`);
@@ -881,12 +947,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   // var registerAccountButton = document.getElementById("registerAccountButton");
-  var saveModal = new bootstrap.Modal(
-    document.getElementById("saveModal"),
-    {
-      keyboard: false,
-    }
-  );
+  var saveModal = new bootstrap.Modal(document.getElementById("saveModal"), {
+    keyboard: false,
+  });
   // registerAccountButton.addEventListener("click", function () {
   //   saveModal.toggle();
   // });
