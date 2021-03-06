@@ -1,4 +1,3 @@
-// debugger
 const BASE_URL = "http://localhost:3000";
 const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
@@ -11,6 +10,7 @@ const w = window.innerWidth;
 const h = window.innerHeight;
 const keyColorLight = "#d9d9d9";
 const keyColorDark = "#000000";
+const typeFont = "16pt Courier New"
 // let speed = 0.3;
 let speed = 3;
 // let speed = 0.1;
@@ -345,7 +345,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function createPlayer() {
-    // debugger;
     console.log(`1. createPlayer()`);
     let configObjCreate = {
       method: "POST",
@@ -360,7 +359,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .catch((errors) => console.log(`createPlayer: ${errors}`));
   }
 
-  // debugger
   const playButton = document.getElementById("playButton");
   playButton.addEventListener("click", () => createPlayer());
 
@@ -371,12 +369,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   skipButton.addEventListener("click", () => document.location.reload());
 
   const saveButton = document.getElementById("saveButton");
-    // saveButton.addEventListener("click", () => savePlayer(playername.value));
     saveButton.addEventListener("click", () => savePlayer(nameField.value));
-
-  function doNothing() {
-    console.log("doNothing()")
-  }
 
   function createGame(id) {
     console.log(`3. createGame()`);
@@ -396,7 +389,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     fetch(GAMES_URL, configObj)
       .then((res) => res.json())
       .then((obj) => setCurrentGame(obj))
-      // .then(startGame())
       .catch((errors) => console.log(`createGame Failed: ${errors}`));
   }
 
@@ -418,7 +410,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     console.log("endGame()")
     clearInterval(interval);
     interval = "";
-    //alert(`endGame called, CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`)
     console.log(
       `endGame: CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
     );
@@ -438,13 +429,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(GAMES_URL, configObj)
       .then((res) => res.json())
-      // .then(renderForm())
       .then(saveModal.toggle())
       .catch((errors) => console.log(`endGame: ${errors}`));
   }
 
   function savePlayer(name) {
-    //alert(`savePlayer:name = ${name}`)
     console.log(`savePlayer:name = ${name}`);
     let formData = {
       id: CURRENT_PLAYER,
@@ -512,7 +501,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function updateGame(name) {
-    //alert(`updateGame called: name = ${name}`)
     console.log(`updateGame(): name = ${name}`);
     let formData = {
       id: CURRENT_GAME,
@@ -587,19 +575,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     leaderboard.append(h1);
     leaderboard.append(ol);
 
-    // REMOVE
-    // const btnStart = document.createElement("button");
-    // btnStart.setAttribute("id", "btn-start");
-    // btnStart.innerHTML = "Start Game";
-    // btnStart.addEventListener("click", () => createPlayer());
-    // leaderboard.append(btnStart);
     bringToFront1(leaderboard);
     bringToFront2(playButtonDiv);
   }
 
   function renderPersonalLeaderboard(arr, id) {
     console.log("renderPersonalLeaderboard()")
-
     //console.log(`arr = ${arr}`)
     //console.log(`id = ${id}`)
     let filteredList = arr.filter((element) => element["player_id"] == id);
@@ -634,33 +615,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function renderForm() {
     console.log("renderForm()")
-
     //deactivateKeyListeners();
-    // console.log("renderForm called");
     saveModal.toggle();
-    const playername = document.createElement("input");
-    playername.setAttribute("name", "playername");
-    playername.placeholder = "enter name";
-    playername.focus();
-
-    
-
-    const btnSave = document.createElement("button");
-    btnSave.innerText = "Save Game";
-    btnSave.addEventListener("click", () => savePlayer(playername.value));
-
-    
-
-   
-
-    const btnCancel = document.createElement("button");
-    btnCancel.innerText = "Skip This";
-    btnCancel.addEventListener("click", () => document.location.reload());
-
-    form.append(playername);
-    form.append(btnSave);
-    form.append(btnCancel);
-    bringToFront1(form);
   }
 
   function activateKeyListeners() {
@@ -673,7 +629,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function captureKeyDown(ev) {
     console.log("captureKeyDown()")
-
     //ev.preventDefault();
     let keyPressed = ev.code;
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
@@ -683,7 +638,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function captureKeyUp(ev) {
     console.log("captureKeyUp()")
-
     //ev.preventDefault();
     let keyReleased = ev.code;
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
@@ -693,7 +647,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function deactivateKeyListeners() {
     console.log("deactivateKeyListeners()")
-
     document.body.removeEventListener("keydown", captureKeyDown);
     document.body.removeEventListener("keyup", captureKeyUp);
   }
@@ -757,16 +710,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.closePath();
   }
 
-  function drawPaddle() {
-    console.log("drawPaddle()")
-
-    ctx.beginPath();
-    ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-    ctx.fillStyle = "black";
-    ctx.fill();
-    ctx.closePath();
-  }
-
   KEY_ARRAY = [];
 
   //Exceptions: function,command+spacebar, command+tab
@@ -790,7 +733,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function initKeys(keys) {
     console.log("initKeys()")
-
     //console.log(`keys.length = ${keys.length}`)
     for (let i = 0; i < keys.length; i++) {
       let k = keys[i].name;
@@ -808,7 +750,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function drawKeys(array) {
     console.log("drawKeys()")
-
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
       //drawSingleOutline(key.name, key.code, key.x, key.y, key.w, key.h);
@@ -837,14 +778,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.id = code;
     // BELOW DOESN'T APPEAR TO DO ANYTHING
     //ctx.strokeStyle = "blue";
-    ctx.font = "16px Arial";
+    ctx.font = typeFont;
     ctx.fillStyle = keyColorLight;
-    ctx.fillText(name, keyX + keyWidth / 2, keyY + keyHeight / 2);
+    let capName = name.toUpperCase();
+    ctx.fillText(capName, keyX + (keyWidth / 2) - ((capName.length/2)*12), keyY + (keyHeight / 2) +4 );
   }
 
   function drawSingleKey(name, code, keyX, keyY, keyWidth, keyHeight) {
     console.log("drawSingleKey()")
-
     //console.log(`Drawing = ${name}`)
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
@@ -852,14 +793,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.fill();
     ctx.closePath();
     ctx.id = code;
-    ctx.font = "16px Arial";
+    ctx.font = typeFont;
     ctx.fillStyle = keyColorLight;
-    ctx.fillText(name, keyX + keyWidth / 2, keyY + keyHeight / 2);
+    let capName = name.toUpperCase();
+    ctx.fillText(capName, keyX + (keyWidth / 2)- ((capName.length/2)*12), keyY + (keyHeight / 2)+4);
   }
 
   function releaseAllKeys(array) {
     console.log("releaseAllKeys()")
-
     for (key of array) {
       key.s = 0;
     }
@@ -868,24 +809,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function drawScore() {
     console.log("drawScore()")
     scoreText.innerText = "Score: " + score
-    // ctx.font = "16px Arial";
-    // ctx.fillStyle = "black";
-    // ctx.fillText("Score: " + score, 8, 20);
   }
 
   function drawLives() {
     livesText.innerText = "Lives: " + lives
     console.log("drawLives()")
-    // ctx.font = "16px Arial";
-    // ctx.fillStyle = "black";
-    // ctx.fillText("Lives: " + lives, canvas.width - 80, 20);
   }
 
   let myReq;
 
   function draw() {
     console.log("draw()")
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.lineWidth = 1;
     ctx.strokeStyle = "#000000";
