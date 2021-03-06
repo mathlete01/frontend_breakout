@@ -417,7 +417,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     fetch(GAMES_URL, configObj)
       .then((res) => res.json())
       .then(renderForm())
-      // .then(registerAccountModal.toggle())
+      // .then(saveModal.toggle())
       .catch((errors) => console.log(`endGame: ${errors}`));
   }
 
@@ -612,7 +612,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     //deactivateKeyListeners();
     // console.log("renderForm called");
-    registerAccountModal.toggle();
+    saveModal.toggle();
     const playername = document.createElement("input");
     playername.setAttribute("name", "playername");
     playername.placeholder = "enter name";
@@ -921,15 +921,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
     drawOutlines(KEY_ARRAY);
   }
 
-  var registerAccountButton = document.getElementById("registerAccountButton");
-  var registerAccountModal = new bootstrap.Modal(
-    document.getElementById("registerAccountModal"),
+  // var registerAccountButton = document.getElementById("registerAccountButton");
+  var saveModal = new bootstrap.Modal(
+    document.getElementById("saveModal"),
     {
       keyboard: false,
     }
   );
   // registerAccountButton.addEventListener("click", function () {
-  //   registerAccountModal.toggle();
+  //   saveModal.toggle();
   // });
 
   renderGameboard();
