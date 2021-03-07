@@ -8,14 +8,16 @@ const browser = navigator.appName;
 const platform = navigator.platform;
 const w = window.innerWidth;
 const h = window.innerHeight;
-const colorKeyUpStroke = "#000000";
-const colorKeyUpFill = "#ffffff";
-const colorKeyFontUp = "#000000";
-const colorKeyDownStroke = "#ffffff"; 
+const colorLight = "#dfdfdf"
+let colorKeyUpStroke = colorLight;
+let colorKeyUpFill = "#ffffff";
+let colorKeyFontUp = colorLight;
+const colorKeyDownStroke = "#000000";
 const colorKeyDownFill = "#000000";
-const colorKeyFontDown = "#ffffff"; 
+const colorKeyFontDown = "#ffffff";
 const colorBallFill = "#000000"; //red
 const colorBallStroke = "#000000"; //green
+const strokeThickness = 1
 const typeFont = "16pt Courier New";
 let speed = 0.3;
 // let speed = 3;
@@ -54,6 +56,7 @@ let score = 0;
 let directionV = "north";
 let directionH = "east";
 const context = new AudioContext();
+let gameOn = false;
 
 const row0 = [
   {
@@ -380,7 +383,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // ------------------------------------------------
 
   function toggleDirectionV() {
-    console.log("toggleDirectionV()");
+    // console.log("toggleDirectionV()");
     switch (directionV) {
       case "north":
         directionV = "south";
@@ -401,8 +404,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
+  function toggleColor() {
+    if (gameOn === true) {
+      colorKeyUpStroke = "#000000";
+      colorKeyUpFill = "#ffffff";
+      colorKeyFontUp = "#000000";
+    }else if(gameOn === false) {
+      colorKeyUpStroke = colorLight;
+      colorKeyUpFill = "#ffffff";
+      colorKeyFontUp = colorLight;
+    }
+  }
+
   function toggleDirectionH() {
-    console.log("toggleDirectionH()");
+    // console.log("toggleDirectionH()");
     switch (directionH) {
       case "east":
         directionH = "west";
@@ -416,12 +431,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function bringToFront1(obj) {
-    console.log("bringToFront()");
+    // console.log("bringToFront1()");
     obj.style.zIndex = "1";
   }
 
   function bringToFront2(obj) {
-    console.log("bringToFront()");
+    // console.log("bringToFront2()");
     obj.style.zIndex = "2";
   }
 
@@ -431,23 +446,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function setCurrentPlayer(obj) {
-    console.log(`2. setCurrentPlayer(): obj = ${obj}`);
-    console.log(obj);
+    // console.log(`2. setCurrentPlayer(): obj = ${obj}`);
+    // console.log(obj);
     CURRENT_PLAYER = obj.id;
-    console.log(`2. setCurrentPlayer(): obj.id = ${obj.id}`);
+    // console.log(`2. setCurrentPlayer(): obj.id = ${obj.id}`);
     createGame(CURRENT_PLAYER);
   }
 
   function setCurrentGame(obj) {
-    console.log(`4. setCurrentGame(): obj = ${obj}`);
-    console.log(obj);
+    // console.log(`4. setCurrentGame(): obj = ${obj}`);
+    // console.log(obj);
     CURRENT_GAME = obj.id;
-    console.log(`4. setCurrentGame(): obj.id = ${obj.id}`);
+    // console.log(`4. setCurrentGame(): obj.id = ${obj.id}`);
     startGame();
   }
 
   function createPlayer() {
-    console.log(`1. createPlayer()`);
+    // console.log(`1. createPlayer()`);
     let configObjCreate = {
       method: "POST",
       headers: {
@@ -479,7 +494,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   saveButton.addEventListener("click", () => savePlayer(nameField.value));
 
   function createGame(id) {
-    console.log(`3. createGame()`);
+    // console.log(`3. createGame()`);
     leaderboard.innerHTML = "";
     let formData = {
       player_id: id,
@@ -500,7 +515,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function startGame() {
-    console.log(`5. startGame()`);
+    // console.log(`5. startGame()`);
+    gameOn = true;
+    toggleColor();
     soundGameStart();
     toggleView(playButtonDiv);
     activateKeyListeners();
@@ -510,12 +527,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
     initKeys(row3);
     initKeys(row4);
     interval = setInterval(draw, 10);
+    // draw();
     // console.log(`directionV = `, directionV);
     // console.log(`directionH = `, directionH);
   }
 
   function endGame() {
     console.log("endGame()");
+    gameOn = false;
+    toggleColor();
     soundGameOver();
     clearInterval(interval);
     interval = "";
@@ -588,7 +608,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function getLeaderboard() {
-    console.log("getLeaderboard()");
+    // console.log("getLeaderboard()");
     fetch("http://localhost:3000/games")
       .then((res) => res.json())
       .then((json) => {
@@ -612,7 +632,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function getMax(arr, max) {
-    console.log("getMax()");
+    // console.log("getMax()");
     if (arr.length < max) {
       return arr.length;
     } else {
@@ -621,8 +641,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderLeaderboard(arr) {
-    console.log("renderLeaderboard()");
-
+    // console.log("renderLeaderboard()");
     let h1 = document.createElement("h1");
     h1.innerText = "Top Ten Scores";
     arr.sort((a, b) => (a.score < b.score ? 1 : -1));
@@ -681,7 +700,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function activateKeyListeners() {
-    console.log("activateKeyListeners()");
+    // console.log("activateKeyListeners()");
     document.body.addEventListener("keydown", (ev) => captureKeyDown(ev));
     document.body.addEventListener("keyup", (ev) => captureKeyUp(ev));
   }
@@ -689,7 +708,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // GAMEPLAY
 
   function captureKeyDown(ev) {
-    console.log("captureKeyDown()");
+    // console.log("captureKeyDown()");
     //ev.preventDefault();
     let keyPressed = ev.code;
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
@@ -699,7 +718,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function captureKeyUp(ev) {
-    console.log("captureKeyUp()");
+    // console.log("captureKeyUp()");
     //ev.preventDefault();
     let keyReleased = ev.code;
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
@@ -840,6 +859,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
     ctx.strokeStyle = colorKeyUpStroke;
+    ctx.lineWidth = strokeThickness;
     ctx.stroke();
     ctx.closePath();
     ctx.fillStyle = colorKeyUpFill;
@@ -851,19 +871,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.font = typeFont;
     ctx.fillStyle = colorKeyFontUp;
     let capName = name.toUpperCase();
-    ctx.fillText(
-      capName,
-      keyX + keyWidth / 2 - (capName.length / 2) * 12,
-      keyY + keyHeight / 2 + 4
-    );
+    ctx.textAlign = "center";
+    ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
   }
 
   function drawSingleKeyDown(name, code, keyX, keyY, keyWidth, keyHeight) {
-    console.log("drawSingleKeyDown()");
+    // console.log("drawSingleKeyDown()");
     //console.log(`Drawing = ${name}`)
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
     ctx.strokeStyle = colorKeyDownStroke;
+    ctx.lineWidth = strokeThickness;
     ctx.stroke();
     ctx.closePath();
     ctx.fillStyle = colorKeyDownFill;
@@ -873,15 +891,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.font = typeFont;
     ctx.fillStyle = colorKeyFontDown;
     let capName = name.toUpperCase();
-    ctx.fillText(
-      capName,
-      keyX + keyWidth / 2 - (capName.length / 2) * 12,
-      keyY + keyHeight / 2 + 4
-    );
+    ctx.textAlign = "center";
+    ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
   }
 
   function releaseAllKeys(array) {
-    console.log("releaseAllKeys()");
+    // console.log("releaseAllKeys()");
     for (key of array) {
       key.s = 0;
     }
@@ -902,10 +917,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function draw() {
     // console.log("draw()");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = strokeThickness;
+    ctx.strokeStyle = colorKeyUpStroke;
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
-    //ctx.fillStyle = "#0000FF"
     drawKeysUp(KEY_ARRAY);
     drawKeysDown(KEY_ARRAY);
     drawBall();
@@ -946,10 +960,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // x += dx;
     // y += dy;
     // console.log(`dx = ${dx}, speed = ${speed}`);
+    // requestAnimationFrame(draw);
   }
 
   function renderGameboard() {
-    console.log(`renderGameboard()`);
+    // console.log(`renderGameboard()`);
     soundNext();
     ctx.width = window.innerWidth;
     ctx.height = window.innerHeight;
