@@ -35,7 +35,7 @@ canvas.height = factor * w;
 let ctx = canvas.getContext("2d");
 let ballRadius = 10;
 let x = canvas.width / 2;
-let y = canvas.height - 30;
+let y = canvas.height /2;
 let dx = speed;
 let dy = -1 * dx;
 let paddleHeight = 10;
@@ -748,14 +748,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
           // console.log(`myHash = `, myHash)
           myArrayOfKeys = Object.keys(myHash);
           let min = Math.min.apply(Math, myArrayOfKeys);
-          // console.log(
-          //   `directionH = `,
-          //   directionH,
-          //   `| directionV = `,
-          //   directionV,
-          //   `| myHash[min] = `,
-          //   myHash[min]
-          // );
+          console.log(
+            `directionH = `,
+            directionH,
+            `| directionV = `,
+            directionV,
+            `| myHash[min] = `,
+            myHash[min]
+          );
           if (
             (myHash[min] === "topEdge" && directionV === "south") ||
             (myHash[min] === "bottomEdge" && directionV === "north")
@@ -949,26 +949,57 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function fail() {
+    console.log("fail()")
     lives--;
     soundDie();
     if (!lives) {
-      // console.log("GAME OVER");
+      console.log("GAME OVER");
       endGame();
     } else {
-      x = canvas.width / 2;
-      y = canvas.height - 30;
-      dx = speed;
-      dy = -1 * speed;
+      console.log("LIFE LOST");
+      initNextPlay()
     }
   }
 
+  function initNextPlay(){
+    console.log("initNextPlay()")
+    x = canvas.width / 2;
+    y = canvas.height /2;
+    ranNumX = Math.ceil(Math.random() * 1) * (Math.round(Math.random()) ? 1 : -1)
+    ranNumY = Math.ceil(Math.random() * 1) * (Math.round(Math.random()) ? 1 : -1)
+    console.log(`ranNumX = `, ranNumX)
+    console.log(`ranNumY = `, ranNumY)
+    switch (ranNumX) {
+      case 1:
+        directionH = "east";
+        break;
+      case -1:
+        directionH = "west";
+        break;
+      default:
+        return null;
+    }
+    switch (ranNumY) {
+      case 1:
+        directionV = "south";
+        break;
+      case -1:
+        directionV = "north";
+        break;
+      default:
+        return null;
+    }
+    dx = speed * ranNumX;
+    dy = speed * ranNumY;
+  }
+
   function renderGameboard() {
-    // console.log(`renderGameboard()`);
+    console.log(`renderGameboard()`);
     soundNext();
     ctx.width = window.innerWidth;
     ctx.height = window.innerHeight;
-    // console.log(`ctx.width = ${ctx.width}`);
-    // console.log(`window.innerWidth = ${window.innerWidth}`);
+    console.log(`ctx.width = ${ctx.width}`);
+    console.log(`window.innerWidth = ${window.innerWidth}`);
     initKeys(row0);
     initKeys(row1);
     initKeys(row2);
