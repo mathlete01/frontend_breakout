@@ -941,26 +941,25 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     x += dx;
     y += dy;
-
-    function fail() {
-      lives--;
-      soundDie();
-      if (!lives) {
-        // console.log("GAME OVER");
-        endGame();
-      } else {
-        x = canvas.width / 2;
-        y = canvas.height - 30;
-        dx = speed;
-        dy = -1 * speed;
-      }
-    }
-
     //dx = speed
     // x += dx;
     // y += dy;
     // console.log(`dx = ${dx}, speed = ${speed}`);
     // requestAnimationFrame(draw);
+  }
+
+  function fail() {
+    lives--;
+    soundDie();
+    if (!lives) {
+      // console.log("GAME OVER");
+      endGame();
+    } else {
+      x = canvas.width / 2;
+      y = canvas.height - 30;
+      dx = speed;
+      dy = -1 * speed;
+    }
   }
 
   function renderGameboard() {
