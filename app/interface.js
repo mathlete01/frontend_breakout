@@ -3,6 +3,7 @@ const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
 const interface = document.getElementById("interface");
 const leaderboard = document.getElementById("leaderboard");
+const footer = document.getElementById("footer");
 const form = document.getElementById("form");
 const browser = navigator.appName;
 const platform = navigator.platform;
@@ -19,8 +20,8 @@ const colorBallFill = "#000000"; //red
 const colorBallStroke = "#000000"; //green
 const strokeThickness = 1
 const typeFont = "16pt Courier New";
-let speed = 0.3;
-// let speed = 3;
+// let speed = 0.3;
+let speed = 3;
 // let speed = 0.1;
 let lives = 3;
 const playButtonDiv = document.getElementById("playButtonDiv");
@@ -658,8 +659,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
       ol.append(li);
     }
-    leaderboard.append(h1);
-    leaderboard.append(ol);
+    footer.append(h1);
+    footer.append(ol);
 
     bringToFront1(leaderboard);
     bringToFront2(playButtonDiv);
@@ -689,13 +690,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
       ol.append(li);
     }
-    leaderboard.append(h1);
-    leaderboard.append(ol);
+    footer.append(h1);
+    footer.append(ol);
     const btnOK = document.createElement("button");
     btnOK.setAttribute("id", "btn-ok");
     btnOK.innerHTML = "Okay";
     btnOK.addEventListener("click", () => document.location.reload());
-    leaderboard.append(btnOK);
+    footer.append(btnOK);
     bringToFront1(leaderboard);
     bringToFront2(playButtonDiv);
   }
