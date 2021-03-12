@@ -488,7 +488,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   skipButton.addEventListener("click", () => skip());
 
   const saveButton = document.getElementById("saveButton");
-  saveButton.addEventListener("click", () => savePlayer(nameField.value));
+  saveButton.addEventListener("click", () => savePlayer(nameField.value.toUpperCase()));
 
   function createGame(id) {
     // console.log(`3. createGame()`);
@@ -554,15 +554,25 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(GAMES_URL, configObj)
       .then((res) => res.json())
-      .then(saveModal.toggle())
+      // .then(saveModal.toggle())
+      .then(saveOrNot())
       .catch((errors) => console.log(`endGame: ${errors}`));
+  }
+
+  function saveOrNot(){
+    console.log(`saveOrNot()`);
+    if(score > 0){
+      saveModal.toggle()
+    }else{
+      document.location.reload();
+    }
   }
 
   function savePlayer(name) {
     console.log(`savePlayer:name = ${name}`);
     let data = {
       id: CURRENT_PLAYER,
-      name: name,
+      name: name
     };
 
     let configOb = {
@@ -638,14 +648,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function renderLeaderboard(arr) {
     // console.log("renderLeaderboard()");
+    // console.log(`arr = `, arr)
+    let filteredArr = arr.filter(element => element.player.name !== null)
+    // console.log(`filteredArr = `, filteredArr)
     let h1 = document.createElement("h1");
     h1.innerText = "Top Ten Scores";
-    arr.sort((a, b) => (a.score < b.score ? 1 : -1));
+    filteredArr.sort((a, b) => (a.score < b.score ? 1 : -1));
     let ol = document.createElement("ol");
-    for (let i = 0; i < getMax(arr, 10); i++) {
+    for (let i = 0; i < getMax(filteredArr, 10); i++) {
       let li = document.createElement("li");
-      let element = arr[i];
-      if (arr.length > 0) {
+      let element = filteredArr[i];
+      if (filteredArr.length > 0) {
         let s = element["score"];
         let p = element["player"]["name"];
         // li.innerText = `${p}......${s} points`;
@@ -1014,6 +1027,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     initKeys(row3);
     initKeys(row4);
     drawKeysUp(KEY_ARRAY);
+    drawScore();
+    drawLives();
   }
 
   // var registerAccountButton = document.getElementById("registerAccountButton");
