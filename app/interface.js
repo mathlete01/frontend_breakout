@@ -57,6 +57,7 @@ let directionV = "north";
 let directionH = "east";
 const context = new AudioContext();
 let gameOn = false;
+const vol = 0.02
 
 const row0 = [
   {
@@ -299,7 +300,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     osc1.type = waveType;
     osc2.type = waveType;
 
-    volume.gain.value = 0.1;
+    volume.gain.value = vol;
 
     // Set up node routing
     osc1.connect(volume);
@@ -311,7 +312,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     osc2.frequency.value = frequency - 2;
 
     // Fade out
-    volume.gain.setValueAtTime(0.1, startTime + duration - 0.05);
+    volume.gain.setValueAtTime(vol, startTime + duration - 0.05);
     volume.gain.linearRampToValueAtTime(0, startTime + duration);
 
     // Start oscillators
