@@ -1,10 +1,9 @@
 const BASE_URL = "http://localhost:3000";
 const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
-const interface = document.getElementById("interface");
+// const interface = document.getElementById("interface");
 const leaderboard = document.getElementById("leaderboard");
-const footer = document.getElementById("footer");
-const form = document.getElementById("form");
+// const form = document.getElementById("form");
 const browser = navigator.appName;
 const platform = navigator.platform;
 const w = window.innerWidth;
@@ -24,7 +23,6 @@ const typeFont = "16pt Courier New";
 let speed = 3;
 // let speed = 0.1;
 let lives = 3;
-const playButtonDiv = document.getElementById("playButtonDiv");
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
 const scoreIncrement = 1000;
@@ -58,7 +56,7 @@ let directionV = "north";
 let directionH = "east";
 const context = new AudioContext();
 let gameOn = false;
-const vol = 0.02
+const vol = 0.05
 
 const row0 = [
   {
@@ -483,9 +481,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // soundNext()
   }
 
-  const playButton = document.getElementById("playButton");
-  playButton.addEventListener("click", () => createPlayer());
-
   let nameField = document.getElementById("nameField");
   nameField.placeholder = "Enter your name";
 
@@ -498,7 +493,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function createGame(id) {
     // console.log(`3. createGame()`);
     leaderboard.innerHTML = "";
-    let formData = {
+    let data = {
       player_id: id,
     };
     let configObj = {
@@ -507,7 +502,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(data),
     };
 
     fetch(GAMES_URL, configObj)
@@ -521,7 +516,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     gameOn = true;
     toggleColor();
     soundGameStart();
-    toggleView(playButtonDiv);
     activateKeyListeners();
     initKeys(row0);
     initKeys(row1);
@@ -544,7 +538,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     console.log(
       `endGame: CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
     );
-    let formData = {
+    let data = {
       id: CURRENT_GAME,
       score: score,
     };
@@ -555,7 +549,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(data),
     };
 
     fetch(GAMES_URL, configObj)
@@ -566,7 +560,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function savePlayer(name) {
     console.log(`savePlayer:name = ${name}`);
-    let formData = {
+    let data = {
       id: CURRENT_PLAYER,
       name: name,
     };
@@ -577,7 +571,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(data),
     };
 
     fetch(PLAYERS_URL, configOb)
@@ -589,7 +583,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function updateGame(name) {
     console.log(`updateGame(): name = ${name}`);
-    let formData = {
+    let data = {
       id: CURRENT_GAME,
       name: name,
     };
@@ -600,7 +594,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(data),
     };
 
     fetch(GAMES_URL, configOb)
@@ -624,7 +618,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function getPersonalLeaderboard(id) {
     console.log("getPersonalLeaderboard()");
     saveModal.toggle();
-    form.innerHTML = "";
+    // form.innerHTML = "";
     fetch("http://localhost:3000/games")
       .then((res) => res.json())
       .then((json) => {
@@ -659,11 +653,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
       ol.append(li);
     }
-    footer.append(h1);
-    footer.append(ol);
+    
+    const btnPlay = document.createElement("button");
+    btnPlay.setAttribute("id", "btn-play");
+    btnPlay.setAttribute("class","btn btn-dark btn-lg")
+    btnPlay.setAttribute("type","button")
+    btnPlay.innerHTML = "Play";
+    btnPlay.addEventListener("click", () => createPlayer());
+
+    const centerWrapper = document.createElement("div")
+    centerWrapper.setAttribute("id", "centerWrapper")
+    centerWrapper.append(btnPlay)
+
+    leaderboard.append(h1);
+    leaderboard.append(ol);
+    leaderboard.append(centerWrapper)
 
     bringToFront1(leaderboard);
-    bringToFront2(playButtonDiv);
   }
 
   function renderPersonalLeaderboard(arr, id) {
@@ -690,15 +696,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
       ol.append(li);
     }
-    footer.append(h1);
-    footer.append(ol);
+    leaderboard.append(h1);
+    leaderboard.append(ol);
     const btnOK = document.createElement("button");
     btnOK.setAttribute("id", "btn-ok");
+    btnOK.setAttribute("class","btn btn-dark btn-lg")
     btnOK.innerHTML = "Okay";
     btnOK.addEventListener("click", () => document.location.reload());
-    footer.append(btnOK);
+    leaderboard.append(btnOK);
     bringToFront1(leaderboard);
-    bringToFront2(playButtonDiv);
   }
 
   function activateKeyListeners() {
