@@ -1,9 +1,7 @@
 const BASE_URL = "http://localhost:3000";
 const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
-// const interface = document.getElementById("interface");
 const leaderboard = document.getElementById("leaderboard");
-// const form = document.getElementById("form");
 const browser = navigator.appName;
 const platform = navigator.platform;
 const w = window.innerWidth;
@@ -396,13 +394,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  function toggleView(x) {
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
-    }
-  }
+  // function toggleView(x) {
+  //   if (x.style.display === "none") {
+  //     x.style.display = "block";
+  //   } else {
+  //     x.style.display = "none";
+  //   }
+  // }
 
   function toggleColor() {
     if (gameOn === true) {
@@ -435,18 +433,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
     obj.style.zIndex = "1";
   }
 
-  function bringToFront2(obj) {
-    // console.log("bringToFront2()");
-    obj.style.zIndex = "2";
-  }
+  // function bringToFront2(obj) {
+  //   // console.log("bringToFront2()");
+  //   obj.style.zIndex = "2";
+  // }
 
-  function sendToBack(obj) {
-    console.log("sendToBack()");
-    obj.style.zIndex = "-10";
-  }
+  // function sendToBack(obj) {
+  //   console.log("sendToBack()");
+  //   obj.style.zIndex = "-10";
+  // }
 
   function setCurrentPlayer(obj) {
-    // console.log(`2. setCurrentPlayer(): obj = ${obj}`);
+    console.log(`2. setCurrentPlayer(): obj = ${obj}`);
     // console.log(obj);
     CURRENT_PLAYER = obj.id;
     // console.log(`2. setCurrentPlayer(): obj.id = ${obj.id}`);
@@ -454,7 +452,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function setCurrentGame(obj) {
-    // console.log(`4. setCurrentGame(): obj = ${obj}`);
+    console.log(`4. setCurrentGame(): obj = ${obj}`);
     // console.log(obj);
     CURRENT_GAME = obj.id;
     // console.log(`4. setCurrentGame(): obj.id = ${obj.id}`);
@@ -462,7 +460,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function createPlayer() {
-    // console.log(`1. createPlayer()`);
+    console.log(`1. createPlayer()`);
     let configObjCreate = {
       method: "POST",
       headers: {
@@ -477,6 +475,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function skip() {
+    console.log(`skip()`)
     document.location.reload();
     // soundNext()
   }
@@ -491,7 +490,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   saveButton.addEventListener("click", () => savePlayer(nameField.value.toUpperCase()));
 
   function createGame(id) {
-    // console.log(`3. createGame()`);
+    console.log(`3. createGame()`);
     leaderboard.innerHTML = "";
     let data = {
       player_id: id,
@@ -512,7 +511,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function startGame() {
-    // console.log(`5. startGame()`);
+    console.log(`5. startGame()`);
     gameOn = true;
     toggleColor();
     soundGameStart();
@@ -523,7 +522,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     initKeys(row3);
     initKeys(row4);
     interval = setInterval(draw, 10);
-    // draw();
     // console.log(`directionV = `, directionV);
     // console.log(`directionH = `, directionH);
   }
@@ -554,7 +552,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(GAMES_URL, configObj)
       .then((res) => res.json())
-      // .then(saveModal.toggle())
       .then(saveOrNot())
       .catch((errors) => console.log(`endGame: ${errors}`));
   }
@@ -609,12 +606,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(GAMES_URL, configOb)
       .then((res) => res.json())
-      .then((obj) => getPersonalLeaderboard(obj.player_id))
+      // .then((obj) => getPersonalLeaderboard(obj.player_id))
+      .then(renderGameboard())
       .catch((errors) => console.log(`updateGame: ${errors}`));
   }
 
   function getLeaderboard() {
-    // console.log("getLeaderboard()");
+    console.log("getLeaderboard()");
     fetch("http://localhost:3000/games")
       .then((res) => res.json())
       .then((json) => {
@@ -638,7 +636,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function getMax(arr, max) {
-    // console.log("getMax()");
+    console.log("getMax()");
     if (arr.length < max) {
       return arr.length;
     } else {
@@ -647,7 +645,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderLeaderboard(arr) {
-    // console.log("renderLeaderboard()");
+    console.log("renderLeaderboard()");
     // console.log(`arr = `, arr)
     let filteredArr = arr.filter(element => element.player.name !== null)
     // console.log(`filteredArr = `, filteredArr)
@@ -704,7 +702,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       if (filteredList.length > 0) {
         let s = element["score"];
         let p = element["player"]["name"];
-        // li.innerText = `${p}......${s} points`;
         li.innerText = `${s} points......${p}`;
       }
       ol.append(li);
@@ -721,7 +718,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function activateKeyListeners() {
-    // console.log("activateKeyListeners()");
+    console.log("activateKeyListeners()");
     document.body.addEventListener("keydown", (ev) => captureKeyDown(ev));
     document.body.addEventListener("keyup", (ev) => captureKeyUp(ev));
   }
@@ -747,11 +744,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
     return false;
   }
 
-  function deactivateKeyListeners() {
-    console.log("deactivateKeyListeners()");
-    document.body.removeEventListener("keydown", captureKeyDown);
-    document.body.removeEventListener("keyup", captureKeyUp);
-  }
+  // function deactivateKeyListeners() {
+  //   console.log("deactivateKeyListeners()");
+  //   document.body.removeEventListener("keydown", captureKeyDown);
+  //   document.body.removeEventListener("keyup", captureKeyUp);
+  // }
 
   function collisionDetection(KEY_ARRAY) {
     // console.log("CollisionDetection()");
@@ -839,7 +836,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // });
 
   function initKeys(keys) {
-    // console.log("initKeys()");
+    console.log("initKeys()");
     //console.log(`keys.length = ${keys.length}`)
     for (let i = 0; i < keys.length; i++) {
       let k = keys[i].name;
@@ -887,8 +884,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.fill();
     ctx.closePath();
     ctx.id = code;
-    // BELOW DOESN'T APPEAR TO DO ANYTHING
-    //ctx.strokeStyle = "blue";
     ctx.font = typeFont;
     ctx.fillStyle = colorKeyFontUp;
     let capName = name.toUpperCase();
@@ -917,7 +912,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function releaseAllKeys(array) {
-    // console.log("releaseAllKeys()");
+    console.log("releaseAllKeys()");
     for (key of array) {
       key.s = 0;
     }
@@ -962,11 +957,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     x += dx;
     y += dy;
-    //dx = speed
-    // x += dx;
-    // y += dy;
-    // console.log(`dx = ${dx}, speed = ${speed}`);
-    // requestAnimationFrame(draw);
   }
 
   function fail() {
@@ -1031,13 +1021,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     drawLives();
   }
 
-  // var registerAccountButton = document.getElementById("registerAccountButton");
   var saveModal = new bootstrap.Modal(document.getElementById("saveModal"), {
     keyboard: false,
   });
-  // registerAccountButton.addEventListener("click", function () {
-  //   saveModal.toggle();
-  // });
 
   renderGameboard();
 });
