@@ -1,14 +1,12 @@
 const BASE_URL = "http://localhost:3000";
 const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
-// const interface = document.getElementById("interface");
 const leaderboard = document.getElementById("leaderboard");
-// const form = document.getElementById("form");
 const browser = navigator.appName;
 const platform = navigator.platform;
 const w = window.innerWidth;
 const h = window.innerHeight;
-const colorLight = "#dfdfdf"
+const colorLight = "#dfdfdf";
 let colorKeyUpStroke = colorLight;
 let colorKeyUpFill = "#ffffff";
 let colorKeyFontUp = colorLight;
@@ -17,10 +15,10 @@ const colorKeyDownFill = "#000000";
 const colorKeyFontDown = "#ffffff";
 const colorBallFill = "#000000"; //red
 const colorBallStroke = "#000000"; //green
-const strokeThickness = 1
+const strokeThickness = 1;
 const typeFont = "16pt Courier New";
-// let speed = 0.3;
-let speed = 3;
+let speed = 0.3;
+// let speed = 3;
 // let speed = 0.1;
 let lives = 3;
 const livesText = document.getElementById("livesText");
@@ -34,7 +32,7 @@ canvas.height = factor * w;
 let ctx = canvas.getContext("2d");
 let ballRadius = 10;
 let x = canvas.width / 2;
-let y = canvas.height /2;
+let y = canvas.height / 2;
 let dx = speed;
 let dy = -1 * dx;
 let paddleHeight = 10;
@@ -56,7 +54,7 @@ let directionV = "north";
 let directionH = "east";
 const context = new AudioContext();
 let gameOn = false;
-const vol = 0.05
+const vol = 0.05;
 
 const row0 = [
   {
@@ -396,20 +394,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  function toggleView(x) {
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
-    }
-  }
-
   function toggleColor() {
     if (gameOn === true) {
       colorKeyUpStroke = "#000000";
       colorKeyUpFill = "#ffffff";
       colorKeyFontUp = "#000000";
-    }else if(gameOn === false) {
+    } else if (gameOn === false) {
       colorKeyUpStroke = colorLight;
       colorKeyUpFill = "#ffffff";
       colorKeyFontUp = colorLight;
@@ -435,18 +425,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     obj.style.zIndex = "1";
   }
 
-  function bringToFront2(obj) {
-    // console.log("bringToFront2()");
-    obj.style.zIndex = "2";
-  }
-
-  function sendToBack(obj) {
-    console.log("sendToBack()");
-    obj.style.zIndex = "-10";
-  }
-
   function setCurrentPlayer(obj) {
-    // console.log(`2. setCurrentPlayer(): obj = ${obj}`);
+    console.log(`2. setCurrentPlayer(): obj = ${obj}`);
     // console.log(obj);
     CURRENT_PLAYER = obj.id;
     // console.log(`2. setCurrentPlayer(): obj.id = ${obj.id}`);
@@ -454,7 +434,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function setCurrentGame(obj) {
-    // console.log(`4. setCurrentGame(): obj = ${obj}`);
+    console.log(`4. setCurrentGame(): obj = ${obj}`);
     // console.log(obj);
     CURRENT_GAME = obj.id;
     // console.log(`4. setCurrentGame(): obj.id = ${obj.id}`);
@@ -462,7 +442,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function createPlayer() {
-    // console.log(`1. createPlayer()`);
+    console.log(`1. createPlayer()`);
     let configObjCreate = {
       method: "POST",
       headers: {
@@ -477,6 +457,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function skip() {
+    console.log(`skip()`);
     document.location.reload();
     // soundNext()
   }
@@ -488,10 +469,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
   skipButton.addEventListener("click", () => skip());
 
   const saveButton = document.getElementById("saveButton");
-  saveButton.addEventListener("click", () => savePlayer(nameField.value));
+  saveButton.addEventListener("click", () =>
+    savePlayer(nameField.value.toUpperCase())
+  );
 
   function createGame(id) {
-    // console.log(`3. createGame()`);
+    console.log(`3. createGame()`);
     leaderboard.innerHTML = "";
     let data = {
       player_id: id,
@@ -512,7 +495,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function startGame() {
-    // console.log(`5. startGame()`);
+    console.log(`5. startGame()`);
     gameOn = true;
     toggleColor();
     soundGameStart();
@@ -523,7 +506,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     initKeys(row3);
     initKeys(row4);
     interval = setInterval(draw, 10);
-    // draw();
     // console.log(`directionV = `, directionV);
     // console.log(`directionH = `, directionH);
   }
@@ -554,8 +536,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(GAMES_URL, configObj)
       .then((res) => res.json())
-      .then(saveModal.toggle())
+      .then(saveOrNot())
       .catch((errors) => console.log(`endGame: ${errors}`));
+  }
+
+  function saveOrNot() {
+    console.log(`saveOrNot()`);
+    if (score > 0) {
+      saveModal.toggle();
+    } else {
+      document.location.reload();
+    }
   }
 
   function savePlayer(name) {
@@ -604,7 +595,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function getLeaderboard() {
-    // console.log("getLeaderboard()");
+    console.log("getLeaderboard()");
     fetch("http://localhost:3000/games")
       .then((res) => res.json())
       .then((json) => {
@@ -618,17 +609,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function getPersonalLeaderboard(id) {
     console.log("getPersonalLeaderboard()");
     saveModal.toggle();
-    // form.innerHTML = "";
-    fetch("http://localhost:3000/games")
-      .then((res) => res.json())
-      .then((json) => {
-        const objs = json;
-        renderPersonalLeaderboard(objs, id);
-      });
+    document.location.reload()
   }
 
   function getMax(arr, max) {
-    // console.log("getMax()");
+    console.log("getMax()");
     if (arr.length < max) {
       return arr.length;
     } else {
@@ -637,15 +622,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderLeaderboard(arr) {
-    // console.log("renderLeaderboard()");
+    console.log("renderLeaderboard()");
+    // console.log(`arr = `, arr)
+    let filteredArr = arr.filter((element) => element.player.name !== null);
+    // console.log(`filteredArr = `, filteredArr)
     let h1 = document.createElement("h1");
     h1.innerText = "Top Ten Scores";
-    arr.sort((a, b) => (a.score < b.score ? 1 : -1));
+    filteredArr.sort((a, b) => (a.score < b.score ? 1 : -1));
     let ol = document.createElement("ol");
-    for (let i = 0; i < getMax(arr, 10); i++) {
+    for (let i = 0; i < getMax(filteredArr, 10); i++) {
       let li = document.createElement("li");
-      let element = arr[i];
-      if (arr.length > 0) {
+      let element = filteredArr[i];
+      if (filteredArr.length > 0) {
         let s = element["score"];
         let p = element["player"]["name"];
         // li.innerText = `${p}......${s} points`;
@@ -653,62 +641,27 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
       ol.append(li);
     }
-    
+
     const btnPlay = document.createElement("button");
     btnPlay.setAttribute("id", "btn-play");
-    btnPlay.setAttribute("class","btn btn-dark btn-lg")
-    btnPlay.setAttribute("type","button")
+    btnPlay.setAttribute("class", "btn btn-dark btn-lg");
+    btnPlay.setAttribute("type", "button");
     btnPlay.innerHTML = "Play";
     btnPlay.addEventListener("click", () => createPlayer());
 
-    const centerWrapper = document.createElement("div")
-    centerWrapper.setAttribute("id", "centerWrapper")
-    centerWrapper.append(btnPlay)
+    const centerWrapper = document.createElement("div");
+    centerWrapper.setAttribute("id", "centerWrapper");
+    centerWrapper.append(btnPlay);
 
     leaderboard.append(h1);
     leaderboard.append(ol);
-    leaderboard.append(centerWrapper)
+    leaderboard.append(centerWrapper);
 
-    bringToFront1(leaderboard);
-  }
-
-  function renderPersonalLeaderboard(arr, id) {
-    console.log("renderPersonalLeaderboard()");
-    //console.log(`arr = ${arr}`)
-    //console.log(`id = ${id}`)
-    let filteredList = arr.filter((element) => element["player_id"] == id);
-    console.log(`filteredList = ${filteredList}`);
-    let h1 = document.createElement("h1");
-    h1.innerText = "Your Top 3 Scores";
-    filteredList.sort((a, b) => (a.score < b.score ? 1 : -1));
-    let ol = document.createElement("ol");
-    console.log(`filteredList = ${filteredList}`);
-    for (let i = 0; i < getMax(filteredList, 3); i++) {
-      let li = document.createElement("li");
-      console.log(`filteredList[i] = ${filteredList[i]}`);
-      let element = filteredList[i];
-      console.log(`element = ${element}`);
-      if (filteredList.length > 0) {
-        let s = element["score"];
-        let p = element["player"]["name"];
-        // li.innerText = `${p}......${s} points`;
-        li.innerText = `${s} points......${p}`;
-      }
-      ol.append(li);
-    }
-    leaderboard.append(h1);
-    leaderboard.append(ol);
-    const btnOK = document.createElement("button");
-    btnOK.setAttribute("id", "btn-ok");
-    btnOK.setAttribute("class","btn btn-dark btn-lg")
-    btnOK.innerHTML = "Okay";
-    btnOK.addEventListener("click", () => document.location.reload());
-    leaderboard.append(btnOK);
     bringToFront1(leaderboard);
   }
 
   function activateKeyListeners() {
-    // console.log("activateKeyListeners()");
+    console.log("activateKeyListeners()");
     document.body.addEventListener("keydown", (ev) => captureKeyDown(ev));
     document.body.addEventListener("keyup", (ev) => captureKeyUp(ev));
   }
@@ -732,12 +685,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
     keyObj.s = 0;
     return false;
-  }
-
-  function deactivateKeyListeners() {
-    console.log("deactivateKeyListeners()");
-    document.body.removeEventListener("keydown", captureKeyDown);
-    document.body.removeEventListener("keyup", captureKeyUp);
   }
 
   function collisionDetection(KEY_ARRAY) {
@@ -826,7 +773,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // });
 
   function initKeys(keys) {
-    // console.log("initKeys()");
+    console.log("initKeys()");
     //console.log(`keys.length = ${keys.length}`)
     for (let i = 0; i < keys.length; i++) {
       let k = keys[i].name;
@@ -874,8 +821,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.fill();
     ctx.closePath();
     ctx.id = code;
-    // BELOW DOESN'T APPEAR TO DO ANYTHING
-    //ctx.strokeStyle = "blue";
     ctx.font = typeFont;
     ctx.fillStyle = colorKeyFontUp;
     let capName = name.toUpperCase();
@@ -904,7 +849,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function releaseAllKeys(array) {
-    // console.log("releaseAllKeys()");
+    console.log("releaseAllKeys()");
     for (key of array) {
       key.s = 0;
     }
@@ -949,15 +894,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     x += dx;
     y += dy;
-    //dx = speed
-    // x += dx;
-    // y += dy;
-    // console.log(`dx = ${dx}, speed = ${speed}`);
-    // requestAnimationFrame(draw);
   }
 
   function fail() {
-    console.log("fail()")
+    console.log("fail()");
     lives--;
     soundDie();
     if (!lives) {
@@ -965,18 +905,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
       endGame();
     } else {
       console.log("LIFE LOST");
-      initNextPlay()
+      initNextPlay();
     }
   }
 
-  function initNextPlay(){
-    console.log("initNextPlay()")
+  function initNextPlay() {
+    console.log("initNextPlay()");
     x = canvas.width / 2;
-    y = canvas.height /2;
-    ranNumX = Math.ceil(Math.random() * 1) * (Math.round(Math.random()) ? 1 : -1)
-    ranNumY = Math.ceil(Math.random() * 1) * (Math.round(Math.random()) ? 1 : -1)
-    console.log(`ranNumX = `, ranNumX)
-    console.log(`ranNumY = `, ranNumY)
+    y = canvas.height / 2;
+    ranNumX =
+      Math.ceil(Math.random() * 1) * (Math.round(Math.random()) ? 1 : -1);
+    ranNumY =
+      Math.ceil(Math.random() * 1) * (Math.round(Math.random()) ? 1 : -1);
+    console.log(`ranNumX = `, ranNumX);
+    console.log(`ranNumY = `, ranNumY);
     switch (ranNumX) {
       case 1:
         directionH = "east";
@@ -1014,15 +956,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     initKeys(row3);
     initKeys(row4);
     drawKeysUp(KEY_ARRAY);
+    drawScore();
+    drawLives();
   }
 
-  // var registerAccountButton = document.getElementById("registerAccountButton");
   var saveModal = new bootstrap.Modal(document.getElementById("saveModal"), {
     keyboard: false,
   });
-  // registerAccountButton.addEventListener("click", function () {
-  //   saveModal.toggle();
-  // });
 
   renderGameboard();
 });
