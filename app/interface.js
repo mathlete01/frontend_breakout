@@ -6,7 +6,7 @@ const browser = navigator.appName;
 const platform = navigator.platform;
 const w = window.innerWidth;
 const h = window.innerHeight;
-const colorLight = "#dfdfdf"
+const colorLight = "#dfdfdf";
 let colorKeyUpStroke = colorLight;
 let colorKeyUpFill = "#ffffff";
 let colorKeyFontUp = colorLight;
@@ -15,10 +15,10 @@ const colorKeyDownFill = "#000000";
 const colorKeyFontDown = "#ffffff";
 const colorBallFill = "#000000"; //red
 const colorBallStroke = "#000000"; //green
-const strokeThickness = 1
+const strokeThickness = 1;
 const typeFont = "16pt Courier New";
-// let speed = 0.3;
-let speed = 3;
+let speed = 0.3;
+// let speed = 3;
 // let speed = 0.1;
 let lives = 3;
 const livesText = document.getElementById("livesText");
@@ -32,7 +32,7 @@ canvas.height = factor * w;
 let ctx = canvas.getContext("2d");
 let ballRadius = 10;
 let x = canvas.width / 2;
-let y = canvas.height /2;
+let y = canvas.height / 2;
 let dx = speed;
 let dy = -1 * dx;
 let paddleHeight = 10;
@@ -54,7 +54,7 @@ let directionV = "north";
 let directionH = "east";
 const context = new AudioContext();
 let gameOn = false;
-const vol = 0.05
+const vol = 0.05;
 
 const row0 = [
   {
@@ -394,20 +394,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  // function toggleView(x) {
-  //   if (x.style.display === "none") {
-  //     x.style.display = "block";
-  //   } else {
-  //     x.style.display = "none";
-  //   }
-  // }
-
   function toggleColor() {
     if (gameOn === true) {
       colorKeyUpStroke = "#000000";
       colorKeyUpFill = "#ffffff";
       colorKeyFontUp = "#000000";
-    }else if(gameOn === false) {
+    } else if (gameOn === false) {
       colorKeyUpStroke = colorLight;
       colorKeyUpFill = "#ffffff";
       colorKeyFontUp = colorLight;
@@ -432,16 +424,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log("bringToFront1()");
     obj.style.zIndex = "1";
   }
-
-  // function bringToFront2(obj) {
-  //   // console.log("bringToFront2()");
-  //   obj.style.zIndex = "2";
-  // }
-
-  // function sendToBack(obj) {
-  //   console.log("sendToBack()");
-  //   obj.style.zIndex = "-10";
-  // }
 
   function setCurrentPlayer(obj) {
     console.log(`2. setCurrentPlayer(): obj = ${obj}`);
@@ -475,7 +457,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function skip() {
-    console.log(`skip()`)
+    console.log(`skip()`);
     document.location.reload();
     // soundNext()
   }
@@ -487,7 +469,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   skipButton.addEventListener("click", () => skip());
 
   const saveButton = document.getElementById("saveButton");
-  saveButton.addEventListener("click", () => savePlayer(nameField.value.toUpperCase()));
+  saveButton.addEventListener("click", () =>
+    savePlayer(nameField.value.toUpperCase())
+  );
 
   function createGame(id) {
     console.log(`3. createGame()`);
@@ -556,11 +540,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .catch((errors) => console.log(`endGame: ${errors}`));
   }
 
-  function saveOrNot(){
+  function saveOrNot() {
     console.log(`saveOrNot()`);
-    if(score > 0){
-      saveModal.toggle()
-    }else{
+    if (score > 0) {
+      saveModal.toggle();
+    } else {
       document.location.reload();
     }
   }
@@ -569,7 +553,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     console.log(`savePlayer:name = ${name}`);
     let data = {
       id: CURRENT_PLAYER,
-      name: name
+      name: name,
     };
 
     let configOb = {
@@ -606,8 +590,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(GAMES_URL, configOb)
       .then((res) => res.json())
-      // .then((obj) => getPersonalLeaderboard(obj.player_id))
-      .then(renderGameboard())
+      .then((obj) => getPersonalLeaderboard(obj.player_id))
       .catch((errors) => console.log(`updateGame: ${errors}`));
   }
 
@@ -626,13 +609,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function getPersonalLeaderboard(id) {
     console.log("getPersonalLeaderboard()");
     saveModal.toggle();
-    // form.innerHTML = "";
-    fetch("http://localhost:3000/games")
-      .then((res) => res.json())
-      .then((json) => {
-        const objs = json;
-        renderPersonalLeaderboard(objs, id);
-      });
+    document.location.reload()
   }
 
   function getMax(arr, max) {
@@ -647,7 +624,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function renderLeaderboard(arr) {
     console.log("renderLeaderboard()");
     // console.log(`arr = `, arr)
-    let filteredArr = arr.filter(element => element.player.name !== null)
+    let filteredArr = arr.filter((element) => element.player.name !== null);
     // console.log(`filteredArr = `, filteredArr)
     let h1 = document.createElement("h1");
     h1.innerText = "Top Ten Scores";
@@ -664,56 +641,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
       ol.append(li);
     }
-    
+
     const btnPlay = document.createElement("button");
     btnPlay.setAttribute("id", "btn-play");
-    btnPlay.setAttribute("class","btn btn-dark btn-lg")
-    btnPlay.setAttribute("type","button")
+    btnPlay.setAttribute("class", "btn btn-dark btn-lg");
+    btnPlay.setAttribute("type", "button");
     btnPlay.innerHTML = "Play";
     btnPlay.addEventListener("click", () => createPlayer());
 
-    const centerWrapper = document.createElement("div")
-    centerWrapper.setAttribute("id", "centerWrapper")
-    centerWrapper.append(btnPlay)
+    const centerWrapper = document.createElement("div");
+    centerWrapper.setAttribute("id", "centerWrapper");
+    centerWrapper.append(btnPlay);
 
     leaderboard.append(h1);
     leaderboard.append(ol);
-    leaderboard.append(centerWrapper)
+    leaderboard.append(centerWrapper);
 
-    bringToFront1(leaderboard);
-  }
-
-  function renderPersonalLeaderboard(arr, id) {
-    console.log("renderPersonalLeaderboard()");
-    //console.log(`arr = ${arr}`)
-    //console.log(`id = ${id}`)
-    let filteredList = arr.filter((element) => element["player_id"] == id);
-    console.log(`filteredList = ${filteredList}`);
-    let h1 = document.createElement("h1");
-    h1.innerText = "Your Top 3 Scores";
-    filteredList.sort((a, b) => (a.score < b.score ? 1 : -1));
-    let ol = document.createElement("ol");
-    console.log(`filteredList = ${filteredList}`);
-    for (let i = 0; i < getMax(filteredList, 3); i++) {
-      let li = document.createElement("li");
-      console.log(`filteredList[i] = ${filteredList[i]}`);
-      let element = filteredList[i];
-      console.log(`element = ${element}`);
-      if (filteredList.length > 0) {
-        let s = element["score"];
-        let p = element["player"]["name"];
-        li.innerText = `${s} points......${p}`;
-      }
-      ol.append(li);
-    }
-    leaderboard.append(h1);
-    leaderboard.append(ol);
-    const btnOK = document.createElement("button");
-    btnOK.setAttribute("id", "btn-ok");
-    btnOK.setAttribute("class","btn btn-dark btn-lg")
-    btnOK.innerHTML = "Okay";
-    btnOK.addEventListener("click", () => document.location.reload());
-    leaderboard.append(btnOK);
     bringToFront1(leaderboard);
   }
 
@@ -743,12 +686,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     keyObj.s = 0;
     return false;
   }
-
-  // function deactivateKeyListeners() {
-  //   console.log("deactivateKeyListeners()");
-  //   document.body.removeEventListener("keydown", captureKeyDown);
-  //   document.body.removeEventListener("keyup", captureKeyUp);
-  // }
 
   function collisionDetection(KEY_ARRAY) {
     // console.log("CollisionDetection()");
@@ -960,7 +897,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function fail() {
-    console.log("fail()")
+    console.log("fail()");
     lives--;
     soundDie();
     if (!lives) {
@@ -968,18 +905,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
       endGame();
     } else {
       console.log("LIFE LOST");
-      initNextPlay()
+      initNextPlay();
     }
   }
 
-  function initNextPlay(){
-    console.log("initNextPlay()")
+  function initNextPlay() {
+    console.log("initNextPlay()");
     x = canvas.width / 2;
-    y = canvas.height /2;
-    ranNumX = Math.ceil(Math.random() * 1) * (Math.round(Math.random()) ? 1 : -1)
-    ranNumY = Math.ceil(Math.random() * 1) * (Math.round(Math.random()) ? 1 : -1)
-    console.log(`ranNumX = `, ranNumX)
-    console.log(`ranNumY = `, ranNumY)
+    y = canvas.height / 2;
+    ranNumX =
+      Math.ceil(Math.random() * 1) * (Math.round(Math.random()) ? 1 : -1);
+    ranNumY =
+      Math.ceil(Math.random() * 1) * (Math.round(Math.random()) ? 1 : -1);
+    console.log(`ranNumX = `, ranNumX);
+    console.log(`ranNumY = `, ranNumY);
     switch (ranNumX) {
       case 1:
         directionH = "east";
