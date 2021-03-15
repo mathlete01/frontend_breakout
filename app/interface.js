@@ -17,10 +17,10 @@ const colorBallFill = "#000000"; //red
 const colorBallStroke = "#000000"; //green
 const strokeThickness = 1;
 const typeFont = "16pt Courier New";
-let speed = 0.3;
+// let speed = 0.3;
 // let speed = 3;
-// let speed = 0.1;
-let lives = 3;
+let speed = 0.1;
+let lives = 1;
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
 const scoreIncrement = 1000;
@@ -286,6 +286,18 @@ const row4 = [
 ];
 
 document.addEventListener("DOMContentLoaded", (event) => {
+
+  let nameField = document.getElementById("nameField");
+  nameField.placeholder = "Enter your name";
+
+  const skipButton = document.getElementById("skipButton");
+  skipButton.addEventListener("click", () => skip());
+
+  const saveButton = document.getElementById("saveButton");
+  saveButton.addEventListener("click", () =>
+    savePlayer(nameField.value.toUpperCase())
+  );
+
   // Audio
   // Play oscillators at certain frequency and for a certain time
   function playNote(frequency, startTime, duration, waveType) {
@@ -462,17 +474,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // soundNext()
   }
 
-  let nameField = document.getElementById("nameField");
-  nameField.placeholder = "Enter your name";
-
-  const skipButton = document.getElementById("skipButton");
-  skipButton.addEventListener("click", () => skip());
-
-  const saveButton = document.getElementById("saveButton");
-  saveButton.addEventListener("click", () =>
-    savePlayer(nameField.value.toUpperCase())
-  );
-
   function createGame(id) {
     console.log(`3. createGame()`);
     leaderboard.innerHTML = "";
@@ -627,7 +628,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let filteredArr = arr.filter((element) => element.player.name !== null);
     // console.log(`filteredArr = `, filteredArr)
     let h1 = document.createElement("h1");
-    h1.innerText = "Top Ten Scores";
+    h1.innerText = "Top Scores";
     filteredArr.sort((a, b) => (a.score < b.score ? 1 : -1));
     let ol = document.createElement("ol");
     for (let i = 0; i < getMax(filteredArr, 10); i++) {
@@ -661,7 +662,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function activateKeyListeners() {
-    console.log("activateKeyListeners()");
+    // console.log("activateKeyListeners()");
     document.body.addEventListener("keydown", (ev) => captureKeyDown(ev));
     document.body.addEventListener("keyup", (ev) => captureKeyUp(ev));
   }
@@ -690,25 +691,27 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function collisionDetection(KEY_ARRAY) {
     // console.log("CollisionDetection()");
     for (let i = 0; i < KEY_ARRAY.length; i++) {
-      let b = KEY_ARRAY[i];
-      if (b.s == 1) {
-        if (x > b.x && x < b.x + b.w && y > b.y && y < b.y + b.h) {
+      let thisKey = KEY_ARRAY[i];
+      let leftSide = thisKey.x;
+      let rightSide = thisKey.x + thisKey.w;
+      let topSide = thisKey.y;
+      let bottomSide = thisKey.y + thisKey.h;
+      let ballDiameter = w;
+      if (thisKey.s == 1) {
+        if (x > thisKey.x && x < (thisKey.x + thisKey.w) && y > thisKey.y && y < (thisKey.y + thisKey.h)) {
           let myHash = {};
-          myHash[Math.round(Math.abs(x - (b.x - ballRadius)))] = "leftEdge";
-          myHash[Math.round(Math.abs(x - (b.x + b.w + ballRadius)))] =
-            "rightEdge";
-          myHash[Math.round(Math.abs(y - (b.y - ballRadius)))] = "topEdge";
-          myHash[Math.round(Math.abs(y - (b.y + b.h + ballRadius)))] =
-            "bottomEdge";
-          // console.log(`myHash = `, myHash)
+          myHash[Math.round(Math.abs(x - (leftSide - ballRadius)))] = "leftEdge";
+          myHash[Math.round(Math.abs(x - (leftSide + thisKey.w + ballRadius)))] = "rightEdge";
+          myHash[Math.round(Math.abs(y - (topSide - ballRadius)))] = "topEdge";
+          myHash[Math.round(Math.abs(y - (topSide + thisKey.h + ballRadius)))] = "bottomEdge";
+          console.log(`myHash = `, myHash)
           myArrayOfKeys = Object.keys(myHash);
           let min = Math.min.apply(Math, myArrayOfKeys);
           console.log(
-            `directionH = `,
-            directionH,
-            `| directionV = `,
+            `Ball traveling`,
             directionV,
-            `| myHash[min] = `,
+            directionH,
+            `hit`,
             myHash[min]
           );
           if (
@@ -849,7 +852,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function releaseAllKeys(array) {
-    console.log("releaseAllKeys()");
+    // console.log("releaseAllKeys()");
     for (key of array) {
       key.s = 0;
     }
