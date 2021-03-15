@@ -13,6 +13,7 @@ let colorKeyFontUp = colorLight;
 const colorKeyDownStroke = "#000000";
 const colorKeyDownFill = "#000000";
 const colorKeyFontDown = "#ffffff";
+const colorKeyGrayFill = "#808080"
 const colorBallFill = "#000000"; //red
 const colorBallStroke = "#000000"; //green
 const strokeThickness = 1;
@@ -20,7 +21,7 @@ const typeFont = "16pt Courier New";
 let speed = 0.3;
 // let speed = 3;
 // let speed = 0.1;
-let lives = 1;
+let lives = 2;
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
 const scoreIncrement = 1000;
@@ -431,8 +432,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  function bringToFront1(obj) {
-    // console.log("bringToFront1()");
+  function bringToFront(obj) {
+    // console.log("bringToFront()");
     obj.style.zIndex = "1";
   }
 
@@ -657,7 +658,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     leaderboard.append(ol);
     leaderboard.append(centerWrapper);
 
-    bringToFront1(leaderboard);
+    // bringToFront(leaderboard);
   }
 
   function activateKeyListeners() {
@@ -675,8 +676,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
     keyObj.s = 1;
     // soundPress();
-    console.log(`keyPressed = `, keyPressed)
-    console.log(`keyObj = `, keyObj)
+    // console.log(`keyPressed = `, keyPressed);
+    // console.log(`keyObj = `, keyObj);
     return false;
   }
 
@@ -701,6 +702,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
       let ballDiameter = ballRadius;
       // if ball is active
       if (thisKey.s == 1) {
+        // if ball is overlapping middle of a key, that key can't be depressed
+        if (y > topSide + ballDiameter && y < bottomSide - ballDiameter && x > leftSide + ballDiameter && x < rightSide - ballDiameter) {
+          thisKey.s == 0
+          drawSingleKeyGray(thisKey.name, thisKey.code, thisKey.x, thisKey.y, thisKey.w, thisKey.h)
+          // console.log(`Overlapped thisKey.name = `, thisKey.name)
+          // console.log(`Overlapped thisKey.status = `, thisKey.status)
+        }
         // If ball is within the vertical bounds of the key
         if (y > topSide - ballDiameter && y < bottomSide + ballDiameter) {
           //if ball is traveling EAST and overlaps LEFT side
@@ -709,21 +717,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
             x < leftSide + ballDiameter &&
             directionH === "east"
           ) {
-            console.log(`leftSide = `, leftSide)
-            console.log(
-              `Key:`,
-              thisKey.name,
-              `| Traveling:`,
-              directionH,
-              `| Hit: LEFT side, `,
-              Math.round(x),
-              `> `,
-              leftSide - ballDiameter,
-              `, `,
-              Math.round(x),
-              `<`,
-              leftSide + ballDiameter
-            );
+            // console.log(`leftSide = `, leftSide);
+            // console.log(
+            //   `Key:`,
+            //   thisKey.name,
+            //   `| Traveling:`,
+            //   directionH,
+            //   `| Hit: LEFT side, `,
+            //   Math.round(x),
+            //   `> `,
+            //   leftSide - ballDiameter,
+            //   `, `,
+            //   Math.round(x),
+            //   `<`,
+            //   leftSide + ballDiameter
+            // );
             dx = -dx;
             toggleDirectionH();
             releaseAllKeys(KEY_ARRAY);
@@ -731,30 +739,27 @@ document.addEventListener("DOMContentLoaded", (event) => {
             score = score + scoreIncrement;
             dx = dx * 1.3;
           }
-        }
-        // If ball is within the vertical bounds of the key
-        if (y > topSide - ballDiameter && y < bottomSide + ballDiameter) {
           //if ball is traveling WEST and overlaps RIGHT side
           if (
             x > rightSide - ballDiameter &&
             x < rightSide + ballDiameter &&
             directionH === "west"
           ) {
-            console.log(`rightSide = `, rightSide)
-            console.log(
-              `Key:`,
-              thisKey.name,
-              `| Traveling:`,
-              directionH,
-              `| Hit: RIGHT side`,
-              Math.round(x),
-              `> `,
-              rightSide - ballDiameter,
-              `, `,
-              Math.round(x),
-              `<`,
-              rightSide + ballDiameter
-            );
+            // console.log(`rightSide = `, rightSide);
+            // console.log(
+            //   `Key:`,
+            //   thisKey.name,
+            //   `| Traveling:`,
+            //   directionH,
+            //   `| Hit: RIGHT side`,
+            //   Math.round(x),
+            //   `> `,
+            //   rightSide - ballDiameter,
+            //   `, `,
+            //   Math.round(x),
+            //   `<`,
+            //   rightSide + ballDiameter
+            // );
             dx = -dx;
             toggleDirectionH();
             releaseAllKeys(KEY_ARRAY);
@@ -771,21 +776,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
             y < topSide + ballDiameter &&
             directionV === "south"
           ) {
-            console.log(`topSide = `, topSide)
-            console.log(
-              `Key:`,
-              thisKey.name,
-              `| Traveling:`,
-              directionV,
-              `| Hit: TOP side`,
-              Math.round(y),
-              `> `,
-              topSide - ballDiameter,
-              `, `,
-              Math.round(y),
-              `<`,
-              topSide + ballDiameter
-            );
+            // console.log(`topSide = `, topSide);
+            // console.log(
+            //   `Key:`,
+            //   thisKey.name,
+            //   `| Traveling:`,
+            //   directionV,
+            //   `| Hit: TOP side`,
+            //   Math.round(y),
+            //   `> `,
+            //   topSide - ballDiameter,
+            //   `, `,
+            //   Math.round(y),
+            //   `<`,
+            //   topSide + ballDiameter
+            // );
             dy = -dy;
             toggleDirectionV();
             releaseAllKeys(KEY_ARRAY);
@@ -793,29 +798,27 @@ document.addEventListener("DOMContentLoaded", (event) => {
             score = score + scoreIncrement;
             dx = dx * 1.3;
           }
-        }
-        if (x > leftSide - ballDiameter && x < rightSide + ballDiameter) {
           //if ball is traveling NORTH and overlaps BOTTOM side
           if (
             y > bottomSide - ballDiameter &&
             y < bottomSide + ballDiameter &&
             directionV === "north"
           ) {
-            console.log(`bottomSide = `, bottomSide)
-            console.log(
-              `Key:`,
-              thisKey.name,
-              `| Traveling:`,
-              directionV,
-              `| Hit: BOTTOM side`,
-              Math.round(y),
-              `> `,
-              bottomSide - ballDiameter,
-              `, `,
-              Math.round(y),
-              `<`,
-              bottomSide + ballDiameter
-            );
+            // console.log(`bottomSide = `, bottomSide);
+            // console.log(
+            //   `Key:`,
+            //   thisKey.name,
+            //   `| Traveling:`,
+            //   directionV,
+            //   `| Hit: BOTTOM side`,
+            //   Math.round(y),
+            //   `> `,
+            //   bottomSide - ballDiameter,
+            //   `, `,
+            //   Math.round(y),
+            //   `<`,
+            //   bottomSide + ballDiameter
+            // );
             dy = -dy;
             toggleDirectionV();
             releaseAllKeys(KEY_ARRAY);
@@ -824,7 +827,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
             dx = dx * 1.3;
           }
         }
-        // releaseAllKeys(KEY_ARRAY);
       }
     }
   }
@@ -883,7 +885,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log("drawKeysDown()");
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
-      // drawSingleKeyUp(key.name, key.code, key.x, key.y, key.w, key.h);
       if (key.s == 1) {
         drawSingleKeyDown(key.name, key.code, key.x, key.y, key.w, key.h);
       }
@@ -938,6 +939,26 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
   }
 
+  function drawSingleKeyGray(name, code, keyX, keyY, keyWidth, keyHeight) {
+    // console.log("drawSingleKeyDown()");
+    //console.log(`Drawing = ${name}`)
+    ctx.beginPath();
+    ctx.rect(keyX, keyY, keyWidth, keyHeight);
+    ctx.strokeStyle = colorKeyDownStroke;
+    ctx.lineWidth = strokeThickness;
+    ctx.stroke();
+    ctx.closePath();
+    ctx.fillStyle = colorKeyGrayFill;
+    ctx.fill();
+    ctx.closePath();
+    ctx.id = code;
+    ctx.font = typeFont;
+    ctx.fillStyle = colorKeyFontDown;
+    let capName = name.toUpperCase();
+    ctx.textAlign = "center";
+    ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
+  }
+
   function releaseAllKeys(array) {
     // console.log("releaseAllKeys()");
     for (key of array) {
@@ -965,10 +986,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
     drawKeysUp(KEY_ARRAY);
     drawKeysDown(KEY_ARRAY);
-    drawBall();
     drawScore();
     drawLives();
     collisionDetection(KEY_ARRAY);
+    drawBall();
 
     if (lives < 1) {
       fail();
