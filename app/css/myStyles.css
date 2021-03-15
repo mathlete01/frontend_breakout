@@ -74,8 +74,18 @@ canvas {
   transform: translate(-50%, -50%);
   position: absolute;
 }
+
 .canvasContainer {
   position:relative;
+}
+
+.footer {
+  padding-top: 20;
+  margin-top: 50;
+}
+
+p {
+  margin-top: 20;
 }
 
 #centerWrapper {
