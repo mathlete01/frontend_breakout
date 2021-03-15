@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QWERTY Ball</title>
+    <title>QWERTYBall</title>
     <link rel="stylesheet" href="css/myStyles.css" />
   </head>
   <body>   
@@ -39,13 +39,10 @@
       >
         <ul class="navbar-nav ms-auto flex-nowrap">
           <li class="nav-item">
-            <a href="#" class="nav-link m-2 menu-item">Game</a>
+            <a href="#" class="nav-link m-2 menu-item" id="aboutNav">About</a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link m-2 menu-item">About</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link m-2 menu-item">Hire Me!</a>
+            <a href="#" class="nav-link m-2 menu-item"  id="hireMeNav">Hire Me!</a>
           </li>
         </ul>
       </div>
@@ -92,10 +89,51 @@
         </form>
       </div>
     </div>
+    <div class="modal" tabindex="-1" id="aboutModal">
+      <div class="modal-dialog">
+        <form action="#" class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">About</h5>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              Hello my baby, hello my honey, hello my ragtime gaaaaaaal...
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-dark" id="closeAboutButton">
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal" tabindex="-1" id="hireMeModal">
+      <div class="modal-dialog">
+        <form action="#" class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Hire Me!</h5>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              Bring me a hire love
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-dark" id="closeHireMeButton">
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
     <div class="canvasContainer">
-      <div id="leaderboard"  style="color:black;"></div>
+      <div id="leaderboard"  style="color:black;" class="text-center"></div>
       <canvas id="myCanvas" >
       </canvas>
+    </div>
+    <div class="footer">
+      <p class="text-center" style="color:white;"><i>"It's like Breakout, if it were especially chaotic and involved banging on your keyboard" --someone on Reddit</i></p>
     </div>
     <script src="interface.js"></script>
     <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>

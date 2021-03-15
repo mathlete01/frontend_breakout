@@ -301,6 +301,38 @@ document.addEventListener("DOMContentLoaded", (event) => {
     savePlayer(nameField.value.toUpperCase())
   );
 
+  const aboutNav = document.getElementById("aboutNav");
+  aboutNav.addEventListener("click", () =>
+    aboutModal.toggle()
+  );
+
+  const hireMeNav = document.getElementById("hireMeNav");
+  hireMeNav.addEventListener("click", () =>
+    hireMeModal.toggle()
+  );
+
+  const closeAboutButton = document.getElementById("closeAboutButton");
+  closeAboutButton.addEventListener("click", () =>
+    aboutModal.toggle()
+  );
+
+  const closeHireMeButton = document.getElementById("closeHireMeButton");
+  closeHireMeButton.addEventListener("click", () =>
+    hireMeModal.toggle()
+  );
+
+  const saveModal = new bootstrap.Modal(document.getElementById("saveModal"), {
+    keyboard: false,
+  });
+
+  const aboutModal = new bootstrap.Modal(document.getElementById("aboutModal"), {
+    keyboard: false,
+  });
+
+  const hireMeModal = new bootstrap.Modal(document.getElementById("hireMeModal"), {
+    keyboard: false,
+  });
+
   // Audio
   // Play oscillators at certain frequency and for a certain time
   function playNote(frequency, startTime, duration, waveType) {
@@ -436,24 +468,24 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function bringToFront(obj) {
-    // console.log("bringToFront()");
+    console.log("bringToFront()");
     obj.style.zIndex = "1";
   }
 
   function setCurrentPlayer(obj) {
-    // console.log(`2. setCurrentPlayer(): obj = ${obj}`);
+    console.log(`setCurrentPlayer(): obj =`, obj);
     CURRENT_PLAYER = obj.id;
     createGame(CURRENT_PLAYER);
   }
 
   function setCurrentGame(obj) {
-    // console.log(`4. setCurrentGame(): obj = ${obj}`);
+    console.log(`setCurrentGame(): obj =`, obj);
     CURRENT_GAME = obj.id;
     startGame();
   }
 
   function createPlayer() {
-    // console.log(`1. createPlayer()`);
+    console.log(`createPlayer()`);
     let configObjCreate = {
       method: "POST",
       headers: {
@@ -468,13 +500,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function skip() {
-    // console.log(`skip()`);
+    console.log(`skip()`);
     document.location.reload();
     // soundNext()
   }
 
   function createGame(id) {
-    // console.log(`3. createGame()`);
+    console.log(`createGame()`);
     leaderboard.innerHTML = "";
     let data = {
       player_id: id,
@@ -495,7 +527,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function startGame() {
-    // console.log(`5. startGame()`);
+    console.log(`startGame()`);
     gameOn = true;
     toggleColor();
     soundGameStart();
@@ -509,7 +541,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function endGame() {
-    // console.log("endGame()");
+    console.log("endGame()");
     gameOn = false;
     toggleColor();
     soundGameOver();
@@ -539,7 +571,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function saveOrNot() {
-    // console.log(`saveOrNot()`);
+    console.log(`saveOrNot()`);
     if (score > 0) {
       saveModal.toggle();
     } else {
@@ -548,7 +580,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function savePlayer(name) {
-    // console.log(`savePlayer:name = ${name}`);
+    console.log(`savePlayer:name = ${name}`);
     let data = {
       id: CURRENT_PLAYER,
       name: name,
@@ -570,7 +602,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function updateGame(name) {
-    // console.log(`updateGame(): name = ${name}`);
+    console.log(`updateGame(): name = ${name}`);
     let data = {
       id: CURRENT_GAME,
       name: name,
@@ -604,7 +636,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   getLeaderboard();
 
   function getPersonalLeaderboard(id) {
-    // console.log("getPersonalLeaderboard()");
+    console.log("getPersonalLeaderboard()");
     saveModal.toggle();
     document.location.reload();
   }
@@ -619,14 +651,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderLeaderboard(arr) {
-    // console.log("renderLeaderboard()");
+    console.log("renderLeaderboard()");
     let filteredArr = arr.filter((element) => element.player.name !== null);
     let h1 = document.createElement("h1");
+    h1.style = "font-size:3vw; text-center"
     h1.innerText = "Top Scores";
     filteredArr.sort((a, b) => (a.score < b.score ? 1 : -1));
     let ol = document.createElement("ol");
     for (let i = 0; i < getMax(filteredArr, 10); i++) {
       let li = document.createElement("li");
+      li.style = "font-size:1.5vw;"
       let element = filteredArr[i];
       if (filteredArr.length > 0) {
         let s = element["score"];
@@ -655,7 +689,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function activateKeyListeners() {
-    // console.log("activateKeyListeners()");
+    console.log("activateKeyListeners()");
     document.body.addEventListener("keydown", (ev) => captureKeyDown(ev));
     document.body.addEventListener("keyup", (ev) => captureKeyUp(ev));
   }
@@ -956,14 +990,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function fail() {
-    // console.log("fail()");
+    console.log("fail()");
     lives--;
     soundDie();
     if (!lives) {
-      console.log("GAME OVER");
+      // console.log("GAME OVER");
       endGame();
     } else {
-      console.log("LIFE LOST");
+      // console.log("LIFE LOST");
       initNextPlay();
     }
   }
@@ -978,8 +1012,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
       Math.ceil(Math.random() * 1) * (Math.round(Math.random()) ? 1 : -1);
     ranNumY =
       Math.ceil(Math.random() * 1) * (Math.round(Math.random()) ? 1 : -1);
-    console.log(`ranNumX = `, ranNumX);
-    console.log(`ranNumY = `, ranNumY);
+    // console.log(`ranNumX = `, ranNumX);
+    // console.log(`ranNumY = `, ranNumY);
     switch (ranNumX) {
       case 1:
         directionH = "east";
@@ -1006,7 +1040,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderGameboard() {
-    // console.log(`renderGameboard()`);
+    console.log(`renderGameboard()`);
     soundNext();
     ctx.width = window.innerWidth;
     // console.log(`ctx.width = `, ctx.width)
@@ -1020,10 +1054,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     drawScore();
     drawLives();
   }
-
-  var saveModal = new bootstrap.Modal(document.getElementById("saveModal"), {
-    keyboard: false,
-  });
 
   renderGameboard();
 });
