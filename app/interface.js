@@ -13,17 +13,20 @@ let colorKeyFontUp = colorLight;
 const colorKeyDownStroke = "#000000";
 const colorKeyDownFill = "#000000";
 const colorKeyFontDown = "#ffffff";
-const colorKeyGrayFill = "#808080"
+const colorKeyGrayFill = "#808080";
 const colorBallFill = "#000000"; //red
 const colorBallStroke = "#000000"; //green
 const strokeThickness = 1;
-const typeFont = "16pt Courier New";
+// const typeFont = "16pt Courier New";
+const typeFont = (window.innerWidth / 100) + "px Courier New";
 let speed = 0.3;
 // let speed = 3;
 // let speed = 0.1;
-let lives = 2;
+let lives = 3;
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
+let scoreNote1 = 493.883;
+let scoreNote2 = 659.255;
 const scoreIncrement = 1000;
 let canvas = document.getElementById("myCanvas");
 let keySegments = 15;
@@ -335,10 +338,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function soundScore() {
     // Play a 'B4' now that lasts for 0.116 seconds
-    playNote(493.883, context.currentTime, 0.116, "square");
+    playNote(scoreNote1, context.currentTime, 0.116, "square");
 
     // Play an 'E5' just as the previous note finishes, that lasts for 0.232 seconds
-    playNote(659.255, context.currentTime + 0.116, 0.232, "square");
+    playNote(scoreNote2, context.currentTime + 0.116, 0.232, "square");
   }
 
   function soundGameStart() {
@@ -691,9 +694,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
       // if ball is active
       if (thisKey.s == 1) {
         // if ball is overlapping middle of a key, that key can't be depressed
-        if (y > topSide + ballDiameter && y < bottomSide - ballDiameter && x > leftSide + ballDiameter && x < rightSide - ballDiameter) {
-          thisKey.s == 0
-          drawSingleKeyGray(thisKey.name, thisKey.code, thisKey.x, thisKey.y, thisKey.w, thisKey.h)
+        if (
+          y > topSide + ballDiameter &&
+          y < bottomSide - ballDiameter &&
+          x > leftSide + ballDiameter &&
+          x < rightSide - ballDiameter
+        ) {
+          thisKey.s == 0;
+          drawSingleKeyGray(
+            thisKey.name,
+            thisKey.code,
+            thisKey.x,
+            thisKey.y,
+            thisKey.w,
+            thisKey.h
+          );
         }
         // If ball is within the vertical bounds of the key
         if (y > topSide - ballDiameter && y < bottomSide + ballDiameter) {
@@ -708,6 +723,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
             releaseAllKeys(KEY_ARRAY);
             soundScore();
             score = score + scoreIncrement;
+            scoreNote1 = scoreNote1 + 10;
+            scoreNote2 = scoreNote2 + 10;
             dx = dx * 1.3;
           }
           //if ball is traveling WEST and overlaps RIGHT side
@@ -721,6 +738,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
             releaseAllKeys(KEY_ARRAY);
             soundScore();
             score = score + scoreIncrement;
+            scoreNote1 = scoreNote1 + 10;
+            scoreNote2 = scoreNote2 + 10;
             dx = dx * 1.3;
           }
         }
@@ -737,6 +756,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
             releaseAllKeys(KEY_ARRAY);
             soundScore();
             score = score + scoreIncrement;
+            scoreNote1 = scoreNote1 + 10;
+            scoreNote2 = scoreNote2 + 10;
             dx = dx * 1.3;
           }
           //if ball is traveling NORTH and overlaps BOTTOM side
@@ -750,6 +771,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
             releaseAllKeys(KEY_ARRAY);
             soundScore();
             score = score + scoreIncrement;
+            scoreNote1 = scoreNote1 + 10;
+            scoreNote2 = scoreNote2 + 10;
             dx = dx * 1.3;
           }
         }
@@ -946,7 +969,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function initNextPlay() {
-    // console.log("initNextPlay()");
+    console.log("initNextPlay()");
+    scoreNote1 = 493.883;
+    scoreNote2 = 659.255;
     x = canvas.width / 2;
     y = canvas.height / 2;
     ranNumX =
@@ -977,12 +1002,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
     dx = speed * ranNumX;
     dy = speed * ranNumY;
+    
   }
 
   function renderGameboard() {
     // console.log(`renderGameboard()`);
     soundNext();
     ctx.width = window.innerWidth;
+    // console.log(`ctx.width = `, ctx.width)
     ctx.height = window.innerHeight;
     initKeys(row0);
     initKeys(row1);
