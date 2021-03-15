@@ -438,23 +438,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function setCurrentPlayer(obj) {
-    console.log(`2. setCurrentPlayer(): obj = ${obj}`);
-    // console.log(obj);
+    // console.log(`2. setCurrentPlayer(): obj = ${obj}`);
     CURRENT_PLAYER = obj.id;
-    // console.log(`2. setCurrentPlayer(): obj.id = ${obj.id}`);
     createGame(CURRENT_PLAYER);
   }
 
   function setCurrentGame(obj) {
-    console.log(`4. setCurrentGame(): obj = ${obj}`);
-    // console.log(obj);
+    // console.log(`4. setCurrentGame(): obj = ${obj}`);
     CURRENT_GAME = obj.id;
-    // console.log(`4. setCurrentGame(): obj.id = ${obj.id}`);
     startGame();
   }
 
   function createPlayer() {
-    console.log(`1. createPlayer()`);
+    // console.log(`1. createPlayer()`);
     let configObjCreate = {
       method: "POST",
       headers: {
@@ -469,13 +465,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function skip() {
-    console.log(`skip()`);
+    // console.log(`skip()`);
     document.location.reload();
     // soundNext()
   }
 
   function createGame(id) {
-    console.log(`3. createGame()`);
+    // console.log(`3. createGame()`);
     leaderboard.innerHTML = "";
     let data = {
       player_id: id,
@@ -496,7 +492,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function startGame() {
-    console.log(`5. startGame()`);
+    // console.log(`5. startGame()`);
     gameOn = true;
     toggleColor();
     soundGameStart();
@@ -507,20 +503,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
     initKeys(row3);
     initKeys(row4);
     interval = setInterval(draw, 10);
-    // console.log(`directionV = `, directionV);
-    // console.log(`directionH = `, directionH);
   }
 
   function endGame() {
-    console.log("endGame()");
+    // console.log("endGame()");
     gameOn = false;
     toggleColor();
     soundGameOver();
     clearInterval(interval);
     interval = "";
-    console.log(
-      `endGame: CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
-    );
+    // console.log(
+    //   `endGame: CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
+    // );
     let data = {
       id: CURRENT_GAME,
       score: score,
@@ -542,7 +536,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function saveOrNot() {
-    console.log(`saveOrNot()`);
+    // console.log(`saveOrNot()`);
     if (score > 0) {
       saveModal.toggle();
     } else {
@@ -551,7 +545,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function savePlayer(name) {
-    console.log(`savePlayer:name = ${name}`);
+    // console.log(`savePlayer:name = ${name}`);
     let data = {
       id: CURRENT_PLAYER,
       name: name,
@@ -568,13 +562,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(PLAYERS_URL, configOb)
       .then((res) => res.json())
-      //.then((obj) => console.log(obj))
       .then(updateGame(name))
       .catch((errors) => console.log(`savePlayer: ${errors}`));
   }
 
   function updateGame(name) {
-    console.log(`updateGame(): name = ${name}`);
+    // console.log(`updateGame(): name = ${name}`);
     let data = {
       id: CURRENT_GAME,
       name: name,
@@ -608,13 +601,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
   getLeaderboard();
 
   function getPersonalLeaderboard(id) {
-    console.log("getPersonalLeaderboard()");
+    // console.log("getPersonalLeaderboard()");
     saveModal.toggle();
     document.location.reload();
   }
 
   function getMax(arr, max) {
-    console.log("getMax()");
+    // console.log("getMax()");
     if (arr.length < max) {
       return arr.length;
     } else {
@@ -623,10 +616,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderLeaderboard(arr) {
-    console.log("renderLeaderboard()");
-    // console.log(`arr = `, arr)
+    // console.log("renderLeaderboard()");
     let filteredArr = arr.filter((element) => element.player.name !== null);
-    // console.log(`filteredArr = `, filteredArr)
     let h1 = document.createElement("h1");
     h1.innerText = "Top Scores";
     filteredArr.sort((a, b) => (a.score < b.score ? 1 : -1));
@@ -637,7 +628,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       if (filteredArr.length > 0) {
         let s = element["score"];
         let p = element["player"]["name"];
-        // li.innerText = `${p}......${s} points`;
         li.innerText = `${s} points......${p}`;
       }
       ol.append(li);
@@ -676,8 +666,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
     keyObj.s = 1;
     // soundPress();
-    // console.log(`keyPressed = `, keyPressed);
-    // console.log(`keyObj = `, keyObj);
     return false;
   }
 
@@ -706,8 +694,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         if (y > topSide + ballDiameter && y < bottomSide - ballDiameter && x > leftSide + ballDiameter && x < rightSide - ballDiameter) {
           thisKey.s == 0
           drawSingleKeyGray(thisKey.name, thisKey.code, thisKey.x, thisKey.y, thisKey.w, thisKey.h)
-          // console.log(`Overlapped thisKey.name = `, thisKey.name)
-          // console.log(`Overlapped thisKey.status = `, thisKey.status)
         }
         // If ball is within the vertical bounds of the key
         if (y > topSide - ballDiameter && y < bottomSide + ballDiameter) {
@@ -717,21 +703,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
             x < leftSide + ballDiameter &&
             directionH === "east"
           ) {
-            // console.log(`leftSide = `, leftSide);
-            // console.log(
-            //   `Key:`,
-            //   thisKey.name,
-            //   `| Traveling:`,
-            //   directionH,
-            //   `| Hit: LEFT side, `,
-            //   Math.round(x),
-            //   `> `,
-            //   leftSide - ballDiameter,
-            //   `, `,
-            //   Math.round(x),
-            //   `<`,
-            //   leftSide + ballDiameter
-            // );
             dx = -dx;
             toggleDirectionH();
             releaseAllKeys(KEY_ARRAY);
@@ -745,21 +716,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
             x < rightSide + ballDiameter &&
             directionH === "west"
           ) {
-            // console.log(`rightSide = `, rightSide);
-            // console.log(
-            //   `Key:`,
-            //   thisKey.name,
-            //   `| Traveling:`,
-            //   directionH,
-            //   `| Hit: RIGHT side`,
-            //   Math.round(x),
-            //   `> `,
-            //   rightSide - ballDiameter,
-            //   `, `,
-            //   Math.round(x),
-            //   `<`,
-            //   rightSide + ballDiameter
-            // );
             dx = -dx;
             toggleDirectionH();
             releaseAllKeys(KEY_ARRAY);
@@ -776,21 +732,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
             y < topSide + ballDiameter &&
             directionV === "south"
           ) {
-            // console.log(`topSide = `, topSide);
-            // console.log(
-            //   `Key:`,
-            //   thisKey.name,
-            //   `| Traveling:`,
-            //   directionV,
-            //   `| Hit: TOP side`,
-            //   Math.round(y),
-            //   `> `,
-            //   topSide - ballDiameter,
-            //   `, `,
-            //   Math.round(y),
-            //   `<`,
-            //   topSide + ballDiameter
-            // );
             dy = -dy;
             toggleDirectionV();
             releaseAllKeys(KEY_ARRAY);
@@ -804,21 +745,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
             y < bottomSide + ballDiameter &&
             directionV === "north"
           ) {
-            // console.log(`bottomSide = `, bottomSide);
-            // console.log(
-            //   `Key:`,
-            //   thisKey.name,
-            //   `| Traveling:`,
-            //   directionV,
-            //   `| Hit: BOTTOM side`,
-            //   Math.round(y),
-            //   `> `,
-            //   bottomSide - ballDiameter,
-            //   `, `,
-            //   Math.round(y),
-            //   `<`,
-            //   bottomSide + ballDiameter
-            // );
             dy = -dy;
             toggleDirectionV();
             releaseAllKeys(KEY_ARRAY);
@@ -866,7 +792,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function initKeys(keys) {
     // console.log("initKeys()");
-    //console.log(`keys.length = ${keys.length}`)
     for (let i = 0; i < keys.length; i++) {
       let k = keys[i].name;
       let c = keys[i].code;
@@ -1008,7 +933,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function fail() {
-    console.log("fail()");
+    // console.log("fail()");
     lives--;
     soundDie();
     if (!lives) {
@@ -1021,7 +946,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function initNextPlay() {
-    console.log("initNextPlay()");
+    // console.log("initNextPlay()");
     x = canvas.width / 2;
     y = canvas.height / 2;
     ranNumX =
@@ -1055,12 +980,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderGameboard() {
-    console.log(`renderGameboard()`);
+    // console.log(`renderGameboard()`);
     soundNext();
     ctx.width = window.innerWidth;
     ctx.height = window.innerHeight;
-    console.log(`ctx.width = ${ctx.width}`);
-    console.log(`window.innerWidth = ${window.innerWidth}`);
     initKeys(row0);
     initKeys(row1);
     initKeys(row2);
