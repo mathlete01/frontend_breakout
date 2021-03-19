@@ -4,7 +4,9 @@
   "description": "Keyboard Breakout is a little browser game built with a Javascript frontend and a Ruby on Rails backend.",
   "main": "interface.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app",
+    "postinstall": "gulp default"
   },
   "repository": {
     "type": "git",
