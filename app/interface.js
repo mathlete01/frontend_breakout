@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:3000";
+// const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://evening-hollows-06706.herokuapp.com";
 const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
 const leaderboard = document.getElementById("leaderboard");
@@ -625,7 +626,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function getLeaderboard() {
     console.log("getLeaderboard()");
-    fetch("http://localhost:3000/games")
+    fetch(GAMES_URL)
       .then((res) => res.json())
       .then((json) => {
         const objs = json;
