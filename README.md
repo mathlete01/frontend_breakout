@@ -1,10 +1,10 @@
-## Keyboard Breakout
+## QWERTYBall
 
-Keyboard Breakout is a little browser game built with a Javascript frontend and a Ruby on Rails backend.
+QWERTYBall is a little browser game built with a Javascript frontend and a Ruby on Rails backend.
 
 ### How to Use
 
-Keyboard Breakout was built on Ruby 2.6.1 and uses npm to install node modules. You'll probably need a similar set-up to get it to run correctly. 
+QWERTYBall was built on Ruby 2.6.1 and uses npm to install node modules. You'll probably need a similar set-up to get it to run correctly. 
 
 #### Installation
 
