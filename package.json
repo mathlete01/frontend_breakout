@@ -5,8 +5,8 @@
   "main": "interface.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app",
-    "serve": "gulp default",
+    "// start": "node app",
+    "start": "gulp default",
     "build": "gulp build",
     "// postinstall": "gulp default"
   },
