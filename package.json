@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app",
-    "postinstall": "gulp default"
+    "serve":"gulp default",
+    "// postinstall": "gulp default"
   },
   "repository": {
     "type": "git",
