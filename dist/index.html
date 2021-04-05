@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QWERTYBall</title>
+    <link rel="stylesheet" href="css/myStyles.css" />
+  </head>
+  <body>   
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #000000">
+      <div class="d-flex flex-grow-1">
+        <div class="w-100 text-right">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#myNavbar"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+      <div
+        class="collapse navbar-collapse flex-grow-1 text-right"
+        id="myNavbar"
+      ></div>
+      <div><p class="text-center" style="color:white;">
+        <div class="ascii-art">
+          ____   _       __  ______  ____   _______ __  __  ____            __  __
+         / __ \ | |     / / / ____/ / __ \ /_  __/ / / / / / __ )  ____ _  / / / /
+        / / / / | | /| / / / __/   / /_/ /  / /   / /_/ / / __  | / __ `/ / / / / 
+       / /_/ /  | |/ |/ / / /___  / _, _/  / /    \   _/ / /_/ / / /_/ / / / / /    
+       \___\_\  |__/|__/ /_____/ /_/ |_|  /_/     /_/   /_____/  \__,_/ /_/ /_/    
+      </p></div>  
+      </div>
+      <div
+        class="collapse navbar-collapse flex-grow-1 text-right"
+        id="myNavbar"
+      >
+        <ul class="navbar-nav ms-auto flex-nowrap">
+          <li class="nav-item">
+            <a href="#" class="nav-link m-2 menu-item" id="aboutNav">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link m-2 menu-item"  id="hireMeNav">Hire Me!</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-2">
+          <h4 id="livesText" class="text-left"  style="color:white;">&nbsp;</h4>
+        </div>
+        <div class="col-8"></div>
+        <div class="col-2">
+          <h4 id="scoreText" class="text-right"  style="color:white;">&nbsp;</h4>
+        </div>
+      </div>
+    </div>
+    <!-- <div id="form" ></div> -->
+    
+    <!-- <div id="interface" ></div> -->
+    <div class="modal" tabindex="-1" id="saveModal">
+      <div class="modal-dialog">
+        <form action="#" class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Save Your Score</h5>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <input type="name" class="form-control" id="nameField" required />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              id="skipButton"
+            >
+              Skip This
+            </button>
+            <button type="submit" class="btn btn-dark" id="saveButton">
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal" tabindex="-1" id="aboutModal">
+      <div class="modal-dialog">
+        <form action="#" class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">About</h5>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <p>QWERTYBall is the realization of an idea I had years ago that it would be fun to create a twist on the classic game of <a href="https://en.wikipedia.org/wiki/Breakout_(video_game)" target="_blank">Breakout</a> by transposing my keyboard onto my screen so that you had to bang on the keys to keep the ball in play.</p>
+              <p>For whatever reason, the idea stuck with me, so when I <a href="https://flatironschool.com/career-courses/coding-bootcamp/online" target="_blank">decided to get back into programming</a> and needed a project to work on, I decided to make this game for real.</p>
+              <p>I employed the Canvas API to dynamically draw the keyboard on the user’s screen, and I used the Web Audio API to add original sound effects to make the game feel more responsive</p>
+              <p>I hope you nejoy it. Feel free to <a href="mailto:msallin@gmail.com">get in touch</a> if you have any feedback!</p>
+              <p>-Matty</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-dark" id="closeAboutButton">
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal" tabindex="-1" id="hireMeModal">
+      <div class="modal-dialog">
+        <form action="#" class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Hire Me!</h5>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <p>After focusing on User Experience for years, I recently decided to get back into programming. In Spring 2021 I completed a <a href="https://flatironschool.com/career-courses/coding-bootcamp/online" target="_blank">Software Engineering course at Flatiron School</a> and this is one of the projects I made. </p>
+
+              <p>I've learned a tremendous amount about front-end engineering, backend engineering, and the mechanics of web applications. I'm looking forward to applying new programming skills and my old UX skills to a new job opportunity. This web app was built in Rails/React, but I'm eager to learn more programming languages going forward.</p>
+
+              <p>Wanna know more? <a href="mailto:msallin@gmail.com">Get in touch!</a></p>
+
+              <p>-Matty</p>
+              <p><a href="http://www.linkedin.com/in/msallin" target="_blank">LinkedIn</a> • <a href="http://www.mathlete.com" target="_blank">Portfolio</a></p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-dark" id="closeHireMeButton">
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="canvasContainer">
+      <div id="leaderboard"  style="color:black;" class="text-center"></div>
+      <canvas id="myCanvas" >
+      </canvas>
+    </div>
+    <div class="footer">
+      <p class="text-center" style="color:white;"><i>"It's like Breakout, if it were especially chaotic and involved banging on your keyboard" --someone on Reddit</i></p>
+    </div>
+    <script src="interface.js"></script>
+    <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+      integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
