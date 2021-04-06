@@ -57,6 +57,7 @@ let interval = "";
 let score = 0;
 let directionV = "north";
 let directionH = "east";
+var AudioContext = window.AudioContext || window.webkitAudioContext;
 const context = new AudioContext();
 let gameOn = false;
 const vol = 0.05;
