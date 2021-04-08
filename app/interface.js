@@ -291,6 +291,11 @@ const row4 = [
   },
 ];
 
+const preventDefaultKeys = {
+  Tab: true,
+  Enter: true,
+}
+
 document.addEventListener("DOMContentLoaded", (event) => {
   let nameField = document.getElementById("nameField");
   nameField.placeholder = "Enter your name";
@@ -702,6 +707,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log("captureKeyDown()");
     //ev.preventDefault();
     let keyPressed = ev.code;
+
+    if (preventDefaultKeys[keyPressed]) {
+      ev.preventDefault();
+    }
+
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
     keyObj.s = 1;
     // soundPress();
