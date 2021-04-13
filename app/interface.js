@@ -728,14 +728,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function collisionDetection(KEY_ARRAY) {
-    // console.log("CollisionDetection()");
     for (let i = 0; i < KEY_ARRAY.length; i++) {
       let thisKey = KEY_ARRAY[i];
       let leftSide = Math.round(thisKey.x);
       let rightSide = Math.round(thisKey.x + thisKey.w);
       let topSide = Math.round(thisKey.y);
       let bottomSide = Math.round(thisKey.y + thisKey.h);
-      // Making diameter smalled because ball appeared to be bouncing too early, as thought the diameter was too big
       let ballDiameter = ballRadius;
       // if ball is active
       if (thisKey.s == 1) {
