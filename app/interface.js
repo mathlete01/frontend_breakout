@@ -19,7 +19,7 @@ const colorBallFill = "#000000"; //red
 const colorBallStroke = "#000000"; //green
 const strokeThickness = 1;
 // const typeFont = "16pt Courier New";
-const typeFont = (window.innerWidth / 100) + "px Courier New";
+const typeFont = window.innerWidth / 100 + "px Courier New";
 let speed = 0.3;
 // let speed = 3;
 // let speed = 0.1;
@@ -294,7 +294,7 @@ const row4 = [
 const preventDefaultKeys = {
   Tab: true,
   Enter: true,
-}
+};
 
 document.addEventListener("DOMContentLoaded", (event) => {
   let nameField = document.getElementById("nameField");
@@ -309,36 +309,34 @@ document.addEventListener("DOMContentLoaded", (event) => {
   );
 
   const aboutNav = document.getElementById("aboutNav");
-  aboutNav.addEventListener("click", () =>
-    aboutModal.toggle()
-  );
+  aboutNav.addEventListener("click", () => aboutModal.toggle());
 
   const hireMeNav = document.getElementById("hireMeNav");
-  hireMeNav.addEventListener("click", () =>
-    hireMeModal.toggle()
-  );
+  hireMeNav.addEventListener("click", () => hireMeModal.toggle());
 
   const closeAboutButton = document.getElementById("closeAboutButton");
-  closeAboutButton.addEventListener("click", () =>
-    aboutModal.toggle()
-  );
+  closeAboutButton.addEventListener("click", () => aboutModal.toggle());
 
   const closeHireMeButton = document.getElementById("closeHireMeButton");
-  closeHireMeButton.addEventListener("click", () =>
-    hireMeModal.toggle()
-  );
+  closeHireMeButton.addEventListener("click", () => hireMeModal.toggle());
 
   const saveModal = new bootstrap.Modal(document.getElementById("saveModal"), {
     keyboard: false,
   });
 
-  const aboutModal = new bootstrap.Modal(document.getElementById("aboutModal"), {
-    keyboard: false,
-  });
+  const aboutModal = new bootstrap.Modal(
+    document.getElementById("aboutModal"),
+    {
+      keyboard: false,
+    }
+  );
 
-  const hireMeModal = new bootstrap.Modal(document.getElementById("hireMeModal"), {
-    keyboard: false,
-  });
+  const hireMeModal = new bootstrap.Modal(
+    document.getElementById("hireMeModal"),
+    {
+      keyboard: false,
+    }
+  );
 
   // Audio
   // Play oscillators at certain frequency and for a certain time
@@ -661,13 +659,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log("renderLeaderboard()");
     let filteredArr = arr.filter((element) => element.player.name !== null);
     let h1 = document.createElement("h1");
-    h1.style = "font-size:3vw; text-center"
+    h1.style = "font-size:3vw; text-center";
     h1.innerText = "Top Scores";
     filteredArr.sort((a, b) => (a.score < b.score ? 1 : -1));
     let ol = document.createElement("ol");
     for (let i = 0; i < getMax(filteredArr, 10); i++) {
       let li = document.createElement("li");
-      li.style = "font-size:1.5vw;"
+      li.style = "font-size:1.5vw;";
       let element = filteredArr[i];
       if (filteredArr.length > 0) {
         let s = element["score"];
@@ -764,12 +762,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
           ) {
             dx = -dx;
             toggleDirectionH();
-            releaseAllKeys(KEY_ARRAY);
-            soundScore();
-            score = score + scoreIncrement;
-            scoreNote1 = scoreNote1 + 10;
-            scoreNote2 = scoreNote2 + 10;
-            dx = dx * 1.3;
+            scorePoint();
           }
           //if ball is traveling WEST and overlaps RIGHT side
           if (
@@ -779,12 +772,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
           ) {
             dx = -dx;
             toggleDirectionH();
-            releaseAllKeys(KEY_ARRAY);
-            soundScore();
-            score = score + scoreIncrement;
-            scoreNote1 = scoreNote1 + 10;
-            scoreNote2 = scoreNote2 + 10;
-            dx = dx * 1.3;
+            scorePoint();
           }
         }
         // If ball is within the horizontal bounds of the key
@@ -797,12 +785,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
           ) {
             dy = -dy;
             toggleDirectionV();
-            releaseAllKeys(KEY_ARRAY);
-            soundScore();
-            score = score + scoreIncrement;
-            scoreNote1 = scoreNote1 + 10;
-            scoreNote2 = scoreNote2 + 10;
-            dx = dx * 1.3;
+            scorePoint();
           }
           //if ball is traveling NORTH and overlaps BOTTOM side
           if (
@@ -812,16 +795,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
           ) {
             dy = -dy;
             toggleDirectionV();
-            releaseAllKeys(KEY_ARRAY);
-            soundScore();
-            score = score + scoreIncrement;
-            scoreNote1 = scoreNote1 + 10;
-            scoreNote2 = scoreNote2 + 10;
-            dx = dx * 1.3;
+            scorePoint();
           }
         }
       }
     }
+  }
+
+  function scorePoint() {
+    releaseAllKeys(KEY_ARRAY);
+    soundScore();
+    score = score + scoreIncrement;
+    scoreNote1 = scoreNote1 + 10;
+    scoreNote2 = scoreNote2 + 10;
+    dx = dx * 1.3;
   }
 
   function drawBall() {
@@ -1046,7 +1033,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
     dx = speed * ranNumX;
     dy = speed * ranNumY;
-    
   }
 
   function renderGameboard() {
