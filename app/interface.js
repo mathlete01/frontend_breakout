@@ -1,5 +1,6 @@
-// ----------------------Initializae Variables--------------------------
+// ----------------------Initialize Variables--------------------------
 
+// function initVars() {
 // const BASE_URL = "http://localhost:3000";
 const BASE_URL = "https://evening-hollows-06706.herokuapp.com";
 const PLAYERS_URL = `${BASE_URL}/players`;
@@ -25,10 +26,13 @@ const colorBallStroke = colorBlack; //green
 const strokeThickness = 1;
 // const typeFont = "16pt Courier New";
 const typeFont = window.innerWidth / 100 + "px Courier New";
+// ----------------------FOR TESTING--------------------------
 let speed = 0.3;
 // let speed = 3;
 // let speed = 0.1;
-let lives = 3;
+// let lives = 3;
+let lives = 1;
+// -----------------------------------------------------------
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
 let scoreNote1 = 493.883;
@@ -45,9 +49,6 @@ let x = canvas.width / 2;
 let y = canvas.height / 2;
 let dx = speed;
 let dy = -1 * dx;
-let paddleHeight = 10;
-let paddleWidth = 75;
-let paddleX = (canvas.width - paddleWidth) / 2;
 let rightPressed = false;
 let leftPressed = false;
 let keyRowCount = 5;
@@ -302,6 +303,9 @@ const preventDefaultKeys = {
 };
 
 KEY_ARRAY = [];
+// }
+
+// initVars();
 
 //Exceptions: function,command+spacebar, command+tab
 
@@ -761,26 +765,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
   }
 
-  function drawSingleKeyGray(name, code, keyX, keyY, keyWidth, keyHeight) {
-    // console.log("drawSingleKeyDown()");
-    //console.log(`Drawing = ${name}`)
-    ctx.beginPath();
-    ctx.rect(keyX, keyY, keyWidth, keyHeight);
-    ctx.strokeStyle = colorKeyDownStroke;
-    ctx.lineWidth = strokeThickness;
-    ctx.stroke();
-    ctx.closePath();
-    ctx.fillStyle = colorKeyGrayFill;
-    ctx.fill();
-    ctx.closePath();
-    ctx.id = code;
-    ctx.font = typeFont;
-    ctx.fillStyle = colorKeyFontDown;
-    let capName = name.toUpperCase();
-    ctx.textAlign = "center";
-    ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
-  }
-
   function drawBall() {
     // console.log("drawBall()");
     ctx.beginPath();
@@ -878,6 +862,26 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
       }
     }
+  }
+
+  function drawSingleKeyGray(name, code, keyX, keyY, keyWidth, keyHeight) {
+    // console.log("drawSingleKeyDown()");
+    //console.log(`Drawing = ${name}`)
+    ctx.beginPath();
+    ctx.rect(keyX, keyY, keyWidth, keyHeight);
+    ctx.strokeStyle = colorKeyDownStroke;
+    ctx.lineWidth = strokeThickness;
+    ctx.stroke();
+    ctx.closePath();
+    ctx.fillStyle = colorKeyGrayFill;
+    ctx.fill();
+    ctx.closePath();
+    ctx.id = code;
+    ctx.font = typeFont;
+    ctx.fillStyle = colorKeyFontDown;
+    let capName = name.toUpperCase();
+    ctx.textAlign = "center";
+    ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
   }
 
   function releaseAllKeys(array) {
@@ -1053,7 +1057,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     document.location.reload();
   }
 
-  // ----------------------FOO--------------------------
+  // ---------------------------------------------------
 
   getLeaderboard();
   renderGameboard();
