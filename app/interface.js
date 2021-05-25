@@ -1,3 +1,5 @@
+// ----------------------Initializae Variables--------------------------
+
 // const BASE_URL = "http://localhost:3000";
 const BASE_URL = "https://evening-hollows-06706.herokuapp.com";
 const PLAYERS_URL = `${BASE_URL}/players`;
@@ -8,16 +10,20 @@ const platform = navigator.platform;
 const w = window.innerWidth;
 const h = window.innerHeight;
 const colorLight = "#dfdfdf";
+const colorDark = "#808080";
+const colorWhite = "#ffffff";
+const colorBlack = "#000000";
 let colorKeyUpStroke = colorLight;
-let colorKeyUpFill = "#ffffff";
+let colorKeyUpFill = colorWhite;
 let colorKeyFontUp = colorLight;
-const colorKeyDownStroke = "#000000";
-const colorKeyDownFill = "#000000";
-const colorKeyFontDown = "#ffffff";
-const colorKeyGrayFill = "#808080";
-const colorBallFill = "#000000"; //red
-const colorBallStroke = "#000000"; //green
+const colorKeyDownStroke = colorBlack;
+const colorKeyDownFill = colorBlack;
+const colorKeyFontDown = colorWhite;
+const colorKeyGrayFill = colorDark;
+const colorBallFill = colorBlack; //red
+const colorBallStroke = colorBlack; //green
 const strokeThickness = 1;
+// const typeFont = "16pt Courier New";
 const typeFont = window.innerWidth / 100 + "px Courier New";
 let speed = 0.3;
 // let speed = 3;
@@ -28,19 +34,27 @@ const scoreText = document.getElementById("scoreText");
 let scoreNote1 = 493.883;
 let scoreNote2 = 659.255;
 const scoreIncrement = 1000;
-const canvas = document.getElementById("myCanvas");
-const keySegments = 15;
+let canvas = document.getElementById("myCanvas");
+let keySegments = 15;
 const factor = 5 / keySegments;
 canvas.width = w;
 canvas.height = factor * w;
-const ctx = canvas.getContext("2d");
-const ballRadius = 10;
+let ctx = canvas.getContext("2d");
+let ballRadius = 10;
 let x = canvas.width / 2;
 let y = canvas.height / 2;
 let dx = speed;
 let dy = -1 * dx;
+let paddleHeight = 10;
+let paddleWidth = 75;
+let paddleX = (canvas.width - paddleWidth) / 2;
 let rightPressed = false;
 let leftPressed = false;
+let keyRowCount = 5;
+let keyColumnCount = 15;
+let keyPadding = 10;
+let keyOffsetTop = 30;
+let keyOffsetLeft = 30;
 let keyWidth = w / keySegments;
 let keyHeight = keyWidth;
 let topRow = 100;
@@ -48,7 +62,7 @@ let interval = "";
 let score = 0;
 let directionV = "north";
 let directionH = "east";
-const AudioContext = window.AudioContext || window.webkitAudioContext;
+var AudioContext = window.AudioContext || window.webkitAudioContext;
 const context = new AudioContext();
 let gameOn = false;
 const vol = 0.05;
@@ -287,11 +301,33 @@ const preventDefaultKeys = {
   Enter: true,
 };
 
+KEY_ARRAY = [];
+
+//Exceptions: function,command+spacebar, command+tab
+
+// hotkeys(
+//   "command+`,command+1,command+2,command+3,command+4,command+5,command+6,command+7,command+8,command+9,command+0,command+-,command+=,command+delete,command+tab,command+q,command+w,command+e,command+r,command+t,command+y,command+u,command+i,command+o,command+p,command+[,command+],command+\\,command+capslock,command+a,command+s,command+d,command+f,command+g,command+h,command+j,command+k,command+l,command+;,command+',command+enter,command+shift,command+z,command+x,command+c,command+v,command+b,command+n,command+m,command+,,command+.,command+/,command+crtl,command+option,command+left,command+right,command+up,command+down,ctrl+`,ctrl+1,ctrl+2,ctrl+3,ctrl+4,ctrl+5,ctrl+6,ctrl+7,ctrl+8,ctrl+9,ctrl+0,ctrl+-,ctrl+=,ctrl+delete,ctrl+tab,ctrl+q,ctrl+w,ctrl+e,ctrl+r,ctrl+t,ctrl+y,ctrl+u,ctrl+i,ctrl+o,ctrl+p,ctrl+[,ctrl+],ctrl+\\,ctrl+capslock,ctrl+a,ctrl+s,ctrl+d,ctrl+f,ctrl+g,ctrl+h,ctrl+j,ctrl+k,ctrl+l,ctrl+;,ctrl+',ctrl+enter,ctrl+shift,ctrl+z,ctrl+x,ctrl+c,ctrl+v,ctrl+b,ctrl+n,ctrl+m,ctrl+,,ctrl+.,ctrl+/,ctrl+crtl,ctrl+option,ctrl+left,ctrl+right,ctrl+up,ctrl+down,option+`,option+1,option+2,option+3,option+4,option+5,option+6,option+7,option+8,option+9,option+0,option+-,option+=,option+delete,option+tab,option+q,option+w,option+e,option+r,option+t,option+y,option+u,option+i,option+o,option+p,option+[,option+],option+\\,option+capslock,option+a,option+s,option+d,option+f,option+g,option+h,option+j,option+k,option+l,option+;,option+',option+enter,option+shift,option+z,option+x,option+c,option+v,option+b,option+n,option+m,option+,,option+.,option+/,option+crtl,option+option,option+left,option+right,option+up,option+down",
+//   function () {
+//     //alert('stopped it!');
+//     releaseAllKeys(KEY_ARRAY);
+//     //return false;
+//   }
+// );
+
+//Trying out with the event handler and returning false
+// hotkeys('option+\\,command+left,command+=,command+-,command+9,command+8,command+5,command+4,command+3,command+2,command+tab,command+q,command+w,command+e,command+r,command+t,command+y,command+u,command+i,command+o,command+p,command+[,command+],command+\\,command+a,command+s,command+d,command+f,command+g,command+h,command+j,command+k,command+l,command+;,command+\',command+enter,command+z,command+x,command+c,command+v,command+b,command+n,command+m,command+,,command+.,command+/,command+', function(event,handler) {
+//   //alert('stopped it!');
+//   event.preventDefault()
+//   releaseAllKeys(KEY_ARRAY)
+//   //return false;
+// });
+
 document.addEventListener("DOMContentLoaded", (event) => {
-  const nameField = document.getElementById("nameField");
+  // ----------------------Get Elements--------------------------
+
+  let nameField = document.getElementById("nameField");
   nameField.placeholder = "Enter your name";
 
-  // function initInterface() {
   const skipButton = document.getElementById("skipButton");
   skipButton.addEventListener("click", () => skip());
 
@@ -329,10 +365,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
       keyboard: false,
     }
   );
-  // }
-  // initInterface();
 
-  // Audio
+  // ----------------------Sounds--------------------------
+
   // Play oscillators at certain frequency and for a certain time
   function playNote(frequency, startTime, duration, waveType) {
     const osc1 = context.createOscillator();
@@ -424,7 +459,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     playNote(69.296, context.currentTime + 0.232, 0.232, "square");
   }
 
-  // ------------------------------------------------
+  // ----------------------Toggles--------------------------
 
   function toggleDirectionV() {
     // console.log("toggleDirectionV()");
@@ -437,18 +472,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         break;
       default:
         return null;
-    }
-  }
-
-  function toggleColor() {
-    if (gameOn === true) {
-      colorKeyUpStroke = "#000000";
-      colorKeyUpFill = "#ffffff";
-      colorKeyFontUp = "#000000";
-    } else if (gameOn === false) {
-      colorKeyUpStroke = colorLight;
-      colorKeyUpFill = "#ffffff";
-      colorKeyFontUp = colorLight;
     }
   }
 
@@ -466,156 +489,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  function setCurrentPlayer(obj) {
-    // console.log(`setCurrentPlayer(): obj =`, obj);
-    CURRENT_PLAYER = obj.id;
-    createGame(CURRENT_PLAYER);
-  }
-
-  function setCurrentGame(obj) {
-    // console.log(`setCurrentGame(): obj =`, obj);
-    CURRENT_GAME = obj.id;
-    startGame();
-  }
-
-  function createPlayer() {
-    // console.log(`createPlayer()`);
-    let configObjCreate = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    };
-    fetch(PLAYERS_URL, configObjCreate)
-      .then((res) => res.json())
-      .then((data) => setCurrentPlayer(data))
-      .catch((errors) => console.log(`createPlayer: ${errors}`));
-  }
-
-  function skip() {
-    // console.log(`skip()`);
-    document.location.reload();
-    // soundNext()
-  }
-
-  function createGame(id) {
-    // console.log(`createGame()`);
-    leaderboard.innerHTML = "";
-    let data = {
-      player_id: id,
-    };
-    let configObj = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(data),
-    };
-
-    fetch(GAMES_URL, configObj)
-      .then((res) => res.json())
-      .then((obj) => setCurrentGame(obj))
-      .catch((errors) => console.log(`createGame Failed: ${errors}`));
-  }
-
-  function startGame() {
-    // console.log(`startGame()`);
-    gameOn = true;
-    toggleColor();
-    soundGameStart();
-    activateKeyListeners();
-    initKeys(row0);
-    initKeys(row1);
-    initKeys(row2);
-    initKeys(row3);
-    initKeys(row4);
-    interval = setInterval(draw, 10);
-  }
-
-  function endGame() {
-    // console.log("endGame()");
-    gameOn = false;
-    toggleColor();
-    soundGameOver();
-    clearInterval(interval);
-    interval = "";
-    // console.log(
-    //   `endGame: CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
-    // );
-    let data = {
-      id: CURRENT_GAME,
-      score: score,
-    };
-
-    let configObj = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(data),
-    };
-
-    fetch(GAMES_URL, configObj)
-      .then((res) => res.json())
-      .then(saveOrNot())
-      .catch((errors) => console.log(`endGame: ${errors}`));
-  }
-
-  function saveOrNot() {
-    // console.log(`saveOrNot()`);
-    if (score > 0) {
-      saveModal.toggle();
-    } else {
-      document.location.reload();
-    }
-  }
-
-  function savePlayer(name) {
-    // console.log(`savePlayer:name = ${name}`);
-    let data = {
-      id: CURRENT_PLAYER,
-      name: name,
-    };
-
-    let configOb = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(data),
-    };
-
-    fetch(PLAYERS_URL, configOb)
-      .then((res) => res.json())
-      .then(updateGame(name))
-      .catch((errors) => console.log(`savePlayer: ${errors}`));
-  }
-
-  function updateGame(name) {
-    // console.log(`updateGame(): name = ${name}`);
-    let data = {
-      id: CURRENT_GAME,
-      name: name,
-    };
-
-    let configOb = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(data),
-    };
-
-    fetch(GAMES_URL, configOb)
-      .then((res) => res.json())
-      .then((obj) => getPersonalLeaderboard(obj.player_id))
-      .catch((errors) => console.log(`updateGame: ${errors}`));
-  }
+  // ----------------------Launch--------------------------
 
   function getLeaderboard() {
     // console.log("getLeaderboard()");
@@ -627,21 +501,64 @@ document.addEventListener("DOMContentLoaded", (event) => {
       });
   }
 
-  getLeaderboard();
-
-  function getPersonalLeaderboard(id) {
-    // console.log("getPersonalLeaderboard()");
-    saveModal.toggle();
-    document.location.reload();
+  function renderGameboard() {
+    // console.log(`renderGameboard()`);
+    soundNext();
+    ctx.width = window.innerWidth;
+    // console.log(`ctx.width = `, ctx.width)
+    ctx.height = window.innerHeight;
+    initKeys(row0);
+    initKeys(row1);
+    initKeys(row2);
+    initKeys(row3);
+    initKeys(row4);
+    drawKeysUp(KEY_ARRAY);
+    drawScore();
+    drawLives();
   }
 
-  function getMax(arr, max) {
-    // console.log("getMax()");
-    if (arr.length < max) {
-      return arr.length;
-    } else {
-      return max;
+  function initKeys(keys) {
+    // console.log("initKeys()");
+    for (let i = 0; i < keys.length; i++) {
+      let k = keys[i].name;
+      let c = keys[i].code;
+      //console.log(`Drawing = ${k}`)
+      let w = Math.round(keys[i].segments * keyWidth);
+      let h = keyHeight;
+      let x = keys[i].position * keyWidth;
+      let y = keys[i].row * keyHeight;
+      let s = keys[i].status;
+      KEY_ARRAY.push({ name: k, code: c, x: x, y: y, w: w, h: h, s: s });
     }
+    //console.dir(KEY_ARRAY);
+  }
+
+  function drawKeysUp(array) {
+    // console.log("drawKeysUp()");
+    for (let i = 0; i < array.length; i++) {
+      let key = array[i];
+      drawSingleKeyUp(key.name, key.code, key.x, key.y, key.w, key.h);
+    }
+  }
+
+  function drawSingleKeyUp(name, code, keyX, keyY, keyWidth, keyHeight) {
+    // console.log("drawSingleKeyUp()");
+    //console.log(`Drawing = ${name}`);
+    ctx.beginPath();
+    ctx.rect(keyX, keyY, keyWidth, keyHeight);
+    ctx.strokeStyle = colorKeyUpStroke;
+    ctx.lineWidth = strokeThickness;
+    ctx.stroke();
+    ctx.closePath();
+    ctx.fillStyle = colorKeyUpFill;
+    ctx.fill();
+    ctx.closePath();
+    ctx.id = code;
+    ctx.font = typeFont;
+    ctx.fillStyle = colorKeyFontUp;
+    let capName = name.toUpperCase();
+    ctx.textAlign = "center";
+    ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
   }
 
   function renderLeaderboard(arr) {
@@ -654,7 +571,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let ol = document.createElement("ol");
     for (let i = 0; i < getMax(filteredArr, 10); i++) {
       let li = document.createElement("li");
-      li.style = "font-size:1.5vw; text-left";
+      li.style = "font-size:1.5vw;";
       let element = filteredArr[i];
       if (filteredArr.length > 0) {
         let s = element["score"];
@@ -680,13 +597,84 @@ document.addEventListener("DOMContentLoaded", (event) => {
     leaderboard.append(centerWrapper);
   }
 
+  function getMax(arr, max) {
+    // console.log("getMax()");
+    if (arr.length < max) {
+      return arr.length;
+    } else {
+      return max;
+    }
+  }
+
+  // ----------------------Start Game--------------------------
+
+  function createPlayer() {
+    // console.log(`createPlayer()`);
+    let configObjCreate = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
+    fetch(PLAYERS_URL, configObjCreate)
+      .then((res) => res.json())
+      .then((data) => setCurrentPlayer(data))
+      .catch((errors) => console.log(`createPlayer: ${errors}`));
+  }
+
+  function setCurrentPlayer(obj) {
+    // console.log(`setCurrentPlayer(): obj =`, obj);
+    CURRENT_PLAYER = obj.id;
+    createGame(CURRENT_PLAYER);
+  }
+
+  function createGame(id) {
+    // console.log(`createGame()`);
+    leaderboard.innerHTML = "";
+    let data = {
+      player_id: id,
+    };
+    let configObj = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+
+    fetch(GAMES_URL, configObj)
+      .then((res) => res.json())
+      .then((obj) => setCurrentGame(obj))
+      .catch((errors) => console.log(`createGame Failed: ${errors}`));
+  }
+
+  function setCurrentGame(obj) {
+    // console.log(`setCurrentGame(): obj =`, obj);
+    CURRENT_GAME = obj.id;
+    startGame();
+  }
+
+  function startGame() {
+    // console.log(`startGame()`);
+    gameOn = true;
+    toggleColor();
+    soundGameStart();
+    activateKeyListeners();
+    initKeys(row0);
+    initKeys(row1);
+    initKeys(row2);
+    initKeys(row3);
+    initKeys(row4);
+    interval = setInterval(draw, 10);
+  }
+
   function activateKeyListeners() {
     // console.log("activateKeyListeners()");
     document.body.addEventListener("keydown", (ev) => captureKeyDown(ev));
     document.body.addEventListener("keyup", (ev) => captureKeyUp(ev));
   }
-
-  // GAMEPLAY
 
   function captureKeyDown(ev) {
     // console.log("captureKeyDown()");
@@ -710,6 +698,109 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
     keyObj.s = 0;
     return false;
+  }
+
+  // ----------------------Game Play--------------------------
+
+  function draw() {
+    // console.log("draw()");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = strokeThickness;
+    ctx.strokeStyle = colorKeyUpStroke;
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+    drawKeysUp(KEY_ARRAY);
+    drawKeysDown(KEY_ARRAY);
+    drawScore();
+    drawLives();
+    collisionDetection(KEY_ARRAY);
+    drawBall();
+
+    if (lives < 1) {
+      fail();
+    }
+
+    if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+      fail();
+    }
+
+    if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+      fail();
+    }
+
+    x += dx;
+    y += dy;
+  }
+
+  function drawKeysDown(array) {
+    // console.log("drawKeysDown()");
+    for (let i = 0; i < array.length; i++) {
+      let key = array[i];
+      if (key.s == 1) {
+        drawSingleKeyDown(key.name, key.code, key.x, key.y, key.w, key.h);
+      }
+    }
+  }
+
+  function drawSingleKeyDown(name, code, keyX, keyY, keyWidth, keyHeight) {
+    // console.log("drawSingleKeyDown()");
+    //console.log(`Drawing = ${name}`)
+    ctx.beginPath();
+    ctx.rect(keyX, keyY, keyWidth, keyHeight);
+    ctx.strokeStyle = colorKeyDownStroke;
+    ctx.lineWidth = strokeThickness;
+    ctx.stroke();
+    ctx.closePath();
+    ctx.fillStyle = colorKeyDownFill;
+    ctx.fill();
+    ctx.closePath();
+    ctx.id = code;
+    ctx.font = typeFont;
+    ctx.fillStyle = colorKeyFontDown;
+    let capName = name.toUpperCase();
+    ctx.textAlign = "center";
+    ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
+  }
+
+  function drawSingleKeyGray(name, code, keyX, keyY, keyWidth, keyHeight) {
+    // console.log("drawSingleKeyDown()");
+    //console.log(`Drawing = ${name}`)
+    ctx.beginPath();
+    ctx.rect(keyX, keyY, keyWidth, keyHeight);
+    ctx.strokeStyle = colorKeyDownStroke;
+    ctx.lineWidth = strokeThickness;
+    ctx.stroke();
+    ctx.closePath();
+    ctx.fillStyle = colorKeyGrayFill;
+    ctx.fill();
+    ctx.closePath();
+    ctx.id = code;
+    ctx.font = typeFont;
+    ctx.fillStyle = colorKeyFontDown;
+    let capName = name.toUpperCase();
+    ctx.textAlign = "center";
+    ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
+  }
+
+  function drawBall() {
+    // console.log("drawBall()");
+    ctx.beginPath();
+    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+    ctx.fillStyle = colorBallFill;
+    ctx.fill();
+    ctx.closePath();
+    ctx.strokeStyle = colorBallStroke;
+    ctx.stroke();
+    ctx.closePath();
+  }
+
+  function drawScore() {
+    // console.log("drawScore()");
+    scoreText.innerText = "Score: " + score;
+  }
+
+  function drawLives() {
+    livesText.innerText = "Lives: " + lives;
+    // console.log("drawLives()");
   }
 
   function collisionDetection(KEY_ARRAY) {
@@ -789,142 +880,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  function scorePoint() {
-    releaseAllKeys(KEY_ARRAY);
-    soundScore();
-    score = score + scoreIncrement;
-    scoreNote1 = scoreNote1 + 10;
-    scoreNote2 = scoreNote2 + 10;
-    dx = dx * 1.3;
-  }
-
-  function drawBall() {
-    // console.log("drawBall()");
-    ctx.beginPath();
-    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = colorBallFill;
-    ctx.fill();
-    ctx.closePath();
-    ctx.strokeStyle = colorBallStroke;
-    ctx.stroke();
-    ctx.closePath();
-  }
-
-  KEY_ARRAY = [];
-
-  //Exceptions: function,command+spacebar, command+tab
-
-  hotkeys(
-    "command+`,command+1,command+2,command+3,command+4,command+5,command+6,command+7,command+8,command+9,command+0,command+-,command+=,command+delete,command+tab,command+q,command+w,command+e,command+r,command+t,command+y,command+u,command+i,command+o,command+p,command+[,command+],command+\\,command+capslock,command+a,command+s,command+d,command+f,command+g,command+h,command+j,command+k,command+l,command+;,command+',command+enter,command+shift,command+z,command+x,command+c,command+v,command+b,command+n,command+m,command+,,command+.,command+/,command+crtl,command+option,command+left,command+right,command+up,command+down,ctrl+`,ctrl+1,ctrl+2,ctrl+3,ctrl+4,ctrl+5,ctrl+6,ctrl+7,ctrl+8,ctrl+9,ctrl+0,ctrl+-,ctrl+=,ctrl+delete,ctrl+tab,ctrl+q,ctrl+w,ctrl+e,ctrl+r,ctrl+t,ctrl+y,ctrl+u,ctrl+i,ctrl+o,ctrl+p,ctrl+[,ctrl+],ctrl+\\,ctrl+capslock,ctrl+a,ctrl+s,ctrl+d,ctrl+f,ctrl+g,ctrl+h,ctrl+j,ctrl+k,ctrl+l,ctrl+;,ctrl+',ctrl+enter,ctrl+shift,ctrl+z,ctrl+x,ctrl+c,ctrl+v,ctrl+b,ctrl+n,ctrl+m,ctrl+,,ctrl+.,ctrl+/,ctrl+crtl,ctrl+option,ctrl+left,ctrl+right,ctrl+up,ctrl+down,option+`,option+1,option+2,option+3,option+4,option+5,option+6,option+7,option+8,option+9,option+0,option+-,option+=,option+delete,option+tab,option+q,option+w,option+e,option+r,option+t,option+y,option+u,option+i,option+o,option+p,option+[,option+],option+\\,option+capslock,option+a,option+s,option+d,option+f,option+g,option+h,option+j,option+k,option+l,option+;,option+',option+enter,option+shift,option+z,option+x,option+c,option+v,option+b,option+n,option+m,option+,,option+.,option+/,option+crtl,option+option,option+left,option+right,option+up,option+down",
-    function () {
-      //alert('stopped it!');
-      releaseAllKeys(KEY_ARRAY);
-      //return false;
-    }
-  );
-
-  //Trying out with the event handler and returning false
-  // hotkeys('option+\\,command+left,command+=,command+-,command+9,command+8,command+5,command+4,command+3,command+2,command+tab,command+q,command+w,command+e,command+r,command+t,command+y,command+u,command+i,command+o,command+p,command+[,command+],command+\\,command+a,command+s,command+d,command+f,command+g,command+h,command+j,command+k,command+l,command+;,command+\',command+enter,command+z,command+x,command+c,command+v,command+b,command+n,command+m,command+,,command+.,command+/,command+', function(event,handler) {
-  //   //alert('stopped it!');
-  //   event.preventDefault()
-  //   releaseAllKeys(KEY_ARRAY)
-  //   //return false;
-  // });
-
-  function initKeys(keys) {
-    // console.log("initKeys()");
-    for (let i = 0; i < keys.length; i++) {
-      let k = keys[i].name;
-      let c = keys[i].code;
-      //console.log(`Drawing = ${k}`)
-      let w = Math.round(keys[i].segments * keyWidth);
-      let h = keyHeight;
-      let x = keys[i].position * keyWidth;
-      let y = keys[i].row * keyHeight;
-      let s = keys[i].status;
-      KEY_ARRAY.push({ name: k, code: c, x: x, y: y, w: w, h: h, s: s });
-    }
-    //console.dir(KEY_ARRAY);
-  }
-
-  function drawKeysDown(array) {
-    // console.log("drawKeysDown()");
-    for (let i = 0; i < array.length; i++) {
-      let key = array[i];
-      if (key.s == 1) {
-        drawSingleKeyDown(key.name, key.code, key.x, key.y, key.w, key.h);
-      }
-    }
-  }
-
-  function drawKeysUp(array) {
-    // console.log("drawKeysUp()");
-    for (let i = 0; i < array.length; i++) {
-      let key = array[i];
-      drawSingleKeyUp(key.name, key.code, key.x, key.y, key.w, key.h);
-    }
-  }
-
-  function drawSingleKeyUp(name, code, keyX, keyY, keyWidth, keyHeight) {
-    // console.log("drawSingleKeyUp()");
-    //console.log(`Drawing = ${name}`);
-    ctx.beginPath();
-    ctx.rect(keyX, keyY, keyWidth, keyHeight);
-    ctx.strokeStyle = colorKeyUpStroke;
-    ctx.lineWidth = strokeThickness;
-    ctx.stroke();
-    ctx.closePath();
-    ctx.fillStyle = colorKeyUpFill;
-    ctx.fill();
-    ctx.closePath();
-    ctx.id = code;
-    ctx.font = typeFont;
-    ctx.fillStyle = colorKeyFontUp;
-    let capName = name.toUpperCase();
-    ctx.textAlign = "center";
-    ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
-  }
-
-  function drawSingleKeyDown(name, code, keyX, keyY, keyWidth, keyHeight) {
-    // console.log("drawSingleKeyDown()");
-    //console.log(`Drawing = ${name}`)
-    ctx.beginPath();
-    ctx.rect(keyX, keyY, keyWidth, keyHeight);
-    ctx.strokeStyle = colorKeyDownStroke;
-    ctx.lineWidth = strokeThickness;
-    ctx.stroke();
-    ctx.closePath();
-    ctx.fillStyle = colorKeyDownFill;
-    ctx.fill();
-    ctx.closePath();
-    ctx.id = code;
-    ctx.font = typeFont;
-    ctx.fillStyle = colorKeyFontDown;
-    let capName = name.toUpperCase();
-    ctx.textAlign = "center";
-    ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
-  }
-
-  function drawSingleKeyGray(name, code, keyX, keyY, keyWidth, keyHeight) {
-    // console.log("drawSingleKeyDown()");
-    //console.log(`Drawing = ${name}`)
-    ctx.beginPath();
-    ctx.rect(keyX, keyY, keyWidth, keyHeight);
-    ctx.strokeStyle = colorKeyDownStroke;
-    ctx.lineWidth = strokeThickness;
-    ctx.stroke();
-    ctx.closePath();
-    ctx.fillStyle = colorKeyGrayFill;
-    ctx.fill();
-    ctx.closePath();
-    ctx.id = code;
-    ctx.font = typeFont;
-    ctx.fillStyle = colorKeyFontDown;
-    let capName = name.toUpperCase();
-    ctx.textAlign = "center";
-    ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
-  }
-
   function releaseAllKeys(array) {
     // console.log("releaseAllKeys()");
     for (key of array) {
@@ -932,45 +887,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  function drawScore() {
-    // console.log("drawScore()");
-    scoreText.innerText = "Score: " + score;
-  }
-
-  function drawLives() {
-    livesText.innerText = "Lives: " + lives;
-    // console.log("drawLives()");
-  }
-
-  let myReq;
-
-  function draw() {
-    // console.log("draw()");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.lineWidth = strokeThickness;
-    ctx.strokeStyle = colorKeyUpStroke;
-    ctx.strokeRect(0, 0, canvas.width, canvas.height);
-    drawKeysUp(KEY_ARRAY);
-    drawKeysDown(KEY_ARRAY);
-    drawScore();
-    drawLives();
-    collisionDetection(KEY_ARRAY);
-    drawBall();
-
-    if (lives < 1) {
-      fail();
-    }
-
-    if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-      fail();
-    }
-
-    if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
-      fail();
-    }
-
-    x += dx;
-    y += dy;
+  function scorePoint() {
+    releaseAllKeys(KEY_ARRAY);
+    soundScore();
+    score = score + scoreIncrement;
+    scoreNote1 = scoreNote1 + 10;
+    scoreNote2 = scoreNote2 + 10;
+    dx = dx * 1.3;
   }
 
   function fail() {
@@ -1022,21 +945,116 @@ document.addEventListener("DOMContentLoaded", (event) => {
     dy = speed * ranNumY;
   }
 
-  function renderGameboard() {
-    // console.log(`renderGameboard()`);
-    soundNext();
-    ctx.width = window.innerWidth;
-    // console.log(`ctx.width = `, ctx.width)
-    ctx.height = window.innerHeight;
-    initKeys(row0);
-    initKeys(row1);
-    initKeys(row2);
-    initKeys(row3);
-    initKeys(row4);
-    drawKeysUp(KEY_ARRAY);
-    drawScore();
-    drawLives();
+  // ----------------------Game Over--------------------------
+  function endGame() {
+    // console.log("endGame()");
+    gameOn = false;
+    toggleColor();
+    soundGameOver();
+    clearInterval(interval);
+    interval = "";
+    // console.log(
+    //   `endGame: CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
+    // );
+    let data = {
+      id: CURRENT_GAME,
+      score: score,
+    };
+
+    let configObj = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+
+    fetch(GAMES_URL, configObj)
+      .then((res) => res.json())
+      .then(saveOrNot())
+      .catch((errors) => console.log(`endGame: ${errors}`));
   }
 
+  function toggleColor() {
+    if (gameOn === true) {
+      colorKeyUpStroke = colorBlack;
+      colorKeyUpFill = colorWhite;
+      colorKeyFontUp = colorBlack;
+    } else if (gameOn === false) {
+      colorKeyUpStroke = colorLight;
+      colorKeyUpFill = colorWhite;
+      colorKeyFontUp = colorLight;
+    }
+  }
+
+  function saveOrNot() {
+    // console.log(`saveOrNot()`);
+    if (score > 0) {
+      saveModal.toggle();
+    } else {
+      document.location.reload();
+    }
+  }
+
+  function skip() {
+    // console.log(`skip()`);
+    document.location.reload();
+    // soundNext()
+  }
+  // ----------------------Save Player--------------------------
+  function savePlayer(name) {
+    // console.log(`savePlayer:name = ${name}`);
+    let data = {
+      id: CURRENT_PLAYER,
+      name: name,
+    };
+
+    let configOb = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+
+    fetch(PLAYERS_URL, configOb)
+      .then((res) => res.json())
+      .then(updateGame(name))
+      .catch((errors) => console.log(`savePlayer: ${errors}`));
+  }
+
+  function updateGame(name) {
+    // console.log(`updateGame(): name = ${name}`);
+    let data = {
+      id: CURRENT_GAME,
+      name: name,
+    };
+
+    let configOb = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+
+    fetch(GAMES_URL, configOb)
+      .then((res) => res.json())
+      .then((obj) => getPersonalLeaderboard(obj.player_id))
+      .catch((errors) => console.log(`updateGame: ${errors}`));
+  }
+
+  function getPersonalLeaderboard(id) {
+    // console.log("getPersonalLeaderboard()");
+    saveModal.toggle();
+    document.location.reload();
+  }
+
+  // ----------------------FOO--------------------------
+
+  getLeaderboard();
   renderGameboard();
 });
