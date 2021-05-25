@@ -18,38 +18,29 @@ const colorKeyGrayFill = "#808080";
 const colorBallFill = "#000000"; //red
 const colorBallStroke = "#000000"; //green
 const strokeThickness = 1;
-// const typeFont = "16pt Courier New";
 const typeFont = window.innerWidth / 100 + "px Courier New";
 let speed = 0.3;
 // let speed = 3;
 // let speed = 0.1;
-let lives = 4;
+let lives = 3;
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
 let scoreNote1 = 493.883;
 let scoreNote2 = 659.255;
 const scoreIncrement = 1000;
-let canvas = document.getElementById("myCanvas");
-let keySegments = 15;
+const canvas = document.getElementById("myCanvas");
+const keySegments = 15;
 const factor = 5 / keySegments;
 canvas.width = w;
 canvas.height = factor * w;
-let ctx = canvas.getContext("2d");
-let ballRadius = 10;
+const ctx = canvas.getContext("2d");
+const ballRadius = 10;
 let x = canvas.width / 2;
 let y = canvas.height / 2;
 let dx = speed;
 let dy = -1 * dx;
-let paddleHeight = 10;
-let paddleWidth = 75;
-let paddleX = (canvas.width - paddleWidth) / 2;
 let rightPressed = false;
 let leftPressed = false;
-let keyRowCount = 5;
-let keyColumnCount = 15;
-let keyPadding = 10;
-let keyOffsetTop = 30;
-let keyOffsetLeft = 30;
 let keyWidth = w / keySegments;
 let keyHeight = keyWidth;
 let topRow = 100;
@@ -57,7 +48,7 @@ let interval = "";
 let score = 0;
 let directionV = "north";
 let directionH = "east";
-var AudioContext = window.AudioContext || window.webkitAudioContext;
+const AudioContext = window.AudioContext || window.webkitAudioContext;
 const context = new AudioContext();
 let gameOn = false;
 const vol = 0.05;
@@ -297,9 +288,10 @@ const preventDefaultKeys = {
 };
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  let nameField = document.getElementById("nameField");
+  const nameField = document.getElementById("nameField");
   nameField.placeholder = "Enter your name";
 
+  // function initInterface() {
   const skipButton = document.getElementById("skipButton");
   skipButton.addEventListener("click", () => skip());
 
@@ -337,6 +329,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
       keyboard: false,
     }
   );
+  // }
+  // initInterface();
 
   // Audio
   // Play oscillators at certain frequency and for a certain time
@@ -470,11 +464,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       default:
         return null;
     }
-  }
-
-  function bringToFront(obj) {
-    // console.log("bringToFront()");
-    obj.style.zIndex = "1";
   }
 
   function setCurrentPlayer(obj) {
@@ -665,7 +654,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let ol = document.createElement("ol");
     for (let i = 0; i < getMax(filteredArr, 10); i++) {
       let li = document.createElement("li");
-      li.style = "font-size:1.5vw;";
+      li.style = "font-size:1.5vw; text-left";
       let element = filteredArr[i];
       if (filteredArr.length > 0) {
         let s = element["score"];
@@ -689,8 +678,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     leaderboard.append(h1);
     leaderboard.append(ol);
     leaderboard.append(centerWrapper);
-
-    // bringToFront(leaderboard);
   }
 
   function activateKeyListeners() {
