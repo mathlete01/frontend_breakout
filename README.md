@@ -4,7 +4,7 @@ QWERTYBall is a little browser game built with a Javascript frontend and a Ruby 
 
 ### How to Use
 
-QWERTYBall was built on Ruby 2.6.1 and uses npm to install node modules. You'll probably need a similar set-up to get it to run correctly. 
+QWERTYBall was built on Ruby 2.6.1 and uses npm to install node modules. You'll probably need a similar set-up to get it to run correctly.
 
 #### Installation
 
@@ -14,7 +14,7 @@ QWERTYBall was built on Ruby 2.6.1 and uses npm to install node modules. You'll 
 4. `cd ..` once they're installed to get back into the `keyboard_breakout` directory.
 5. `cd` into the `backend_breakout_api` directory and run `npm install` to install all the required module.
 6. Enter `rails db:migrate` to run the database migrations.
-7. Start the application by entering `rails s`. 
+7. Start the application by entering `rails s`.
 8. `cd ..` to get back into the `keyboard_breakout` directory.
 9. Finally, `cd` into the `frontend_breakout_api` directory and enter `open index.html` to see it running.
 
