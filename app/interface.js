@@ -30,8 +30,8 @@ const typeFont = window.innerWidth / 100 + "px Courier New";
 let speed = 0.3;
 // let speed = 3;
 // let speed = 0.1;
-// let lives = 3;
-let lives = 1;
+let lives = 3;
+//let lives = 1;
 // -----------------------------------------------------------
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
