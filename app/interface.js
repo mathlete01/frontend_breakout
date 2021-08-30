@@ -27,11 +27,11 @@ const strokeThickness = 1;
 // const typeFont = "16pt Courier New";
 const typeFont = window.innerWidth / 100 + "px Courier New";
 // ----------------------FOR TESTING--------------------------
-// let speed = 0.3; //normal
-let speed = 1; // test super fast
+let speed = 0.3; //normal
+// let speed = 1; // test super fast
 //
-// let lives = 3; //normal
-let lives = 2; // test
+let lives = 3; //normal
+// let lives = 2; // test
 // -----------------------------------------------------------
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
@@ -498,8 +498,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function getLeaderboard() {
     // console.log("getLeaderboard()");
     fetch(GAMES_URL)
-      .then((res) => res.json())
-      .then((json) => {
+    then((res) => res.json())
+    then((json) => {
         const objs = json;
         renderLeaderboard(objs);
       });
@@ -622,9 +622,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
       },
     };
     fetch(PLAYERS_URL, configObjCreate)
-      .then((res) => res.json())
-      .then((data) => setCurrentPlayer(data))
-      .catch((errors) => console.log(`createPlayer: ${errors}`));
+    then((res) => res.json())
+    then((data) => setCurrentPlayer(data))
+    catch((errors) => console.log(`createPlayer: ${errors}`));
   }
 
   function setCurrentPlayer(obj) {
@@ -649,9 +649,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     };
 
     fetch(GAMES_URL, configObj)
-      .then((res) => res.json())
-      .then((obj) => setCurrentGame(obj))
-      .catch((errors) => console.log(`createGame Failed: ${errors}`));
+    then((res) => res.json())
+    then((obj) => setCurrentGame(obj))
+    catch((errors) => console.log(`createGame Failed: ${errors}`));
   }
 
   function setCurrentGame(obj) {
@@ -975,9 +975,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     };
 
     fetch(GAMES_URL, configObj)
-      .then((res) => res.json())
-      .then(saveOrNot())
-      .catch((errors) => console.log(`endGame: ${errors}`));
+    then((res) => res.json())
+    then(saveOrNot())
+    catch((errors) => console.log(`endGame: ${errors}`));
   }
 
   function toggleColor() {
@@ -1024,9 +1024,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     };
 
     fetch(PLAYERS_URL, configOb)
-      .then((res) => res.json())
-      .then(updateGame(name))
-      .catch((errors) => console.log(`savePlayer: ${errors}`));
+    then((res) => res.json())
+    then(updateGame(name))
+    catch((errors) => console.log(`savePlayer: ${errors}`));
   }
 
   function updateGame(name) {
@@ -1046,9 +1046,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     };
 
     fetch(GAMES_URL, configOb)
-      .then((res) => res.json())
-      .then((obj) => getPersonalLeaderboard(obj.player_id))
-      .catch((errors) => console.log(`updateGame: ${errors}`));
+    then((res) => res.json())
+    then((obj) => getPersonalLeaderboard(obj.player_id))
+    catch((errors) => console.log(`updateGame: ${errors}`));
   }
 
   function getPersonalLeaderboard(id) {
