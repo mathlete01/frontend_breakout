@@ -27,11 +27,11 @@ const strokeThickness = 1;
 // const typeFont = "16pt Courier New";
 const typeFont = window.innerWidth / 100 + "px Courier New";
 // ----------------------FOR TESTING--------------------------
-let speed = 0.3; //normal
-// let speed = 1; // test super fast
+// let speed = 0.3; //normal
+let speed = 1; // test super fast
 //
-let lives = 3; //normal
-// let lives = 1; // test
+// let lives = 3; //normal
+let lives = 1; // test
 // -----------------------------------------------------------
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
