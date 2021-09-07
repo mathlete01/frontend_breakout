@@ -1,3 +1,55 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5);
+  color: white; }
+
+.grid-item {
+  /* padding: 10px 20px; */
+  text-align: center; }
+
+.interface-item {
+  /* padding: 10px 20px; */
+  text-align: center;
+  color: white;
+  font-size: 1.5rem; }
+
+.nav-item {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  font-size: 1rem;
+  /* padding: 1rem; */ }
+
+.nav-item:hover {
+  color: white;
+  text-decoration: none; }
+
+.nav-item:active {
+  color: red; }
+
+#header {
+  grid-column: span 5;
+  font-family: monospace;
+  color: white;
+  white-space: pre;
+  text-align: center; }
+
+#game {
+  /* background-color: red; */
+  grid-column: span 5;
+  position: relative; }
+
+#footer {
+  /* background-color: purple; */
+  grid-column: span 5; }
+
+#tagline {
+  text-align: center;
+  color: white;
+  font-style: italic; }
+
+/* PRIOR CSS */
 .ascii-art {
   font-family: monospace;
   color: white;
@@ -13,7 +65,7 @@ canvas {
   position: relative; }
 
 .footer {
-  padding-top: 20;
+  /* padding-top: 20; */
   margin-top: 50; }
 
 p {
