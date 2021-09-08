@@ -569,7 +569,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log("renderLeaderboard()");
     let filteredArr = arr.filter((element) => element.player.name !== null);
     let h1 = document.createElement("h1");
-    h1.style = "font-size:3vw; text-center";
+    // h1.style = "font-size:3vw; text-center";
+    h1.className = "title";
     h1.innerText = "Top Scores";
     filteredArr.sort((a, b) => (a.score < b.score ? 1 : -1));
     let ol = document.createElement("ol");
@@ -593,7 +594,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     btnPlay.addEventListener("click", () => createPlayer());
 
     const centerWrapper = document.createElement("div");
-    centerWrapper.setAttribute("id", "centerWrapper");
+    centerWrapper.setAttribute("class", "centerWrapper");
     centerWrapper.append(btnPlay);
 
     leaderboard.append(h1);
