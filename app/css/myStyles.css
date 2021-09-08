@@ -119,18 +119,40 @@ canvas {
   color: white;
   text-decoration: none; }
 
-a:visited {
+a.button1 {
+  display: inline-block;
+  padding: 0.35em 1.2em;
+  border: 0.1em solid #ffffff;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.25em;
+  box-sizing: border-box;
   text-decoration: none;
-  color: white; }
+  /* font-family: "Roboto", sans-serif; */
+  font-weight: 300;
+  color: #ffffff;
+  text-align: center;
+  transition: all 0.2s;
+  background-color: #000000; }
 
-button {
+a.button1:hover {
+  color: #000000;
+  background-color: #ffffff;
+  border: 0.1em solid #000000; }
+
+@media all and (max-width: 30em) {
+  a.button1 {
+    display: block;
+    margin: 0.4em auto; } }
+
+/* a:visited {
+  text-decoration: none;
+  color: white; } */
+/* button {
   border-radius: 0; }
 
 button:focus:not(:focus-visible) {
-  outline: 0; }
-
+  outline: 0; } */
 input,
-button,
 select,
 optgroup,
 textarea {
@@ -141,20 +163,20 @@ textarea {
 input {
   width: 100%; }
 
-button,
+/* button, */
 select {
   text-transform: none; }
 
+/* 
 [role="button"] {
-  cursor: pointer; }
-
+  cursor: pointer; } */
+/* 
 button:not(:disabled),
 [type="button"]:not(:disabled),
 [type="reset"]:not(:disabled),
 [type="submit"]:not(:disabled) {
   cursor: pointer;
-  margin: 0.5rem; }
-
+  margin: 0.5rem; } */
 /* MODALS */
 .modal {
   position: fixed;
