@@ -569,14 +569,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log("renderLeaderboard()");
     let filteredArr = arr.filter((element) => element.player.name !== null);
     let h1 = document.createElement("h1");
-    // h1.style = "font-size:3vw; text-center";
     h1.className = "title";
     h1.innerText = "Top Scores";
     filteredArr.sort((a, b) => (a.score < b.score ? 1 : -1));
     let ol = document.createElement("ol");
     for (let i = 0; i < getMax(filteredArr, 10); i++) {
       let li = document.createElement("li");
-      li.style = "font-size:1.5vw;";
+      li.className = "list-item";
       let element = filteredArr[i];
       if (filteredArr.length > 0) {
         let s = element["score"];

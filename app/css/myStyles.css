@@ -23,7 +23,20 @@
   text-decoration: none; }
 
 .nav-item:active {
-  color: red; }
+  color: red;
+  text-decoration: none; }
+
+.nav-item:focus {
+  color: white;
+  text-decoration: none; }
+
+/* a {
+  text-decoration: none;
+  color: white;
+} */
+a:visited {
+  text-decoration: none;
+  color: white; }
 
 .modal-item {
   grid-column: span 5;
@@ -63,12 +76,6 @@ canvas {
   image-rendering: pixelated;
   image-rendering: crisp-edges; }
 
-.canvasContainer {
-  position: relative; }
-
-.footer {
-  margin-top: 50; }
-
 #leaderboard {
   left: 50%;
   top: 50%;
@@ -76,7 +83,8 @@ canvas {
   -moz-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   position: absolute;
-  z-index: 10; }
+  z-index: 10;
+  color: black; }
 
 :root {
   --bs-font-sans-serif: "Courier New", -apple-system, "Segoe UI", Roboto,
@@ -97,7 +105,7 @@ canvas {
 
 body {
   margin: 0;
-  font-family: var(--bs-font-sans-serif);
+  font-family: "Courier New", Courier, monospace;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -118,6 +126,9 @@ h6 {
   text-align: center;
   font-size: 3rem; }
 
+.list-item {
+  font-size: 1.5rem; }
+
 .centerWrapper {
   width: 100%;
   display: flex;
@@ -135,7 +146,6 @@ button,
 select,
 optgroup,
 textarea {
-  /* margin: 0; */
   font-family: inherit;
   font-size: inherit;
   line-height: inherit; }
@@ -165,22 +175,6 @@ button:not(:disabled),
 [type="submit"]:not(:disabled) {
   cursor: pointer; }
 
-.container {
-  width: 100%;
-  padding-right: var(--bs-gutter-x, 0.75rem);
-  padding-left: var(--bs-gutter-x, 0.75rem);
-  margin-right: auto;
-  margin-left: auto; }
-
-@media (min-width: 1400px) {
-  .container,
-  .container-sm,
-  .container-md,
-  .container-lg,
-  .container-xl,
-  .container-xxl {
-    max-width: 1320px; } }
-
 .modal {
   position: fixed;
   z-index: 1050;
@@ -190,7 +184,6 @@ button:not(:disabled),
 .modal-dialog {
   position: relative;
   width: auto;
-  margin: 0.5rem;
   pointer-events: none; }
 
 .modal-content {
@@ -230,10 +223,6 @@ button:not(:disabled),
   border-top-left-radius: calc(0.3rem - 1px);
   border-top-right-radius: calc(0.3rem - 1px); }
 
-.modal-title {
-  margin-bottom: 0;
-  line-height: 1.5; }
-
 .modal-body {
   position: relative;
   flex: 1 1 auto;
@@ -249,9 +238,6 @@ button:not(:disabled),
   border-top: 1px solid #dee2e6;
   border-bottom-right-radius: calc(0.3rem - 1px);
   border-bottom-left-radius: calc(0.3rem - 1px); }
-
-.modal-footer > * {
-  margin: 0.25rem; }
 
 @media (min-width: 576px) {
   .modal-dialog {
