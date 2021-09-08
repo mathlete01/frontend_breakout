@@ -25,7 +25,7 @@
 .nav-item:active {
   color: red; }
 
-#modal {
+.modal-item {
   grid-column: span 5;
   grid-row: span 5;
   color: black;
@@ -107,29 +107,12 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
 h1,
-.h1,
 h2,
-.h2,
 h3,
-.h3,
 h4,
-.h4,
 h5,
-.h5,
-h6,
-.h6 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  line-height: 1.2; }
-
-h1,
-.h1 {
-  font-size: calc(1.375rem + 1.5vw); }
-
-h4,
-.h4 {
-  font-size: calc(1.275rem + 0.3vw); }
+h6 {
+  font-weight: 500; }
 
 .title {
   text-align: center;
@@ -152,7 +135,7 @@ button,
 select,
 optgroup,
 textarea {
-  margin: 0;
+  /* margin: 0; */
   font-family: inherit;
   font-size: inherit;
   line-height: inherit; }
@@ -200,14 +183,9 @@ button:not(:disabled),
 
 .modal {
   position: fixed;
-  top: 50;
-  left: 50;
   z-index: 1050;
   display: none;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  outline: 0; }
+  width: 100%; }
 
 .modal-dialog {
   position: relative;
@@ -285,25 +263,3 @@ button:not(:disabled),
     min-height: calc(100% - 3.5rem); }
   .modal-sm {
     max-width: 300px; } }
-
-/*
-.flex-grow-1 {
-  flex-grow: 1 !important;
-}
-
-.flex-nowrap {
-  flex-wrap: nowrap !important;
-}
-
-.m-2 {
-  margin: 0.5rem !important;
-}
-
-.ms-auto {
-  margin-left: auto !important;
-}
-
-.text-center {
-  text-align: center !important;
-}
-*/
