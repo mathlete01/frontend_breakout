@@ -29,7 +29,7 @@ const typeFont = window.innerWidth / 100 + "px Courier New";
 // ----------------------FOR TESTING--------------------------
 // let speed = 1; // test super fast
 // let lives = 1; // test
-// ----------------------FOR NOT TESTING--------------------------
+// ----------------------FOR DEPLOYING--------------------------
 let speed = 0.3; //normal
 let lives = 3; //normal
 // -----------------------------------------------------------
@@ -585,10 +585,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
       ol.append(li);
     }
 
-    const btnPlay = document.createElement("button");
+    const btnPlay = document.createElement("a");
     btnPlay.setAttribute("id", "btn-play");
-    btnPlay.setAttribute("class", "btn btn-dark btn-lg");
-    btnPlay.setAttribute("type", "button");
+    btnPlay.setAttribute("class", "btn");
     btnPlay.innerHTML = "Play";
     btnPlay.addEventListener("click", () => createPlayer());
 

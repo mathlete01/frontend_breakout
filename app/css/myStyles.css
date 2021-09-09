@@ -101,36 +101,51 @@ canvas {
   justify-content: center; }
 
 /* BUTTONS, LINKS, FORMS */
-.nav-item {
-  text-align: center;
-  color: rgba(255, 255, 255, 0.55);
+a {
   text-decoration: none;
-  font-size: 1rem; }
+  font-weight: 300; }
 
-.nav-item:hover {
+a.nav {
   color: white;
-  text-decoration: none; }
+  text-align: center; }
 
-.nav-item:active {
-  color: red;
-  text-decoration: none; }
-
-.nav-item:focus {
-  color: white;
-  text-decoration: none; }
-
-a:visited {
-  text-decoration: none;
+a.nav:visited {
   color: white; }
 
-button {
-  border-radius: 0; }
+a.blue {
+  color: blue; }
 
-button:focus:not(:focus-visible) {
-  outline: 0; }
+a.blue:visited {
+  color: blue; }
+
+a:hover {
+  text-decoration: underline; }
+
+a.btn {
+  display: inline-block;
+  padding: 0.35em 1.2em;
+  border: 0.1em solid #ffffff;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-weight: 300;
+  color: #ffffff;
+  text-align: center;
+  transition: all 0.2s;
+  background-color: #000000; }
+
+a.btn:hover {
+  color: #000000;
+  background-color: #ffffff;
+  border: 0.1em solid #000000; }
+
+@media all and (max-width: 30em) {
+  a.btn {
+    display: block;
+    margin: 0.4em auto; } }
 
 input,
-button,
 select,
 optgroup,
 textarea {
@@ -141,19 +156,8 @@ textarea {
 input {
   width: 100%; }
 
-button,
 select {
   text-transform: none; }
-
-[role="button"] {
-  cursor: pointer; }
-
-button:not(:disabled),
-[type="button"]:not(:disabled),
-[type="reset"]:not(:disabled),
-[type="submit"]:not(:disabled) {
-  cursor: pointer;
-  margin: 0.5rem; }
 
 /* MODALS */
 .modal {
