@@ -587,8 +587,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     const btnPlay = document.createElement("a");
     btnPlay.setAttribute("id", "btn-play");
-    btnPlay.setAttribute("class", "button1");
-    btnPlay.setAttribute("type", "button");
+    btnPlay.setAttribute("class", "btn");
     btnPlay.innerHTML = "Play";
     btnPlay.addEventListener("click", () => createPlayer());
 
