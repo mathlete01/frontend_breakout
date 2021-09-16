@@ -252,13 +252,18 @@ select {
 .modal--button {
   display: inline-block;
   padding: 6px 12px;
-  background: darkgray;
+  background: #364135;
   border: none;
   outline: none;
   border-radius: 3px;
   color: white;
   cursor: pointer;
   font-size: 18px;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.modal--button:not(:last-child) {
+  margin-right: var(--gap);
 }
 
 .modal--button:hover {

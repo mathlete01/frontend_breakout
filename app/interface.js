@@ -493,7 +493,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  function showModal(titleHtml, contentHtml, buttonArray) {
+  function showModal(titleHtml, contentHtml, buttons) {
     const modal = document.createElement("div");
     modal.classList.add("modal--");
     modal.innerHTML = `
@@ -509,15 +509,39 @@ document.addEventListener("DOMContentLoaded", (event) => {
       </div>
     `;
 
+    for (const button of buttons) {
+      const element = document.createElement("button");
+
+      element.setAttribute("type", "button");
+      element.classList.add("modal--button");
+      element.textContent = button.label;
+      element.addEventListener("click", () => {
+        if (button.triggerClose) {
+          document.body.removeChild(modal);
+        }
+
+        button.onClick(modal);
+      });
+
+      modal.querySelector(".modal--bottom").appendChild(element);
+    }
+
+    modal.querySelector(".modal--close").addEventListener("click", () => {
+      document.body.removeChild(modal);
+    });
+
     document.body.appendChild(modal);
   }
 
   showModal("Sample Modal Title", "<p>I am the content of this modal</p>", [
     {
       label: "Got it!",
-      onClick: () => {
-        console.log("The button was clicked!");
-      },
+      onClick: (modal) => {},
+      triggerClose: true,
+    },
+    {
+      label: "Decline",
+      onClick: (modal) => {},
       triggerClose: true,
     },
   ]);
