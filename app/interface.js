@@ -493,6 +493,35 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
+  function showModal(titleHtml, contentHtml, buttonArray) {
+    const modal = document.createElement("div");
+    modal.classList.add("modal--");
+    modal.innerHTML = `
+      <div class="modal--inner">
+        <div class="modal--top">
+          <div class="modal--title">${titleHtml}</div>
+          <button type="button" class="modal--close">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+        <div class="modal--content">${contentHtml}</div>
+        <div class="modal--bottom"></div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+  }
+
+  showModal("Sample Modal Title", "<p>I am the content of this modal</p>", [
+    {
+      label: "Got it!",
+      onClick: () => {
+        console.log("The button was clicked!");
+      },
+      triggerClose: true,
+    },
+  ]);
+
   // ----------------------Launch--------------------------
 
   function getLeaderboard() {
