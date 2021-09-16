@@ -27,11 +27,11 @@ const strokeThickness = 1;
 // const typeFont = "16pt Courier New";
 const typeFont = window.innerWidth / 100 + "px Courier New";
 // ----------------------FOR TESTING--------------------------
-// let speed = 1; // test super fast
-// let lives = 1; // test
+let speed = 1; // test super fast
+let lives = 1; // test
 // ----------------------FOR DEPLOYING--------------------------
-let speed = 0.3; //normal
-let lives = 3; //normal
+// let speed = 0.3; //normal
+// let lives = 3; //normal
 // -----------------------------------------------------------
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
@@ -599,6 +599,56 @@ document.addEventListener("DOMContentLoaded", (event) => {
     document.body.appendChild(modal);
   }
 
+  function showSaveModal() {
+    console.log("showSaveModal called");
+    const modal = document.createElement("div");
+    modal.classList.add("modal--");
+    modal.innerHTML = `
+      <div class="modal--inner">
+        <div class="modal--top">
+          <div class="modal--title">"aSave Your Score"</div>
+        </div>
+        <div class="modal--content">
+        <input type="aname" id="anameField" required />
+        </div>
+        <div class="modal--bottom"></div>
+      </div>
+    `;
+
+    // Skip Button
+    const askipButton = document.createElement("button");
+
+    askipButton.setAttribute("type", "button");
+    askipButton.classList.add("modal--button");
+    askipButton.textContent = "aSkip This";
+    askipButton.addEventListener("click", () => {
+      if (askipButton.triggerClose) {
+        document.body.removeChild(modal);
+      }
+
+      askipButton.onClick(modal);
+    });
+
+    modal.querySelector(".modal--bottom").appendChild(askipButton);
+    // Save Button
+    const asaveButton = document.createElement("button");
+
+    asaveButton.setAttribute("type", "button");
+    asaveButton.classList.add("modal--button");
+    asaveButton.textContent = "aSkip This";
+    asaveButton.addEventListener("click", () => {
+      if (asaveButton.triggerClose) {
+        document.body.removeChild(modal);
+      }
+
+      asaveButton.onClick(modal);
+    });
+
+    modal.querySelector(".modal--bottom").appendChild(asaveButton);
+
+    document.body.appendChild(modal);
+  }
+
   // ----------------------Launch--------------------------
 
   function getLeaderboard() {
@@ -1100,7 +1150,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function saveOrNot() {
     // console.log(`saveOrNot()`);
     if (score > 0) {
-      saveModal.toggle();
+      // saveModal.toggle();
+      showSaveModal();
     } else {
       document.location.reload();
     }
@@ -1158,7 +1209,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function getPersonalLeaderboard(id) {
     // console.log("getPersonalLeaderboard()");
-    saveModal.toggle();
+    // saveModal.toggle();
+    showSaveModal();
     document.location.reload();
   }
 
