@@ -340,35 +340,101 @@ document.addEventListener("DOMContentLoaded", (event) => {
     savePlayer(nameField.value.toUpperCase())
   );
 
+  const aboutContent = `<p>
+  QWERTYBall is the realization of an idea I had years ago that it
+  would be fun to create a twist on the classic game of
+  <a
+  class="blue" href="https://en.wikipedia.org/wiki/Breakout_(video_game)"
+    target="_blank"
+    >Breakout</a
+  >
+  by transposing my keyboard onto my screen so that you had to
+  bang on the keys to keep the ball in play.
+</p>
+<p>
+  For whatever reason, the idea stuck with me, so when I
+  <a
+    class="blue"  
+    href="https://flatironschool.com/career-courses/coding-bootcamp/online"
+    target="_blank"
+    >decided to get back into programming</a
+  >
+  and needed a project to work on, I decided to make this game for
+  real.
+</p>
+<p>
+  I employed the Canvas API to dynamically draw the keyboard on
+  the user’s screen, and I used the Web Audio API to add original
+  sound effects to make the game feel more responsive
+</p>
+<p>
+  I hope you enjoy it. Feel free to
+  <a class="blue" href="mailto:msallin@gmail.com">get in touch</a> if you have
+  any feedback!
+</p>
+<p>-Matty</p>`;
+
   const aboutNav = document.getElementById("aboutNav");
-  aboutNav.addEventListener("click", () => aboutModal.toggle());
+  aboutNav.addEventListener("click", () =>
+    showModal("About", aboutContent, [
+      {
+        label: "Close",
+        onClick: (modal) => {},
+        triggerClose: true,
+      },
+    ])
+  );
+
+  const hireMeContent = `
+  <p>
+  After focusing on User Experience for years, I recently decided
+  to get back into programming. In Spring 2021 I completed a
+  <a
+  class="blue" href="https://flatironschool.com/career-courses/coding-bootcamp/online"
+    target="_blank"
+    >Software Engineering course at Flatiron School</a
+  >
+  and this is one of the projects I made.
+</p>
+
+<p>
+  I've learned a tremendous amount about front-end engineering,
+  backend engineering, and the mechanics of web applications. I'm
+  looking forward to applying new programming skills and my old UX
+  skills to a new job opportunity. This web app was built in
+  Rails/React, but I'm eager to learn more programming languages
+  going forward.
+</p>
+
+<p>
+  Wanna know more?
+  <a class="blue" href="mailto:msallin@gmail.com">Get in touch!</a>
+</p>
+
+<p>-Matty</p>
+<p>
+  <a class="blue" href="http://www.linkedin.com/in/msallin" target="_blank"
+    >LinkedIn</a
+  >
+  •
+  <a class="blue" href="http://www.mathlete.com" target="_blank">Portfolio</a>
+</p>
+  `;
 
   const hireMeNav = document.getElementById("hireMeNav");
-  hireMeNav.addEventListener("click", () => hireMeModal.toggle());
-
-  const closeAboutButton = document.getElementById("closeAboutButton");
-  closeAboutButton.addEventListener("click", () => aboutModal.toggle());
-
-  const closeHireMeButton = document.getElementById("closeHireMeButton");
-  closeHireMeButton.addEventListener("click", () => hireMeModal.toggle());
+  hireMeNav.addEventListener("click", () => {
+    showModal("Hire Me!", hireMeContent, [
+      {
+        label: "Close",
+        onClick: (modal) => {},
+        triggerClose: true,
+      },
+    ]);
+  });
 
   const saveModal = new bootstrap.Modal(document.getElementById("saveModal"), {
     keyboard: false,
   });
-
-  const aboutModal = new bootstrap.Modal(
-    document.getElementById("aboutModal"),
-    {
-      keyboard: false,
-    }
-  );
-
-  const hireMeModal = new bootstrap.Modal(
-    document.getElementById("hireMeModal"),
-    {
-      keyboard: false,
-    }
-  );
 
   // ----------------------Sounds--------------------------
 
@@ -532,19 +598,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     document.body.appendChild(modal);
   }
-
-  showModal("Sample Modal Title", "<p>I am the content of this modal</p>", [
-    {
-      label: "Got it!",
-      onClick: (modal) => {},
-      triggerClose: true,
-    },
-    {
-      label: "Decline",
-      onClick: (modal) => {},
-      triggerClose: true,
-    },
-  ]);
 
   // ----------------------Launch--------------------------
 

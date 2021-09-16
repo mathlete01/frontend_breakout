@@ -212,7 +212,7 @@ select {
 .modal--inner {
   background: white;
   width: 100%;
-  max-width: 800px;
+  max-width: 500px;
   overflow: hidden;
   border-radius: 4px;
 }
