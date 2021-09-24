@@ -1154,7 +1154,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log(`saveOrNot()`);
     if (score > 0) {
       // saveModal.toggle();
-      showSaveModal();
+      // showSaveModal();
+      let saveContent = '<input type="aname" id="anameField" required />';
+      showModal("Save Your Score", saveContent, [
+        {
+          label: "Skip This",
+          onClick: () => skip(),
+          triggerClose: true,
+        },
+        {
+          label: "Save",
+          onClick: () => savePlayer(anameField.value.toUpperCase()),
+          triggerClose: true,
+        },
+      ]);
     } else {
       document.location.reload();
     }
