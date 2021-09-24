@@ -600,13 +600,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function showSaveModal() {
-    console.log("showSaveModal called");
+    // console.log("showSaveModal called");
     const modal = document.createElement("div");
     modal.classList.add("modal--");
     modal.innerHTML = `
       <div class="modal--inner">
         <div class="modal--top">
-          <div class="modal--title">"aSave Your Score"</div>
+          <div class="modal--title">Save Your Score</div>
         </div>
         <div class="modal--content">
         <input type="aname" id="anameField" required />
@@ -620,14 +620,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     askipButton.setAttribute("type", "button");
     askipButton.classList.add("modal--button");
-    askipButton.textContent = "aSkip This";
-    askipButton.addEventListener("click", () => {
-      if (askipButton.triggerClose) {
-        document.body.removeChild(modal);
-      }
-
-      askipButton.onClick(modal);
-    });
+    askipButton.textContent = "Skip This";
+    // askipButton.addEventListener("click", () => {
+    //   if (askipButton.triggerClose) {
+    //     document.body.removeChild(modal);
+    //   }
+    //   askipButton.onClick(modal);
+    // });
+    askipButton.addEventListener("click", () => skip());
 
     modal.querySelector(".modal--bottom").appendChild(askipButton);
     // Save Button
@@ -635,13 +635,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     asaveButton.setAttribute("type", "button");
     asaveButton.classList.add("modal--button");
-    asaveButton.textContent = "aSkip This";
-    asaveButton.addEventListener("click", () => {
-      if (asaveButton.triggerClose) {
-        document.body.removeChild(modal);
-      }
+    asaveButton.textContent = "Save";
+    // asaveButton.addEventListener("click", () => {
+    //   if (asaveButton.triggerClose) {
+    //     document.body.removeChild(modal);
+    //   }
 
-      asaveButton.onClick(modal);
+    //   asaveButton.onClick(modal);
+    // });
+    asaveButton.addEventListener("click", () => {
+      savePlayer(anameField.value.toUpperCase());
     });
 
     modal.querySelector(".modal--bottom").appendChild(asaveButton);
