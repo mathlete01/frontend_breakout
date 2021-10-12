@@ -203,7 +203,7 @@ select {
 
 .modal--bottom {
   text-align: right;
-  padding: 0 var(--gap) var(--gap) var(--gap); }
+  padding: var(--gap); }
 
 .modal--button {
   display: inline-block;

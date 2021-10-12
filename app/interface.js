@@ -539,14 +539,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function showModal(titleHtml, contentHtml, buttons) {
-    console.log(
-      `showModal called, titleHtml = `,
-      titleHtml,
-      `contentHtml = `,
-      contentHtml,
-      `buttons = `,
-      buttons
-    );
+    console.log(`showModal called, titleHtml = `);
     const modal = document.createElement("div");
     modal.classList.add("modal--");
     modal.innerHTML = `
@@ -586,43 +579,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     document.body.appendChild(modal);
   }
 
-  function showSaveModal2(titleHtml, contentHtml, buttons) {
-    console.log("showSaveModal2 called");
-    const modal = document.createElement("div");
-    modal.classList.add("modal--");
-    modal.innerHTML = `
-      <div class="modal--inner">
-        <div class="modal--top">
-          <div class="modal--title">Save Your Score</div>
-        </div>
-        <div class="modal--content">
-        <input type="name" id="nameField" required />
-        </div>
-        <div class="modal--bottom"></div>
-      </div>
-    `;
-
-    // Skip Button
-    const skipButton = document.createElement("button");
-    skipButton.setAttribute("type", "button");
-    skipButton.classList.add("modal--button");
-    skipButton.textContent = "Skip This";
-    skipButton.addEventListener("click", () => skip());
-    modal.querySelector(".modal--bottom").appendChild(skipButton);
-
-    // Save Button
-    const saveButton = document.createElement("button");
-    saveButton.setAttribute("type", "button");
-    saveButton.classList.add("modal--button");
-    saveButton.textContent = "Save";
-    saveButton.addEventListener("click", () => {
-      savePlayer(nameField.value.toUpperCase());
-    });
-    modal.querySelector(".modal--bottom").appendChild(saveButton);
-
-    document.body.appendChild(modal);
-  }
-
   function showSaveModal() {
     console.log("showSaveModal called");
     const modal = document.createElement("div");
@@ -631,13 +587,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
       <div class="modal--inner">
         <div class="modal--top">
           <div class="modal--title">Save Your Score</div>
+          <button type="button" class="modal--close">
+            <span class="material-icons">close</span>
+          </button>
         </div>
         <div class="modal--content">
-        <input type="name" id="nameField" required />
+          <p>Type your name below</p>
+          <input type="name" id="nameField" required />
         </div>
         <div class="modal--bottom"></div>
       </div>
     `;
+
+    // Close Button
+    modal
+      .querySelector(".modal--close")
+      .addEventListener("click", () => skip());
 
     // Skip Button
     const skipButton = document.createElement("button");
@@ -754,7 +719,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     const btnPlay = document.createElement("a");
     btnPlay.setAttribute("id", "btn-play");
-    btnPlay.setAttribute("class", "btn");
+    btnPlay.setAttribute("class", "modal--button");
     btnPlay.innerHTML = "Play";
     btnPlay.addEventListener("click", () => createPlayer());
 
@@ -1161,33 +1126,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function saveOrNot() {
     console.log(`saveOrNot()`);
     if (score > 0) {
-      // showSaveModal();
-      // let saveContent = `<p>Type your name below</p>
-      // <input type="name" id="nameField" required />`;
-      // showModal("Save Your Score", saveContent, [
-      //   {
-      //     label: "Skip This",
-      //     onClick: () => skip(),
-      //     triggerClose: true,
-      //   },
-      //   {
-      //     label: "Save",
-      //     onClick: () => savePlayer(nameField.value.toUpperCase()),
-      //     triggerClose: true,
-      //   },
-      // ]);
-      showSaveModal2("Save Your Score", "foo", [
-        {
-          label: "Skip This",
-          onClick: () => skip(),
-          triggerClose: true,
-        },
-        {
-          label: "Save",
-          onClick: () => savePlayer(nameField.value.toUpperCase()),
-          triggerClose: true,
-        },
-      ]);
+      showSaveModal();
     } else {
       document.location.reload();
     }
