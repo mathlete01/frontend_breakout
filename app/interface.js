@@ -1,7 +1,5 @@
 // ----------------------Initialize Variables--------------------------
 
-// function initVars() {
-// const BASE_URL = "http://localhost:3000";
 const BASE_URL = "https://evening-hollows-06706.herokuapp.com";
 const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
@@ -24,21 +22,20 @@ const colorKeyGrayFill = colorDark;
 const colorBallFill = colorBlack; //red
 const colorBallStroke = colorBlack; //green
 const strokeThickness = 1;
-// const typeFont = "16pt Courier New";
 const typeFont = window.innerWidth / 100 + "px Courier New";
 // ----------------------FOR TESTING--------------------------
-// let speed = 1; // test super fast
-// let lives = 1; // test
+let speed = 1; // test super fast
+let lives = 1; // test
 // ----------------------FOR DEPLOYING--------------------------
-let speed = 0.3; //normal
-let lives = 3; //normal
+// let speed = 0.3; //normal
+// let lives = 3; //normal
 // -----------------------------------------------------------
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
 let scoreNote1 = 493.883;
 let scoreNote2 = 659.255;
 const scoreIncrement = 1000;
-let canvas = document.getElementById("myCanvas");
+const canvas = document.getElementById("myCanvas");
 let keySegments = 15;
 const factor = 5 / keySegments;
 canvas.width = w;
@@ -303,9 +300,6 @@ const preventDefaultKeys = {
 };
 
 KEY_ARRAY = [];
-// }
-
-// initVars();
 
 //Exceptions: function,command+spacebar, command+tab
 
@@ -329,46 +323,97 @@ KEY_ARRAY = [];
 document.addEventListener("DOMContentLoaded", (event) => {
   // ----------------------Get Elements--------------------------
 
-  let nameField = document.getElementById("nameField");
-  nameField.placeholder = "Enter your name";
-
-  const skipButton = document.getElementById("skipButton");
-  skipButton.addEventListener("click", () => skip());
-
-  const saveButton = document.getElementById("saveButton");
-  saveButton.addEventListener("click", () =>
-    savePlayer(nameField.value.toUpperCase())
-  );
+  const aboutContent = `<p>
+  QWERTYBall is the realization of an idea I had years ago that it
+  would be fun to create a twist on the classic game of
+  <a
+  class="blue" href="https://en.wikipedia.org/wiki/Breakout_(video_game)"
+    target="_blank"
+    >Breakout</a
+  >
+  by transposing my keyboard onto my screen so that you had to
+  bang on the keys to keep the ball in play.
+</p>
+<p>
+  For whatever reason, the idea stuck with me, so when I
+  <a
+    class="blue"  
+    href="https://flatironschool.com/career-courses/coding-bootcamp/online"
+    target="_blank"
+    >decided to get back into programming</a
+  >
+  and needed a project to work on, I decided to make this game for
+  real.
+</p>
+<p>
+  I employed the Canvas API to dynamically draw the keyboard on
+  the user’s screen, and I used the Web Audio API to add original
+  sound effects to make the game feel more responsive
+</p>
+<p>
+  I hope you enjoy it. Feel free to
+  <a class="blue" href="mailto:msallin@gmail.com">get in touch</a> if you have
+  any feedback!
+</p>
+<p>-Matty</p>`;
 
   const aboutNav = document.getElementById("aboutNav");
-  aboutNav.addEventListener("click", () => aboutModal.toggle());
+  aboutNav.addEventListener("click", () =>
+    showModal("About", aboutContent, [
+      {
+        label: "Close",
+        onClick: (modal) => {},
+        triggerClose: true,
+      },
+    ])
+  );
+
+  const hireMeContent = `
+  <p>
+  After focusing on User Experience for years, I recently decided
+  to get back into programming. In Spring 2021 I completed a
+  <a
+  class="blue" href="https://flatironschool.com/career-courses/coding-bootcamp/online"
+    target="_blank"
+    >Software Engineering course at Flatiron School</a
+  >
+  and this is one of the projects I made.
+</p>
+
+<p>
+  I've learned a tremendous amount about front-end engineering,
+  backend engineering, and the mechanics of web applications. I'm
+  looking forward to applying new programming skills and my old UX
+  skills to a new job opportunity. This web app was built in
+  Rails/React, but I'm eager to learn more programming languages
+  going forward.
+</p>
+
+<p>
+  Wanna know more?
+  <a class="blue" href="mailto:msallin@gmail.com">Get in touch!</a>
+</p>
+
+<p>-Matty</p>
+<p>
+  <a class="blue" href="http://www.linkedin.com/in/msallin" target="_blank"
+    >LinkedIn</a
+  >
+  •
+  <a class="blue" href="http://www.mathlete.com" target="_blank">Portfolio</a>
+</p>
+  `;
 
   const hireMeNav = document.getElementById("hireMeNav");
-  hireMeNav.addEventListener("click", () => hireMeModal.toggle());
-
-  const closeAboutButton = document.getElementById("closeAboutButton");
-  closeAboutButton.addEventListener("click", () => aboutModal.toggle());
-
-  const closeHireMeButton = document.getElementById("closeHireMeButton");
-  closeHireMeButton.addEventListener("click", () => hireMeModal.toggle());
-
-  const saveModal = new bootstrap.Modal(document.getElementById("saveModal"), {
-    keyboard: false,
+  hireMeNav.addEventListener("click", () => {
+    showModal("Hire Me!", hireMeContent, [
+      {
+        label: "Close",
+        onClick: (modal) => {},
+        triggerClose: true,
+      },
+    ]);
   });
-
-  const aboutModal = new bootstrap.Modal(
-    document.getElementById("aboutModal"),
-    {
-      keyboard: false,
-    }
-  );
-
-  const hireMeModal = new bootstrap.Modal(
-    document.getElementById("hireMeModal"),
-    {
-      keyboard: false,
-    }
-  );
 
   // ----------------------Sounds--------------------------
 
@@ -493,6 +538,91 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
+  function showModal(titleHtml, contentHtml, buttons) {
+    console.log(
+      `showModal called, titleHtml = `,
+      titleHtml,
+      `contentHtml = `,
+      contentHtml,
+      `buttons = `,
+      buttons
+    );
+    const modal = document.createElement("div");
+    modal.classList.add("modal--");
+    modal.innerHTML = `
+      <div class="modal--inner">
+        <div class="modal--top">
+          <div class="modal--title">${titleHtml}</div>
+          <button type="button" class="modal--close">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+        <div class="modal--content">${contentHtml}</div>
+        <div class="modal--bottom"></div>
+      </div>
+    `;
+
+    for (const button of buttons) {
+      const element = document.createElement("button");
+
+      element.setAttribute("type", "button");
+      element.classList.add("modal--button");
+      element.textContent = button.label;
+      element.addEventListener("click", () => {
+        if (button.triggerClose) {
+          document.body.removeChild(modal);
+        }
+
+        button.onClick(modal);
+      });
+
+      modal.querySelector(".modal--bottom").appendChild(element);
+    }
+
+    modal.querySelector(".modal--close").addEventListener("click", () => {
+      document.body.removeChild(modal);
+    });
+
+    document.body.appendChild(modal);
+  }
+
+  function showSaveModal() {
+    console.log("showSaveModal called");
+    const modal = document.createElement("div");
+    modal.classList.add("modal--");
+    modal.innerHTML = `
+      <div class="modal--inner">
+        <div class="modal--top">
+          <div class="modal--title">Save Your Score</div>
+        </div>
+        <div class="modal--content">
+        <input type="name" id="nameField" required />
+        </div>
+        <div class="modal--bottom"></div>
+      </div>
+    `;
+
+    // Skip Button
+    const skipButton = document.createElement("button");
+    skipButton.setAttribute("type", "button");
+    skipButton.classList.add("modal--button");
+    skipButton.textContent = "Skip This";
+    skipButton.addEventListener("click", () => skip());
+    modal.querySelector(".modal--bottom").appendChild(skipButton);
+
+    // Save Button
+    const asaveButton = document.createElement("button");
+    asaveButton.setAttribute("type", "button");
+    asaveButton.classList.add("modal--button");
+    asaveButton.textContent = "Save";
+    asaveButton.addEventListener("click", () => {
+      savePlayer(nameField.value.toUpperCase());
+    });
+    modal.querySelector(".modal--bottom").appendChild(asaveButton);
+
+    document.body.appendChild(modal);
+  }
+
   // ----------------------Launch--------------------------
 
   function getLeaderboard() {
@@ -566,7 +696,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderLeaderboard(arr) {
-    // console.log("renderLeaderboard()");
+    console.log("renderLeaderboard()");
     let filteredArr = arr.filter((element) => element.player.name !== null);
     let h1 = document.createElement("h1");
     h1.className = "title";
@@ -992,9 +1122,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function saveOrNot() {
-    // console.log(`saveOrNot()`);
+    console.log(`saveOrNot()`);
     if (score > 0) {
-      saveModal.toggle();
+      showSaveModal();
+      // let saveContent = `<p>Type your name below</p>
+      // <input type="name" id="nameField" required />`;
+      // showModal("Save Your Score", saveContent, [
+      //   {
+      //     label: "Skip This",
+      //     onClick: () => skip(),
+      //     triggerClose: true,
+      //   },
+      //   {
+      //     label: "Save",
+      //     onClick: () => savePlayer(nameField.value.toUpperCase()),
+      //     triggerClose: true,
+      //   },
+      // ]);
     } else {
       document.location.reload();
     }
@@ -1003,11 +1147,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function skip() {
     // console.log(`skip()`);
     document.location.reload();
-    // soundNext()
   }
   // ----------------------Save Player--------------------------
   function savePlayer(name) {
-    // console.log(`savePlayer:name = ${name}`);
+    console.log(`savePlayer:name = ${name}`);
     let data = {
       id: CURRENT_PLAYER,
       name: name,
@@ -1029,7 +1172,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function updateGame(name) {
-    // console.log(`updateGame(): name = ${name}`);
+    console.log(`updateGame(): name = ${name}`);
     let data = {
       id: CURRENT_GAME,
       name: name,
@@ -1046,14 +1189,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(GAMES_URL, configOb)
       .then((res) => res.json())
-      .then((obj) => getPersonalLeaderboard(obj.player_id))
+      .then(() => document.location.reload())
       .catch((errors) => console.log(`updateGame: ${errors}`));
-  }
-
-  function getPersonalLeaderboard(id) {
-    // console.log("getPersonalLeaderboard()");
-    saveModal.toggle();
-    document.location.reload();
   }
 
   // ---------------------------------------------------
