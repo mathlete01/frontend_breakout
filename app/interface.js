@@ -24,11 +24,11 @@ const colorBallStroke = colorBlack; //green
 const strokeThickness = 1;
 const typeFont = window.innerWidth / 100 + "px Courier New";
 // ----------------------FOR TESTING--------------------------
-// let speed = 1; // test super fast
-// let lives = 1; // test
+let speed = 1; // test super fast
+let lives = 1; // test
 // ----------------------FOR DEPLOYING--------------------------
-let speed = 0.3; //normal
-let lives = 3; //normal
+// let speed = 0.3; //normal
+// let lives = 3; //normal
 // -----------------------------------------------------------
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
@@ -586,7 +586,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     modal.innerHTML = `
       <div class="modal--inner">
         <div class="modal--top">
-          <div class="modal--title">Save Your Score</div>
+          <div class="modal--title">Save Your Score!</div>
           <button type="button" class="modal--close">
             <span class="material-icons">close</span>
           </button>
