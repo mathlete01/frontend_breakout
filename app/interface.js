@@ -27,11 +27,11 @@ const strokeThickness = 1;
 // const typeFont = "16pt Courier New";
 const typeFont = window.innerWidth / 100 + "px Courier New";
 // ----------------------FOR TESTING--------------------------
-// let speed = 1; // test super fast
-// let lives = 1; // test
+let speed = 1; // test super fast
+let lives = 1; // test
 // ----------------------FOR DEPLOYING--------------------------
-let speed = 0.3; //normal
-let lives = 3; //normal
+// let speed = 0.3; //normal
+// let lives = 3; //normal
 // -----------------------------------------------------------
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
@@ -332,13 +332,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
   let nameField = document.getElementById("nameField");
   nameField.placeholder = "Enter your name";
 
-  const skipButton = document.getElementById("skipButton");
-  skipButton.addEventListener("click", () => skip());
+  // const skipButton = document.getElementById("skipButton");
+  // skipButton.addEventListener("click", () => skip());
 
-  const saveButton = document.getElementById("saveButton");
-  saveButton.addEventListener("click", () =>
-    savePlayer(nameField.value.toUpperCase())
-  );
+  // const saveButton = document.getElementById("saveButton");
+  // saveButton.addEventListener("click", () =>
+  //   savePlayer(nameField.value.toUpperCase())
+  // );
 
   const aboutContent = `<p>
   QWERTYBall is the realization of an idea I had years ago that it
@@ -560,6 +560,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function showModal(titleHtml, contentHtml, buttons) {
+    console.log(
+      `showModal called, titleHtml = `,
+      titleHtml,
+      `contentHtml = `,
+      contentHtml,
+      `buttons = `,
+      buttons
+    );
     const modal = document.createElement("div");
     modal.classList.add("modal--");
     modal.innerHTML = `
@@ -600,7 +608,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function showSaveModal() {
-    // console.log("showSaveModal called");
+    console.log("showSaveModal called");
     const modal = document.createElement("div");
     modal.classList.add("modal--");
     modal.innerHTML = `
@@ -609,7 +617,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
           <div class="modal--title">Save Your Score</div>
         </div>
         <div class="modal--content">
-        <input type="aname" id="anameField" required />
+        <input type="name" id="AnameField" required />
         </div>
         <div class="modal--bottom"></div>
       </div>
@@ -644,7 +652,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     //   asaveButton.onClick(modal);
     // });
     asaveButton.addEventListener("click", () => {
-      savePlayer(anameField.value.toUpperCase());
+      savePlayer(AnameField.value.toUpperCase());
     });
 
     modal.querySelector(".modal--bottom").appendChild(asaveButton);
@@ -725,7 +733,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderLeaderboard(arr) {
-    // console.log("renderLeaderboard()");
+    console.log("renderLeaderboard()");
     let filteredArr = arr.filter((element) => element.player.name !== null);
     let h1 = document.createElement("h1");
     h1.className = "title";
@@ -1155,9 +1163,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     if (score > 0) {
       // saveModal.toggle();
       showSaveModal();
-      let saveContent = `<p>Type your name below</p>
-      <input type="aname" id="anameField" required />
-      &nbsp`;
+      // let saveContent = `<p>Type your name below</p>
+      // <input type="name" id="nameField" required />`;
       // showModal("Save Your Score", saveContent, [
       //   {
       //     label: "Skip This",
@@ -1166,7 +1173,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       //   },
       //   {
       //     label: "Save",
-      //     onClick: () => savePlayer(anameField.value.toUpperCase()),
+      //     onClick: () => savePlayer(nameField.value.toUpperCase()),
       //     triggerClose: true,
       //   },
       // ]);
@@ -1204,7 +1211,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function updateGame(name) {
-    // console.log(`updateGame(): name = ${name}`);
+    console.log(`updateGame(): name = ${name}`);
     let data = {
       id: CURRENT_GAME,
       name: name,
@@ -1226,24 +1233,24 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function getPersonalLeaderboard(id) {
-    // console.log("getPersonalLeaderboard()");
+    console.log("getPersonalLeaderboard()");
     // saveModal.toggle();
     showSaveModal();
-    let saveContent = `<p>Type your name below</p>
-      <input type="aname" id="anameField" required />
-      &nbsp`;
-    showModal("Save Your Score", saveContent, [
-      {
-        label: "Skip This",
-        onClick: () => skip(),
-        triggerClose: true,
-      },
-      {
-        label: "Save",
-        onClick: () => savePlayer(anameField.value.toUpperCase()),
-        triggerClose: true,
-      },
-    ]);
+    // let saveContent = `<p>Type your name below</p>
+    //   <input type="name" id="CnameField" required />
+    //   &nbsp`;
+    // showModal("Save Your Score", saveContent, [
+    //   {
+    //     label: "Skip This",
+    //     onClick: () => skip(),
+    //     triggerClose: true,
+    //   },
+    //   {
+    //     label: "Save",
+    //     onClick: () => savePlayer(CnameField.value.toUpperCase()),
+    //     triggerClose: true,
+    //   },
+    // ]);
     document.location.reload();
   }
 
