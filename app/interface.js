@@ -4,6 +4,7 @@ const BASE_URL = "https://evening-hollows-06706.herokuapp.com";
 const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
 const leaderboard = document.getElementById("leaderboard");
+// const leaderboard = document.getElementById("game");
 const browser = navigator.appName;
 const platform = navigator.platform;
 const w = window.innerWidth;
@@ -24,11 +25,11 @@ const colorBallStroke = colorBlack; //green
 const strokeThickness = 1;
 const typeFont = window.innerWidth / 100 + "px Courier New";
 // ----------------------FOR TESTING--------------------------
-// let speed = 1; // test super fast
-// let lives = 1; // test
+let speed = 1; // test super fast
+let lives = 1; // test
 // ----------------------FOR DEPLOYING--------------------------
-let speed = 0.3; //normal
-let lives = 3; //normal
+// let speed = 0.3; //normal
+// let lives = 3; //normal
 // -----------------------------------------------------------
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
@@ -586,7 +587,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     modal.innerHTML = `
       <div class="modal--inner">
         <div class="modal--top">
-          <div class="modal--title">Save Your Score!</div>
+          <div class="modal--title">Save Your Score</div>
           <button type="button" class="modal--close">
             <span class="material-icons">close</span>
           </button>
@@ -717,8 +718,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
       ol.append(li);
     }
 
-    const btnPlay = document.createElement("a");
+    const btnPlay = document.createElement("button");
+    btnPlay.setAttribute("type", "button");
     btnPlay.setAttribute("id", "btn-play");
+    // btnPlay.classList.add("modal--button");
     btnPlay.setAttribute("class", "modal--button");
     btnPlay.innerHTML = "Play";
     btnPlay.addEventListener("click", () => createPlayer());
@@ -726,7 +729,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const centerWrapper = document.createElement("div");
     centerWrapper.setAttribute("class", "centerWrapper");
     centerWrapper.append(btnPlay);
-
     leaderboard.append(h1);
     leaderboard.append(ol);
     leaderboard.append(centerWrapper);
