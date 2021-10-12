@@ -599,6 +599,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
       </div>
     `;
 
+    // Close Button
+    modal
+      .querySelector(".modal--close")
+      .addEventListener("click", () => skip());
+
     // Skip Button
     const skipButton = document.createElement("button");
     skipButton.setAttribute("type", "button");
