@@ -27,11 +27,11 @@ const strokeThickness = 1;
 // const typeFont = "16pt Courier New";
 const typeFont = window.innerWidth / 100 + "px Courier New";
 // ----------------------FOR TESTING--------------------------
-let speed = 1; // test super fast
-let lives = 1; // test
+// let speed = 1; // test super fast
+// let lives = 1; // test
 // ----------------------FOR DEPLOYING--------------------------
-// let speed = 0.3; //normal
-// let lives = 3; //normal
+let speed = 0.3; //normal
+let lives = 3; //normal
 // -----------------------------------------------------------
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
@@ -1154,20 +1154,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log(`saveOrNot()`);
     if (score > 0) {
       // saveModal.toggle();
-      // showSaveModal();
-      let saveContent = '<input type="aname" id="anameField" required />';
-      showModal("Save Your Score", saveContent, [
-        {
-          label: "Skip This",
-          onClick: () => skip(),
-          triggerClose: true,
-        },
-        {
-          label: "Save",
-          onClick: () => savePlayer(anameField.value.toUpperCase()),
-          triggerClose: true,
-        },
-      ]);
+      showSaveModal();
+      let saveContent = `<p>Type your name below</p>
+      <input type="aname" id="anameField" required />
+      &nbsp`;
+      // showModal("Save Your Score", saveContent, [
+      //   {
+      //     label: "Skip This",
+      //     onClick: () => skip(),
+      //     triggerClose: true,
+      //   },
+      //   {
+      //     label: "Save",
+      //     onClick: () => savePlayer(anameField.value.toUpperCase()),
+      //     triggerClose: true,
+      //   },
+      // ]);
     } else {
       document.location.reload();
     }
@@ -1180,7 +1182,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
   // ----------------------Save Player--------------------------
   function savePlayer(name) {
-    // console.log(`savePlayer:name = ${name}`);
+    console.log(`savePlayer:name = ${name}`);
     let data = {
       id: CURRENT_PLAYER,
       name: name,
@@ -1227,6 +1229,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log("getPersonalLeaderboard()");
     // saveModal.toggle();
     showSaveModal();
+    let saveContent = `<p>Type your name below</p>
+      <input type="aname" id="anameField" required />
+      &nbsp`;
+    showModal("Save Your Score", saveContent, [
+      {
+        label: "Skip This",
+        onClick: () => skip(),
+        triggerClose: true,
+      },
+      {
+        label: "Save",
+        onClick: () => savePlayer(anameField.value.toUpperCase()),
+        triggerClose: true,
+      },
+    ]);
     document.location.reload();
   }
 
