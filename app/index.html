@@ -7,34 +7,9 @@
     <link rel="stylesheet" href="css/myStyles.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
-  <body>
-    <!-- MODALS -->
-    
+  <body>    
     <!-- CSS GRID -->
     <div class="grid-container">
-
-      <!-- Modal -->
-      <div class="modal-item">  
-      <div class="modal" tabindex="-1" id="saveModal">
-          <div class="modal-dialog">
-            <form action="#" class="modal-content">
-              <div class="modal-header">
-                <h3>Save Your Score</h3>
-              </div>
-              <div class="modal-body">
-                <div class="mb-3">
-                  <input type="name" class="form-control" id="nameField" required />
-                </div>
-              </div>
-              <div class="modal-footer">
-                <a class="btn" id="skipButton" data-dismiss="modal">Skip This</a>
-                <a class="btn" id="saveButton" data-dismiss="modal">Save</a>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-              
       <!-- Row 1 -->
       <div id="header" class="ascii-art">
          ____   _       __  ______  ____   ______  __  __  ____            __  __
@@ -56,11 +31,11 @@
       <div class="grid-item"></div>
       <div class="grid-item"></div>
       <!-- Row 3 -->
+      <div class="grid-item"></div>
       <div class="interface-item"><p id="livesText" style="text-align: right">Lives</p></div>
       <div class="grid-item"></div>
-      <div class="grid-item"></div>
-      <div class="grid-item"></div>
       <div class="interface-item"><p id="scoreText" style="text-align: left">Score</p></div>
+      <div class="grid-item"></div>
       <!-- Row 4 -->
       <div id="game">
           <div id="leaderboard"></div>
@@ -71,11 +46,7 @@
       <p id="tagline">"It's like Breakout, if it were especially chaotic and involved
           banging on your keyboard" --someone on Reddit</p>
     </div>
+  </div>
     <script src="interface.js"></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
-      integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
-      crossorigin="anonymous"
-    ></script>
   </body>
 </html>

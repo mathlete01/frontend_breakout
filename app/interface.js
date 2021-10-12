@@ -1,7 +1,5 @@
 // ----------------------Initialize Variables--------------------------
 
-// function initVars() {
-// const BASE_URL = "http://localhost:3000";
 const BASE_URL = "https://evening-hollows-06706.herokuapp.com";
 const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
@@ -24,7 +22,6 @@ const colorKeyGrayFill = colorDark;
 const colorBallFill = colorBlack; //red
 const colorBallStroke = colorBlack; //green
 const strokeThickness = 1;
-// const typeFont = "16pt Courier New";
 const typeFont = window.innerWidth / 100 + "px Courier New";
 // ----------------------FOR TESTING--------------------------
 let speed = 1; // test super fast
@@ -38,7 +35,7 @@ const scoreText = document.getElementById("scoreText");
 let scoreNote1 = 493.883;
 let scoreNote2 = 659.255;
 const scoreIncrement = 1000;
-let canvas = document.getElementById("myCanvas");
+const canvas = document.getElementById("myCanvas");
 let keySegments = 15;
 const factor = 5 / keySegments;
 canvas.width = w;
@@ -303,9 +300,6 @@ const preventDefaultKeys = {
 };
 
 KEY_ARRAY = [];
-// }
-
-// initVars();
 
 //Exceptions: function,command+spacebar, command+tab
 
@@ -328,17 +322,6 @@ KEY_ARRAY = [];
 
 document.addEventListener("DOMContentLoaded", (event) => {
   // ----------------------Get Elements--------------------------
-
-  let nameField = document.getElementById("nameField");
-  nameField.placeholder = "Enter your name";
-
-  // const skipButton = document.getElementById("skipButton");
-  // skipButton.addEventListener("click", () => skip());
-
-  // const saveButton = document.getElementById("saveButton");
-  // saveButton.addEventListener("click", () =>
-  //   savePlayer(nameField.value.toUpperCase())
-  // );
 
   const aboutContent = `<p>
   QWERTYBall is the realization of an idea I had years ago that it
@@ -430,10 +413,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         triggerClose: true,
       },
     ]);
-  });
-
-  const saveModal = new bootstrap.Modal(document.getElementById("saveModal"), {
-    keyboard: false,
   });
 
   // ----------------------Sounds--------------------------
@@ -617,44 +596,28 @@ document.addEventListener("DOMContentLoaded", (event) => {
           <div class="modal--title">Save Your Score</div>
         </div>
         <div class="modal--content">
-        <input type="name" id="AnameField" required />
+        <input type="name" id="nameField" required />
         </div>
         <div class="modal--bottom"></div>
       </div>
     `;
 
     // Skip Button
-    const askipButton = document.createElement("button");
+    const skipButton = document.createElement("button");
+    skipButton.setAttribute("type", "button");
+    skipButton.classList.add("modal--button");
+    skipButton.textContent = "Skip This";
+    skipButton.addEventListener("click", () => skip());
+    modal.querySelector(".modal--bottom").appendChild(skipButton);
 
-    askipButton.setAttribute("type", "button");
-    askipButton.classList.add("modal--button");
-    askipButton.textContent = "Skip This";
-    // askipButton.addEventListener("click", () => {
-    //   if (askipButton.triggerClose) {
-    //     document.body.removeChild(modal);
-    //   }
-    //   askipButton.onClick(modal);
-    // });
-    askipButton.addEventListener("click", () => skip());
-
-    modal.querySelector(".modal--bottom").appendChild(askipButton);
     // Save Button
     const asaveButton = document.createElement("button");
-
     asaveButton.setAttribute("type", "button");
     asaveButton.classList.add("modal--button");
     asaveButton.textContent = "Save";
-    // asaveButton.addEventListener("click", () => {
-    //   if (asaveButton.triggerClose) {
-    //     document.body.removeChild(modal);
-    //   }
-
-    //   asaveButton.onClick(modal);
-    // });
     asaveButton.addEventListener("click", () => {
-      savePlayer(AnameField.value.toUpperCase());
+      savePlayer(nameField.value.toUpperCase());
     });
-
     modal.querySelector(".modal--bottom").appendChild(asaveButton);
 
     document.body.appendChild(modal);
@@ -1159,9 +1122,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function saveOrNot() {
-    // console.log(`saveOrNot()`);
+    console.log(`saveOrNot()`);
     if (score > 0) {
-      // saveModal.toggle();
       showSaveModal();
       // let saveContent = `<p>Type your name below</p>
       // <input type="name" id="nameField" required />`;
@@ -1185,7 +1147,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function skip() {
     // console.log(`skip()`);
     document.location.reload();
-    // soundNext()
   }
   // ----------------------Save Player--------------------------
   function savePlayer(name) {
@@ -1228,30 +1189,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(GAMES_URL, configOb)
       .then((res) => res.json())
-      .then((obj) => getPersonalLeaderboard(obj.player_id))
+      .then(() => document.location.reload())
       .catch((errors) => console.log(`updateGame: ${errors}`));
-  }
-
-  function getPersonalLeaderboard(id) {
-    console.log("getPersonalLeaderboard()");
-    // saveModal.toggle();
-    showSaveModal();
-    // let saveContent = `<p>Type your name below</p>
-    //   <input type="name" id="CnameField" required />
-    //   &nbsp`;
-    // showModal("Save Your Score", saveContent, [
-    //   {
-    //     label: "Skip This",
-    //     onClick: () => skip(),
-    //     triggerClose: true,
-    //   },
-    //   {
-    //     label: "Save",
-    //     onClick: () => savePlayer(CnameField.value.toUpperCase()),
-    //     triggerClose: true,
-    //   },
-    // ]);
-    document.location.reload();
   }
 
   // ---------------------------------------------------
