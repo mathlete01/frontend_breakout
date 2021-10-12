@@ -24,11 +24,11 @@ const colorBallStroke = colorBlack; //green
 const strokeThickness = 1;
 const typeFont = window.innerWidth / 100 + "px Courier New";
 // ----------------------FOR TESTING--------------------------
-let speed = 1; // test super fast
-let lives = 1; // test
+// let speed = 1; // test super fast
+// let lives = 1; // test
 // ----------------------FOR DEPLOYING--------------------------
-// let speed = 0.3; //normal
-// let lives = 3; //normal
+let speed = 0.3; //normal
+let lives = 3; //normal
 // -----------------------------------------------------------
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
@@ -586,6 +586,43 @@ document.addEventListener("DOMContentLoaded", (event) => {
     document.body.appendChild(modal);
   }
 
+  function showSaveModal2(titleHtml, contentHtml, buttons) {
+    console.log("showSaveModal2 called");
+    const modal = document.createElement("div");
+    modal.classList.add("modal--");
+    modal.innerHTML = `
+      <div class="modal--inner">
+        <div class="modal--top">
+          <div class="modal--title">Save Your Score</div>
+        </div>
+        <div class="modal--content">
+        <input type="name" id="nameField" required />
+        </div>
+        <div class="modal--bottom"></div>
+      </div>
+    `;
+
+    // Skip Button
+    const skipButton = document.createElement("button");
+    skipButton.setAttribute("type", "button");
+    skipButton.classList.add("modal--button");
+    skipButton.textContent = "Skip This";
+    skipButton.addEventListener("click", () => skip());
+    modal.querySelector(".modal--bottom").appendChild(skipButton);
+
+    // Save Button
+    const saveButton = document.createElement("button");
+    saveButton.setAttribute("type", "button");
+    saveButton.classList.add("modal--button");
+    saveButton.textContent = "Save";
+    saveButton.addEventListener("click", () => {
+      savePlayer(nameField.value.toUpperCase());
+    });
+    modal.querySelector(".modal--bottom").appendChild(saveButton);
+
+    document.body.appendChild(modal);
+  }
+
   function showSaveModal() {
     console.log("showSaveModal called");
     const modal = document.createElement("div");
@@ -611,14 +648,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
     modal.querySelector(".modal--bottom").appendChild(skipButton);
 
     // Save Button
-    const asaveButton = document.createElement("button");
-    asaveButton.setAttribute("type", "button");
-    asaveButton.classList.add("modal--button");
-    asaveButton.textContent = "Save";
-    asaveButton.addEventListener("click", () => {
+    const saveButton = document.createElement("button");
+    saveButton.setAttribute("type", "button");
+    saveButton.classList.add("modal--button");
+    saveButton.textContent = "Save";
+    saveButton.addEventListener("click", () => {
       savePlayer(nameField.value.toUpperCase());
     });
-    modal.querySelector(".modal--bottom").appendChild(asaveButton);
+    modal.querySelector(".modal--bottom").appendChild(saveButton);
 
     document.body.appendChild(modal);
   }
@@ -1124,7 +1161,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function saveOrNot() {
     console.log(`saveOrNot()`);
     if (score > 0) {
-      showSaveModal();
+      // showSaveModal();
       // let saveContent = `<p>Type your name below</p>
       // <input type="name" id="nameField" required />`;
       // showModal("Save Your Score", saveContent, [
@@ -1139,6 +1176,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
       //     triggerClose: true,
       //   },
       // ]);
+      showSaveModal2("Save Your Score", "foo", [
+        {
+          label: "Skip This",
+          onClick: () => skip(),
+          triggerClose: true,
+        },
+        {
+          label: "Save",
+          onClick: () => savePlayer(nameField.value.toUpperCase()),
+          triggerClose: true,
+        },
+      ]);
     } else {
       document.location.reload();
     }
