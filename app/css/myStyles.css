@@ -93,10 +93,23 @@ canvas {
 
 .title {
   text-align: center;
-  font-size: 3rem; }
+  font-size: 2.5vw; }
 
 .list-item {
-  font-size: 1.5rem; }
+  font-size: 1.2vw; }
+
+.playBtn {
+  display: inline-block;
+  padding: 6px 12px;
+  background: yellow;
+  border: thin solid #000000;
+  box-sizing: border-box;
+  outline: none;
+  border-radius: 3px;
+  color: black;
+  cursor: pointer;
+  font-size: 1vw;
+  font-family: "Courier New", Courier, monospace; }
 
 .centerWrapper {
   width: 100%;

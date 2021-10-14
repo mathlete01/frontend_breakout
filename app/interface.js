@@ -619,7 +619,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // ----------------------Launch--------------------------
 
   function getLeaderboard() {
-    // console.log("getLeaderboard()");
+    console.log("getLeaderboard()");
     fetch(GAMES_URL)
       .then((res) => res.json())
       .then((json) => {
@@ -629,7 +629,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderGameboard() {
-    // console.log(`renderGameboard()`);
+    console.log(`renderGameboard()`);
     initKeys(row0);
     initKeys(row1);
     initKeys(row2);
@@ -686,6 +686,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function renderLeaderboard(arr) {
     console.log("renderLeaderboard()");
+    leaderboard.innerHTML = "";
     let filteredArr = arr.filter((element) => element.player.name !== null);
     let h1 = document.createElement("h1");
     h1.className = "title";
@@ -706,8 +707,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     const btnPlay = document.createElement("a");
     btnPlay.setAttribute("id", "btn-play");
-    btnPlay.setAttribute("class", "modal--button");
-    btnPlay.innerHTML = "Play";
+    btnPlay.setAttribute("class", "playBtn");
+    btnPlay.innerHTML = "PLAY";
     btnPlay.addEventListener("click", () => createPlayer());
 
     const centerWrapper = document.createElement("div");
@@ -728,10 +729,30 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  function initialize() {
-    // console.log(`initialize()`);
+  function initializeWindowListener() {
+    console.log(`initializeWindowListener()`);
     window.addEventListener("resize", resizeCanvas, false);
-    resizeCanvas();
+  }
+
+  function initializeCanvas() {
+    console.log(`initializeCanvas()`);
+    w = window.innerWidth;
+    h = window.innerHeight;
+    typeFont = window.innerWidth / 100 + "px Courier New";
+    canvas.width = w;
+    canvas.height = factor * w;
+    x = canvas.width / 2;
+    y = canvas.height / 2;
+    keyWidth = w / keySegments;
+    keyHeight = keyWidth;
+    // renderGameboard();
+    initKeys(row0);
+    initKeys(row1);
+    initKeys(row2);
+    initKeys(row3);
+    initKeys(row4);
+    drawKeysUp(KEY_ARRAY);
+    getLeaderboard();
   }
 
   function resizeCanvas() {
@@ -745,10 +766,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
     y = canvas.height / 2;
     keyWidth = w / keySegments;
     keyHeight = keyWidth;
-    renderGameboard();
+    // renderGameboard();
+    initKeys(row0);
+    initKeys(row1);
+    initKeys(row2);
+    initKeys(row3);
+    initKeys(row4);
+    drawKeysUp(KEY_ARRAY);
   }
 
-  initialize();
+  initializeCanvas();
+  initializeWindowListener();
 
   // ----------------------Start Game--------------------------
 
@@ -1192,5 +1220,5 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   // ---------------------------------------------------
 
-  getLeaderboard();
+  // getLeaderboard();
 });
