@@ -6,8 +6,6 @@ const GAMES_URL = `${BASE_URL}/games`;
 const leaderboard = document.getElementById("leaderboard");
 const browser = navigator.appName;
 const platform = navigator.platform;
-const w = window.innerWidth;
-const h = window.innerHeight;
 const colorLight = "#dfdfdf";
 const colorDark = "#808080";
 const colorWhite = "#ffffff";
@@ -22,7 +20,6 @@ const colorKeyGrayFill = colorDark;
 const colorBallFill = colorBlack; //red
 const colorBallStroke = colorBlack; //green
 const strokeThickness = 1;
-const typeFont = window.innerWidth / 100 + "px Courier New";
 // ----------------------FOR TESTING--------------------------
 // let speed = 1; // test super fast
 // let lives = 1; // test
@@ -38,12 +35,8 @@ const scoreIncrement = 1000;
 const canvas = document.getElementById("myCanvas");
 let keySegments = 15;
 const factor = 5 / keySegments;
-canvas.width = w;
-canvas.height = factor * w;
 let ctx = canvas.getContext("2d");
 let ballRadius = 10;
-let x = canvas.width / 2;
-let y = canvas.height / 2;
 let dx = speed;
 let dy = -1 * dx;
 let rightPressed = false;
@@ -53,8 +46,6 @@ let keyColumnCount = 15;
 let keyPadding = 10;
 let keyOffsetTop = 30;
 let keyOffsetLeft = 30;
-let keyWidth = w / keySegments;
-let keyHeight = keyWidth;
 let topRow = 100;
 let interval = "";
 let score = 0;
@@ -586,7 +577,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     modal.innerHTML = `
       <div class="modal--inner">
         <div class="modal--top">
-          <div class="modal--title">Save Your Score!</div>
+          <div class="modal--title">Save Your Score</div>
           <button type="button" class="modal--close">
             <span class="material-icons">close</span>
           </button>
@@ -639,10 +630,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function renderGameboard() {
     // console.log(`renderGameboard()`);
-    soundNext();
-    ctx.width = window.innerWidth;
-    // console.log(`ctx.width = `, ctx.width)
-    ctx.height = window.innerHeight;
     initKeys(row0);
     initKeys(row1);
     initKeys(row2);
@@ -740,6 +727,28 @@ document.addEventListener("DOMContentLoaded", (event) => {
       return max;
     }
   }
+
+  function initialize() {
+    // console.log(`initialize()`);
+    window.addEventListener("resize", resizeCanvas, false);
+    resizeCanvas();
+  }
+
+  function resizeCanvas() {
+    // console.log(`resizeCanvas()`);
+    w = window.innerWidth;
+    h = window.innerHeight;
+    typeFont = window.innerWidth / 100 + "px Courier New";
+    canvas.width = w;
+    canvas.height = factor * w;
+    x = canvas.width / 2;
+    y = canvas.height / 2;
+    keyWidth = w / keySegments;
+    keyHeight = keyWidth;
+    renderGameboard();
+  }
+
+  initialize();
 
   // ----------------------Start Game--------------------------
 
@@ -1184,5 +1193,4 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // ---------------------------------------------------
 
   getLeaderboard();
-  renderGameboard();
 });
