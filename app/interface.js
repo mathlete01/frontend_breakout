@@ -21,11 +21,11 @@ const colorBallFill = colorBlack; //red
 const colorBallStroke = colorBlack; //green
 const strokeThickness = 1;
 // ----------------------FOR TESTING--------------------------
-let speed = 1; // test super fast
-let lives = 1; // test
+// let speed = 1; // test super fast
+// let lives = 1; // test
 // ----------------------FOR DEPLOYING--------------------------
-// let speed = 0.3; //normal
-// let lives = 3; //normal
+let speed = 0.3; //normal
+let lives = 3; //normal
 // -----------------------------------------------------------
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
