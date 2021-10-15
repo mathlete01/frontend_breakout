@@ -290,7 +290,7 @@ const preventDefaultKeys = {
   Enter: true,
 };
 
-KEY_ARRAY = [];
+// KEY_ARRAY = [];
 
 //Exceptions: function,command+spacebar, command+tab
 
@@ -628,16 +628,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
       });
   }
 
-  function renderGameboard() {
-    // console.log(`renderGameboard()`);
+  function initAllKeys() {
+    KEY_ARRAY = [];
     initKeys(row0);
     initKeys(row1);
     initKeys(row2);
     initKeys(row3);
     initKeys(row4);
+  }
+
+  function renderGameboard() {
+    // console.log(`renderGameboard()`);
+    initAllKeys();
     drawKeysUp(KEY_ARRAY);
-    drawScore();
-    drawLives();
+    drawKeysDown(KEY_ARRAY);
   }
 
   function initKeys(keys) {
@@ -645,7 +649,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     for (let i = 0; i < keys.length; i++) {
       let k = keys[i].name;
       let c = keys[i].code;
-      //console.log(`Drawing = ${k}`)
+      // console.log(`Drawing = ${k}`);
       let w = Math.round(keys[i].segments * keyWidth);
       let h = keyHeight;
       let x = keys[i].position * keyWidth;
@@ -653,20 +657,30 @@ document.addEventListener("DOMContentLoaded", (event) => {
       let s = keys[i].status;
       KEY_ARRAY.push({ name: k, code: c, x: x, y: y, w: w, h: h, s: s });
     }
-    //console.dir(KEY_ARRAY);
+    // console.dir(KEY_ARRAY);
   }
 
   function drawKeysUp(array) {
-    // console.log("drawKeysUp()");
+    // console.log(`drawKeysUp()`, array);
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
       drawSingleKeyUp(key.name, key.code, key.x, key.y, key.w, key.h);
     }
   }
 
+  function drawKeysDown(array) {
+    // console.log("drawKeysDown()");
+    for (let i = 0; i < array.length; i++) {
+      let key = array[i];
+      if (key.s == 1) {
+        drawSingleKeyDown(key.name, key.code, key.x, key.y, key.w, key.h);
+      }
+    }
+  }
+
   function drawSingleKeyUp(name, code, keyX, keyY, keyWidth, keyHeight) {
     // console.log("drawSingleKeyUp()");
-    //console.log(`Drawing = ${name}`);
+    // console.log(`Drawing = ${name}`);
     ctx.beginPath();
     ctx.rect(keyX, keyY, keyWidth, keyHeight);
     ctx.strokeStyle = colorKeyUpStroke;
@@ -684,8 +698,28 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
   }
 
+  function drawSingleKeyDown(name, code, keyX, keyY, keyWidth, keyHeight) {
+    // console.log("drawSingleKeyDown()");
+    //console.log(`Drawing = ${name}`)
+    ctx.beginPath();
+    ctx.rect(keyX, keyY, keyWidth, keyHeight);
+    ctx.strokeStyle = colorKeyDownStroke;
+    ctx.lineWidth = strokeThickness;
+    ctx.stroke();
+    ctx.closePath();
+    ctx.fillStyle = colorKeyDownFill;
+    ctx.fill();
+    ctx.closePath();
+    ctx.id = code;
+    ctx.font = typeFont;
+    ctx.fillStyle = colorKeyFontDown;
+    let capName = name.toUpperCase();
+    ctx.textAlign = "center";
+    ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
+  }
+
   function renderLeaderboard(arr) {
-    console.log("renderLeaderboard()");
+    // console.log("renderLeaderboard()");
     let filteredArr = arr.filter((element) => element.player.name !== null);
     let h1 = document.createElement("h1");
     h1.className = "title";
@@ -706,8 +740,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     const btnPlay = document.createElement("a");
     btnPlay.setAttribute("id", "btn-play");
-    btnPlay.setAttribute("class", "modal--button");
-    btnPlay.innerHTML = "Play";
+    btnPlay.setAttribute("class", "playBtn");
+    btnPlay.innerHTML = "PLAY";
     btnPlay.addEventListener("click", () => createPlayer());
 
     const centerWrapper = document.createElement("div");
@@ -728,10 +762,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  function initialize() {
-    // console.log(`initialize()`);
+  function initializeWindowListener() {
+    // console.log(`initializeWindowListener()`);
     window.addEventListener("resize", resizeCanvas, false);
-    resizeCanvas();
+  }
+
+  function initializeCanvas() {
+    // console.log(`initializeCanvas()`);
+    w = window.innerWidth;
+    h = window.innerHeight;
+    typeFont = window.innerWidth / 100 + "px Courier New";
+    canvas.width = w;
+    canvas.height = factor * w;
+    x = canvas.width / 2;
+    y = canvas.height / 2;
+    keyWidth = w / keySegments;
+    keyHeight = keyWidth;
+    renderGameboard();
   }
 
   function resizeCanvas() {
@@ -745,10 +792,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     y = canvas.height / 2;
     keyWidth = w / keySegments;
     keyHeight = keyWidth;
-    renderGameboard();
+    initAllKeys();
+    drawKeysUp(KEY_ARRAY);
+    drawKeysDown(KEY_ARRAY);
   }
 
-  initialize();
+  initializeCanvas();
+  initializeWindowListener();
 
   // ----------------------Start Game--------------------------
 
@@ -806,11 +856,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     toggleColor();
     soundGameStart();
     activateKeyListeners();
-    initKeys(row0);
-    initKeys(row1);
-    initKeys(row2);
-    initKeys(row3);
-    initKeys(row4);
+    initAllKeys();
     interval = setInterval(draw, 10);
   }
 
@@ -873,36 +919,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     x += dx;
     y += dy;
-  }
-
-  function drawKeysDown(array) {
-    // console.log("drawKeysDown()");
-    for (let i = 0; i < array.length; i++) {
-      let key = array[i];
-      if (key.s == 1) {
-        drawSingleKeyDown(key.name, key.code, key.x, key.y, key.w, key.h);
-      }
-    }
-  }
-
-  function drawSingleKeyDown(name, code, keyX, keyY, keyWidth, keyHeight) {
-    // console.log("drawSingleKeyDown()");
-    //console.log(`Drawing = ${name}`)
-    ctx.beginPath();
-    ctx.rect(keyX, keyY, keyWidth, keyHeight);
-    ctx.strokeStyle = colorKeyDownStroke;
-    ctx.lineWidth = strokeThickness;
-    ctx.stroke();
-    ctx.closePath();
-    ctx.fillStyle = colorKeyDownFill;
-    ctx.fill();
-    ctx.closePath();
-    ctx.id = code;
-    ctx.font = typeFont;
-    ctx.fillStyle = colorKeyFontDown;
-    let capName = name.toUpperCase();
-    ctx.textAlign = "center";
-    ctx.fillText(capName, keyX + keyWidth / 2, keyY + keyHeight / 2 + 4);
   }
 
   function drawBall() {
@@ -1193,4 +1209,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // ---------------------------------------------------
 
   getLeaderboard();
+  drawScore();
+  drawLives();
 });
