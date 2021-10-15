@@ -21,11 +21,11 @@ const colorBallFill = colorBlack; //red
 const colorBallStroke = colorBlack; //green
 const strokeThickness = 1;
 // ----------------------FOR TESTING--------------------------
-// let speed = 1; // test super fast
-// let lives = 1; // test
+let speed = 1; // test super fast
+let lives = 1; // test
 // ----------------------FOR DEPLOYING--------------------------
-let speed = 0.3; //normal
-let lives = 3; //normal
+// let speed = 0.3; //normal
+// let lives = 3; //normal
 // -----------------------------------------------------------
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
@@ -47,7 +47,7 @@ let keyPadding = 10;
 let keyOffsetTop = 30;
 let keyOffsetLeft = 30;
 let topRow = 100;
-let interval = "";
+// let interval = "";
 let score = 0;
 let directionV = "north";
 let directionH = "east";
@@ -55,6 +55,12 @@ var AudioContext = window.AudioContext || window.webkitAudioContext;
 const context = new AudioContext();
 let gameOn = false;
 const vol = 0.05;
+var requestAnimationFrame =
+  window.requestAnimationFrame ||
+  window.mozRequestAnimationFrame ||
+  window.webkitRequestAnimationFrame ||
+  window.msRequestAnimationFrame;
+var myReq;
 
 const row0 = [
   {
@@ -863,7 +869,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     soundGameStart();
     activateKeyListeners();
     initAllKeys();
-    interval = setInterval(draw, 10);
+    // interval = setInterval(draw, 10);
+    draw();
   }
 
   function activateKeyListeners() {
@@ -925,6 +932,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     x += dx;
     y += dy;
+
+    myReq = requestAnimationFrame(draw);
   }
 
   function drawBall() {
@@ -1064,19 +1073,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function fail() {
     console.log("fail()");
+    cancelAnimationFrame(myReq);
     lives--;
     soundDie();
-    if (!lives) {
-      // console.log("GAME OVER");
+    if (lives < 1) {
+      console.log("No more lives so GAME OVER");
       endGame();
     } else {
-      // console.log("LIFE LOST");
+      console.log("More lives so LIFE LOST");
       initNextPlay();
     }
   }
 
   function initNextPlay() {
-    // console.log("initNextPlay()");
+    console.log("initNextPlay()");
+    draw();
     scoreNote1 = 493.883;
     scoreNote2 = 659.255;
     x = canvas.width / 2;
@@ -1117,8 +1128,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     gameOn = false;
     toggleColor();
     soundGameOver();
-    clearInterval(interval);
-    interval = "";
+    // clearInterval(interval);
+    // cancelAnimationFrame(myReq);
+    // interval = "";
     // console.log(
     //   `endGame: CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
     // );
@@ -1155,16 +1167,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function saveOrNot() {
-    // console.log(`saveOrNot()`);
+    console.log(`saveOrNot()`);
     if (score > 0) {
+      console.log(`score = `, score, `so showSaveModal()`);
       showSaveModal();
     } else {
+      console.log(`score = `, score, `so documet.location.reload()`);
       document.location.reload();
     }
   }
 
   function skip() {
-    // console.log(`skip()`);
+    console.log(`skip()`);
     document.location.reload();
   }
   // ----------------------Save Player--------------------------
@@ -1191,7 +1205,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function updateGame(name) {
-    // console.log(`updateGame(): git name = ${name}`);
+    console.log(`updateGame(): git name = ${name}`);
     let data = {
       id: CURRENT_GAME,
       name: name,
