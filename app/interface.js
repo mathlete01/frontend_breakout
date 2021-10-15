@@ -443,6 +443,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function soundScore() {
+    // console.log(`soundScore()`);
     // Play a 'B4' now that lasts for 0.116 seconds
     playNote(scoreNote1, context.currentTime, 0.116, "square");
 
@@ -451,6 +452,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function soundGameStart() {
+    // console.log(`soundGameStart()`);
     // Play a 'G4' now that lasts for 0.116 seconds
     playNote(391.995, context.currentTime, 0.116, "square");
 
@@ -462,6 +464,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function soundGameOver() {
+    // console.log(`soundGameOver()`);
     // Play a 'A Flat/G#' now that lasts for 0.116 seconds
     playNote(207.652, context.currentTime, 0.116, "square");
 
@@ -473,11 +476,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function soundPress() {
+    // console.log(`soundPress()`);
     // Play a 'B2' now that lasts for 0.116 seconds
     playNote(123.471, context.currentTime, 0.116, "square");
   }
 
   function soundNext() {
+    // console.log(`soundNext()`);
     // Play a 'f3' now that lasts for 0.116 seconds
     playNote(174.614, context.currentTime, 0.116, "square");
 
@@ -489,6 +494,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function soundDie() {
+    // console.log(`soundDie()`);
     // Play a 'e2' now that lasts for 0.116 seconds
     playNote(82.407, context.currentTime, 0.116, "square");
 
@@ -571,7 +577,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function showSaveModal() {
-    console.log("showSaveModal called");
+    // console.log("showSaveModal()");
     const modal = document.createElement("div");
     modal.classList.add("modal--");
     modal.innerHTML = `
@@ -1057,7 +1063,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function fail() {
-    // console.log("fail()");
+    console.log("fail()");
     lives--;
     soundDie();
     if (!lives) {
@@ -1107,7 +1113,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   // ----------------------Game Over--------------------------
   function endGame() {
-    // console.log("endGame()");
+    console.log("endGame()");
     gameOn = false;
     toggleColor();
     soundGameOver();
@@ -1149,7 +1155,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function saveOrNot() {
-    console.log(`saveOrNot()`);
+    // console.log(`saveOrNot()`);
     if (score > 0) {
       showSaveModal();
     } else {
@@ -1185,7 +1191,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function updateGame(name) {
-    console.log(`updateGame(): name = ${name}`);
+    // console.log(`updateGame(): git name = ${name}`);
     let data = {
       id: CURRENT_GAME,
       name: name,
