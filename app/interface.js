@@ -33,6 +33,9 @@ resetGlobalVars();
 
 // ---------------------GLOBAL VARIABLES ---------------------
 function resetGlobalVars() {
+  if (testing) {
+    console.log(`resetGlobalVars()`);
+  }
   // ----------------------FOR TESTING--------------------------
   // testing = true;
   // -----------------------------------------------------------
@@ -40,7 +43,6 @@ function resetGlobalVars() {
     console.log(`* * * TESTING = TRUE * * * `);
     speed = 1; // test super fast
     lives = 2; // test
-    console.log(`testing conditional speed = `, speed);
   } else if (testing === false) {
     speed = 0.3; //normal
     lives = 3; //normal
@@ -394,7 +396,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       {
         label: "Close",
         onClick: (modal) => {},
-        triggerClose: true,
+        // triggerClose: true,
       },
     ])
   );
@@ -441,7 +443,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       {
         label: "Close",
         onClick: (modal) => {},
-        triggerClose: true,
+        // triggerClose: true,
       },
     ]);
   });
@@ -578,7 +580,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function showModal(titleHtml, contentHtml, buttons) {
-    // console.log(`showModal called, titleHtml = `);
+    if (testing) {
+      console.log(`showModal()`);
+    }
     const modal = document.createElement("div");
     modal.classList.add("modal--");
     modal.innerHTML = `
@@ -600,18 +604,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
       element.setAttribute("type", "button");
       element.classList.add("modal--button");
       element.textContent = button.label;
-      element.addEventListener("click", () => {
-        if (button.triggerClose) {
-          document.body.removeChild(modal);
-        }
-
-        button.onClick(modal);
-      });
-
       modal.querySelector(".modal--bottom").appendChild(element);
     }
 
     modal.querySelector(".modal--close").addEventListener("click", () => {
+      if (testing) {
+        console.log(`showModal modal--close`);
+      }
       document.body.removeChild(modal);
     });
 
@@ -639,16 +638,27 @@ document.addEventListener("DOMContentLoaded", (event) => {
     `;
 
     // Close Button
-    modal
-      .querySelector(".modal--close")
-      .addEventListener("click", () => skip());
+    modal.querySelector(".modal--close").addEventListener("click", () => {
+      if (testing) {
+        console.log(`showSaveModal: close`);
+      }
+      document.body.removeChild(modal);
+      skip();
+    });
 
     // Skip Button
     const skipButton = document.createElement("button");
     skipButton.setAttribute("type", "button");
     skipButton.classList.add("modal--button");
     skipButton.textContent = "Skip This";
-    skipButton.addEventListener("click", () => skip());
+    // skipButton.addEventListener("click", () => skip());
+    skipButton.addEventListener("click", () => {
+      if (testing) {
+        console.log(`showSaveModal: skip`);
+      }
+      document.body.removeChild(modal);
+      skip();
+    });
     modal.querySelector(".modal--bottom").appendChild(skipButton);
 
     // Save Button
@@ -657,7 +667,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
     saveButton.classList.add("modal--button");
     saveButton.textContent = "Save";
     saveButton.addEventListener("click", () => {
+      if (testing) {
+        console.log(`showSaveModal: save`);
+      }
       savePlayer(nameField.value.toUpperCase());
+      document.body.removeChild(modal);
     });
     modal.querySelector(".modal--bottom").appendChild(saveButton);
 
@@ -697,6 +711,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     initAllKeys();
     drawKeysUp(KEY_ARRAY);
     drawKeysDown(KEY_ARRAY);
+    getLeaderboard();
   }
 
   function initKeys(keys) {
@@ -810,6 +825,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     leaderboard.append(h1);
     leaderboard.append(ol);
     leaderboard.append(centerWrapper);
+    drawScore();
+    drawLives();
   }
 
   function getMax(arr, max) {
@@ -842,6 +859,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     keyWidth = w / keySegments;
     keyHeight = keyWidth;
     renderGameboard();
+    // initializeWindowListener();
   }
 
   function resizeCanvas() {
@@ -860,7 +878,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     drawKeysDown(KEY_ARRAY);
   }
 
-  initializeCanvas();
+  // initializeCanvas();
   initializeWindowListener();
 
   // ----------------------Start Game--------------------------
@@ -922,8 +940,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function startGame() {
-    console.log(`startGame speed = `, speed);
-
     if (testing) {
       console.log(`startGame()`);
     }
@@ -1254,7 +1270,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     if (testing) {
       console.log(`skip()`);
     }
-    document.location.reload();
+    // document.location.reload();
+    reloadGame();
   }
   // ----------------------Save Player--------------------------
   function savePlayer(name) {
@@ -1301,13 +1318,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     fetch(GAMES_URL, configOb)
       .then((res) => res.json())
-      .then(() => document.location.reload())
+      // .then(() => document.location.reload())
+      .then(() => reloadGame())
       .catch((errors) => console.log(`updateGame: ${errors}`));
   }
 
-  // ---------------------------------------------------
+  function reloadGame() {
+    if (testing) {
+      console.log(`reloadGame()`);
+    }
+    resetGlobalVars();
+    initializeCanvas();
+    leaderboard.innerHTML = "";
+  }
 
-  getLeaderboard();
-  drawScore();
-  drawLives();
+  // ---------------------------------------------------
+  initializeCanvas();
+  // getLeaderboard();
+  // drawScore();
+  // drawLives();
 });
