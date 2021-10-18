@@ -20,13 +20,19 @@ const colorKeyGrayFill = colorDark;
 const colorBallFill = colorBlack; //red
 const colorBallStroke = colorBlack; //green
 const strokeThickness = 1;
-// ----------------------FOR TESTING--------------------------
-// let speed = 1; // test super fast
-// let lives = 1; // test
-// ----------------------FOR DEPLOYING--------------------------
+let logging = false;
+let testing = false;
 let speed = 0.3; //normal
 let lives = 3; //normal
+// ----------------------FOR TESTING--------------------------
+// testing = true;
 // -----------------------------------------------------------
+if (testing) {
+  console.log(`* * * TESTING = TRUE * * * `);
+  let speed = 1; // test super fast
+  let lives = 2; // test
+  logging = true;
+}
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
 let scoreNote1 = 493.883;
@@ -464,7 +470,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function soundGameOver() {
-    // console.log(`soundGameOver()`);
+    if (testing) {
+      console.log(`soundGameOver()`);
+    }
     // Play a 'A Flat/G#' now that lasts for 0.116 seconds
     playNote(207.652, context.currentTime, 0.116, "square");
 
@@ -536,7 +544,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function showModal(titleHtml, contentHtml, buttons) {
-    console.log(`showModal called, titleHtml = `);
+    // console.log(`showModal called, titleHtml = `);
     const modal = document.createElement("div");
     modal.classList.add("modal--");
     modal.innerHTML = `
@@ -625,7 +633,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // ----------------------Launch--------------------------
 
   function getLeaderboard() {
-    // console.log("getLeaderboard()");
+    if (testing) {
+      console.log("getLeaderboard()");
+    }
     fetch(GAMES_URL)
       .then((res) => res.json())
       .then((json) => {
@@ -635,6 +645,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function initAllKeys() {
+    if (testing) {
+      console.log("initAllKeys()");
+    }
     KEY_ARRAY = [];
     initKeys(row0);
     initKeys(row1);
@@ -644,7 +657,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderGameboard() {
-    // console.log(`renderGameboard()`);
+    if (testing) {
+      console.log(`renderGameboard()`);
+    }
     initAllKeys();
     drawKeysUp(KEY_ARRAY);
     drawKeysDown(KEY_ARRAY);
@@ -667,6 +682,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function drawKeysUp(array) {
+    // console.log(`drawKeysUp()`);
     // console.log(`drawKeysUp()`, array);
     for (let i = 0; i < array.length; i++) {
       let key = array[i];
@@ -725,7 +741,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function renderLeaderboard(arr) {
-    // console.log("renderLeaderboard()");
+    if (testing) {
+      console.log("renderLeaderboard()");
+    }
+    soundNext();
     let filteredArr = arr.filter((element) => element.player.name !== null);
     let h1 = document.createElement("h1");
     h1.className = "title";
@@ -769,12 +788,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function initializeWindowListener() {
-    // console.log(`initializeWindowListener()`);
+    if (testing) {
+      console.log(`initializeWindowListener()`);
+    }
     window.addEventListener("resize", resizeCanvas, false);
   }
 
   function initializeCanvas() {
-    // console.log(`initializeCanvas()`);
+    if (testing) {
+      console.log(`initializeCanvas()`);
+    }
     w = window.innerWidth;
     h = window.innerHeight;
     typeFont = window.innerWidth / 100 + "px Courier New";
@@ -809,7 +832,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // ----------------------Start Game--------------------------
 
   function createPlayer() {
-    // console.log(`createPlayer()`);
+    if (testing) {
+      console.log(`createPlayer()`);
+    }
     let configObjCreate = {
       method: "POST",
       headers: {
@@ -824,13 +849,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function setCurrentPlayer(obj) {
-    // console.log(`setCurrentPlayer(): obj =`, obj);
+    if (testing) {
+      console.log(`setCurrentPlayer(): obj =`, obj);
+    }
     CURRENT_PLAYER = obj.id;
     createGame(CURRENT_PLAYER);
   }
 
   function createGame(id) {
-    // console.log(`createGame()`);
+    if (testing) {
+      console.log(`createGame()`);
+    }
     leaderboard.innerHTML = "";
     let data = {
       player_id: id,
@@ -851,13 +880,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function setCurrentGame(obj) {
-    // console.log(`setCurrentGame(): obj =`, obj);
+    if (testing) {
+      console.log(`setCurrentGame(): obj =`, obj);
+    }
     CURRENT_GAME = obj.id;
     startGame();
   }
 
   function startGame() {
-    // console.log(`startGame()`);
+    if (testing) {
+      console.log(`startGame()`);
+    }
     gameOn = true;
     toggleColor();
     soundGameStart();
@@ -867,7 +900,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function activateKeyListeners() {
-    // console.log("activateKeyListeners()");
+    if (testing) {
+      console.log("activateKeyListeners()");
+    }
     document.body.addEventListener("keydown", (ev) => captureKeyDown(ev));
     document.body.addEventListener("keyup", (ev) => captureKeyUp(ev));
   }
@@ -1063,7 +1098,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function fail() {
-    console.log("fail()");
+    if (testing) {
+      console.log("fail()");
+    }
     lives--;
     soundDie();
     if (!lives) {
@@ -1076,7 +1113,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function initNextPlay() {
-    // console.log("initNextPlay()");
+    if (testing) {
+      console.log("initNextPlay()");
+    }
     scoreNote1 = 493.883;
     scoreNote2 = 659.255;
     x = canvas.width / 2;
@@ -1113,7 +1152,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   // ----------------------Game Over--------------------------
   function endGame() {
-    console.log("endGame()");
+    if (testing) {
+      console.log("endGame()");
+    }
     gameOn = false;
     toggleColor();
     soundGameOver();
@@ -1122,6 +1163,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log(
     //   `endGame: CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
     // );
+    preSaveOrNot();
+  }
+
+  function preSaveOrNot() {
+    if (testing) {
+      console.log(`preSaveOrNot()`);
+    }
     let data = {
       id: CURRENT_GAME,
       score: score,
@@ -1155,21 +1203,28 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function saveOrNot() {
-    // console.log(`saveOrNot()`);
+    if (testing) {
+      console.log(`saveOrNot()`);
+    }
     if (score > 0) {
       showSaveModal();
     } else {
-      document.location.reload();
+      // document.location.reload();
+      skip();
     }
   }
 
   function skip() {
-    // console.log(`skip()`);
+    if (testing) {
+      console.log(`skip()`);
+    }
     document.location.reload();
   }
   // ----------------------Save Player--------------------------
   function savePlayer(name) {
-    console.log(`savePlayer:name = ${name}`);
+    if (testing) {
+      console.log(`savePlayer:name = ${name}`);
+    }
     let data = {
       id: CURRENT_PLAYER,
       name: name,
@@ -1191,7 +1246,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function updateGame(name) {
-    // console.log(`updateGame(): git name = ${name}`);
+    if (testing) {
+      console.log(`updateGame(): git name = ${name}`);
+    }
     let data = {
       id: CURRENT_GAME,
       name: name,
