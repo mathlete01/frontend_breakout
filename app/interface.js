@@ -1,18 +1,80 @@
-// ----------------------Initialize Variables--------------------------
-
-const BASE_URL = "https://evening-hollows-06706.herokuapp.com";
-const PLAYERS_URL = `${BASE_URL}/players`;
-const GAMES_URL = `${BASE_URL}/games`;
-const leaderboard = document.getElementById("leaderboard");
-const browser = navigator.appName;
-const platform = navigator.platform;
 const colorLight = "#dfdfdf";
 const colorDark = "#808080";
 const colorWhite = "#ffffff";
 const colorBlack = "#000000";
-let colorKeyUpStroke = colorLight;
-let colorKeyUpFill = colorWhite;
-let colorKeyFontUp = colorLight;
+const canvas = document.getElementById("myCanvas");
+// ----------------------Declare Global Variables--------------------------
+var colorKeyUpStroke;
+var colorKeyUpFill;
+var colorKeyFontUp;
+var testing = false;
+var speed;
+var lives;
+var scoreNote1;
+var scoreNote2;
+var ctx;
+var ballRadius;
+var dx;
+var dy;
+var rightPressed;
+var leftPressed;
+var keyRowCount;
+var keyColumnCount;
+var keyPadding;
+var keyOffsetTop;
+var keyOffsetLeft;
+var topRow;
+var interval;
+var score;
+var directionV;
+var directionH;
+var gameOn;
+resetGlobalVars();
+
+// ---------------------GLOBAL VARIABLES ---------------------
+function resetGlobalVars() {
+  // ----------------------FOR TESTING--------------------------
+  // testing = true;
+  // -----------------------------------------------------------
+  if (testing === true) {
+    console.log(`* * * TESTING = TRUE * * * `);
+    speed = 1; // test super fast
+    lives = 2; // test
+    console.log(`testing conditional speed = `, speed);
+  } else if (testing === false) {
+    speed = 0.3; //normal
+    lives = 3; //normal
+  }
+  colorKeyUpStroke = colorLight;
+  colorKeyUpFill = colorWhite;
+  colorKeyFontUp = colorLight;
+  scoreNote1 = 493.883;
+  scoreNote2 = 659.255;
+  ctx = canvas.getContext("2d");
+  ballRadius = 10;
+  dx = speed;
+  dy = -1 * dx;
+  rightPressed = false;
+  leftPressed = false;
+  keyRowCount = 5;
+  keyColumnCount = 15;
+  keyPadding = 10;
+  keyOffsetTop = 30;
+  keyOffsetLeft = 30;
+  topRow = 100;
+  interval = "";
+  score = 0;
+  directionV = "north";
+  directionH = "east";
+  gameOn = false;
+}
+//------------------------------------------
+const BASE_URL = "https://evening-hollows-06706.herokuapp.com";
+const PLAYERS_URL = `${BASE_URL}/players`;
+const GAMES_URL = `${BASE_URL}/games`;
+const leaderboard = document.getElementById("leaderboard");
+// const browser = navigator.appName;
+// const platform = navigator.platform;
 const colorKeyDownStroke = colorBlack;
 const colorKeyDownFill = colorBlack;
 const colorKeyFontDown = colorWhite;
@@ -20,48 +82,14 @@ const colorKeyGrayFill = colorDark;
 const colorBallFill = colorBlack; //red
 const colorBallStroke = colorBlack; //green
 const strokeThickness = 1;
-let logging = false;
-let testing = false;
-let speed = 0.3; //normal
-let lives = 3; //normal
-// ----------------------FOR TESTING--------------------------
-// testing = true;
-// -----------------------------------------------------------
-if (testing) {
-  console.log(`* * * TESTING = TRUE * * * `);
-  let speed = 1; // test super fast
-  let lives = 2; // test
-  logging = true;
-}
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
-let scoreNote1 = 493.883;
-let scoreNote2 = 659.255;
 const scoreIncrement = 1000;
-const canvas = document.getElementById("myCanvas");
-let keySegments = 15;
+const keySegments = 15;
 const factor = 5 / keySegments;
-let ctx = canvas.getContext("2d");
-let ballRadius = 10;
-let dx = speed;
-let dy = -1 * dx;
-let rightPressed = false;
-let leftPressed = false;
-let keyRowCount = 5;
-let keyColumnCount = 15;
-let keyPadding = 10;
-let keyOffsetTop = 30;
-let keyOffsetLeft = 30;
-let topRow = 100;
-let interval = "";
-let score = 0;
-let directionV = "north";
-let directionH = "east";
-var AudioContext = window.AudioContext || window.webkitAudioContext;
+const AudioContext = window.AudioContext || window.webkitAudioContext;
 const context = new AudioContext();
-let gameOn = false;
 const vol = 0.05;
-
 const row0 = [
   {
     name: "`",
@@ -295,6 +323,12 @@ const preventDefaultKeys = {
   Tab: true,
   Enter: true,
 };
+
+// if (testing) {
+//   console.log(`* * * TESTING = TRUE * * * `);
+//   speed = 1; // test super fast
+//   lives = 2; // test
+// }
 
 // KEY_ARRAY = [];
 
@@ -888,6 +922,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   function startGame() {
+    console.log(`startGame speed = `, speed);
+
     if (testing) {
       console.log(`startGame()`);
     }
