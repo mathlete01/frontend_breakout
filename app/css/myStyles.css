@@ -1,3 +1,11 @@
+/*
+
+
+#foo {} = ID selector, highest specificty weight
+.foo {} = Class selector, medium specificty weight
+h1 {} = Type selector, lowest specificty weight
+*/
+/* TYPE SELECTORS */
 /* GENERAL */
 html,
 body {
@@ -50,13 +58,6 @@ h6 {
   font-size: 1.5rem; }
 
 /* SPECIFIC SECTIONS */
-#header {
-  grid-column: span 5;
-  font-family: monospace;
-  color: white;
-  white-space: pre;
-  text-align: center; }
-
 #game {
   grid-column: span 5;
   position: relative; }
@@ -80,10 +81,14 @@ h6 {
   color: black; }
 
 /* SPECIFIC ITEMS */
-.ascii-art {
+#ascii-art {
   font-family: monospace;
   color: white;
-  white-space: pre; }
+  white-space: pre;
+  grid-column: span 5;
+  color: white;
+  white-space: pre;
+  text-align: center; }
 
 canvas {
   image-rendering: -moz-crisp-edges;
