@@ -1,3 +1,4 @@
+// ----------------------Declare Global Constants--------------------------
 const colorLight = "#dfdfdf";
 const colorDark = "#808080";
 const colorWhite = "#ffffff";
@@ -16,29 +17,21 @@ var ctx;
 var ballRadius;
 var dx;
 var dy;
-var rightPressed;
-var leftPressed;
-var keyRowCount;
-var keyColumnCount;
-var keyPadding;
-var keyOffsetTop;
-var keyOffsetLeft;
-var topRow;
 var interval;
 var score;
 var directionV;
 var directionH;
 var gameOn;
+
 resetGlobalVars();
 
-// ---------------------GLOBAL VARIABLES ---------------------
 function resetGlobalVars() {
 	if (testing) {
 		console.log(`resetGlobalVars()`);
 	}
-	// ----------------------FOR TESTING--------------------------
+	// ----------------------FOR TESTING-------------------------------------
 	testing = false;
-	// -----------------------------------------------------------
+	// ----------------------------------------------------------------------
 	if (testing === true) {
 		console.log(`* * * TESTING = TRUE * * * `);
 		speed = 1; // test super fast
@@ -56,14 +49,6 @@ function resetGlobalVars() {
 	ballRadius = 10;
 	dx = speed;
 	dy = -1 * dx;
-	rightPressed = false;
-	leftPressed = false;
-	keyRowCount = 5;
-	keyColumnCount = 15;
-	keyPadding = 10;
-	keyOffsetTop = 30;
-	keyOffsetLeft = 30;
-	topRow = 100;
 	interval = "";
 	score = 0;
 	directionV = "north";
@@ -323,12 +308,6 @@ const preventDefaultKeys = {
 	Tab: true,
 	Enter: true,
 };
-
-// if (testing) {
-//   console.log(`* * * TESTING = TRUE * * * `);
-//   speed = 1; // test super fast
-//   lives = 2; // test
-// }
 
 // KEY_ARRAY = [];
 
