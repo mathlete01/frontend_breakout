@@ -44,7 +44,7 @@ gulp.task(
 
 gulp.task("images", async function () {
 	return await gulp
-		.src("app/images/**/*.+(png|jpg|jpeg|gif|svg)")
+		.src("assets/images/**/*.+(png|jpg|jpeg|gif|svg|ico)")
 		.pipe(
 			cache(
 				imagemin({
