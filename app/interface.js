@@ -50,8 +50,8 @@ function resetGlobalVars() {
 
 	if (testing === true) {
 		console.log(`* * * TESTING = TRUE * * * `);
-		speed = 1; // test super fast
-		lives = 1; // test
+		speed = 1; // speed up gameplay
+		lives = 1; // test gameplay then immediately test saving
 	} else  {
 		speed = 0.3; //normal
 		lives = 3; //normal
@@ -239,44 +239,19 @@ const row3 = [
 const row4 = [
 	{ name: "Function", code: "", row: 4, segments: 1, status: 0, position: 0 },
 	{
-		name: "Control",
-		code: "ControlLeft",
-		row: 4,
-		segments: 1,
-		status: 0,
-		position: 1,
+		name: "Control", code: "ControlLeft", row: 4, segments: 1, status: 0, position: 1,
 	},
 	{
-		name: "Alt",
-		code: "AltLeft",
-		row: 4,
-		segments: 1,
-		status: 0,
-		position: 2,
+		name: "Alt", code: "AltLeft", row: 4, segments: 1, status: 0, position: 2,
 	},
 	{
-		name: "⌘",
-		code: "MetaLeft",
-		row: 4,
-		segments: 1.5,
-		status: 0,
-		position: 3,
+		name: "⌘", code: "MetaLeft", row: 4, segments: 1.5, status: 0, position: 3,
 	},
 	{
-		name: "Space",
-		code: "Space",
-		row: 4,
-		segments: 5,
-		status: 0,
-		position: 4.5,
+		name: "Space", code: "Space", row: 4, segments: 5, status: 0, position: 4.5,
 	},
 	{
-		name: "⌘",
-		code: "MetaRight",
-		row: 4,
-		segments: 1.5,
-		status: 0,
-		position: 9.5,
+		name: "⌘", code: "MetaRight", row: 4, segments: 1.5, status: 0, position: 9.5,
 	},
 	{
 		name: "Alt",
