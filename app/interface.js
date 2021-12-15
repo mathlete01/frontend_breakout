@@ -23,6 +23,11 @@ var directionV;
 var directionH;
 var gameOn;
 
+//Force Redirect to use SSL, need to comment while doing local development
+if(window.location.protocol == 'http:'){
+	window.location.href = 'https://'+window.location.hostname;
+}
+
 resetGlobalVars();
 
 function resetGlobalVars() {
