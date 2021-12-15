@@ -23,25 +23,25 @@ var directionV;
 var directionH;
 var gameOn;
 
-//Force Redirect to use SSL, need to comment while doing local development
-if(window.location.protocol == 'http:'){
-	window.location.href = 'https://'+window.location.hostname;
-}
-
 resetGlobalVars();
 
 function resetGlobalVars() {
-	if (testing) {
-		console.log(`resetGlobalVars()`);
-	}
+
+	var host = window.location.hostname;
 	// ----------------------FOR TESTING-------------------------------------
-	testing = false;
+	testing = host.indexOf('localhost') > -1 ? true : false;
 	// ----------------------------------------------------------------------
+
+	//Force Redirect to use SSL, need to comment while doing local development
+	if(!testing && window.location.protocol == 'http:'){
+		window.location.href = 'https://'+host;
+	}
+
 	if (testing === true) {
 		console.log(`* * * TESTING = TRUE * * * `);
 		speed = 1; // test super fast
 		lives = 1; // test
-	} else if (testing === false) {
+	} else  {
 		speed = 0.3; //normal
 		lives = 3; //normal
 	}
