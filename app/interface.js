@@ -37,7 +37,7 @@ function resetGlobalVars() {
 		console.log(`resetGlobalVars()`);
 	}
 	// ----------------------FOR TESTING--------------------------
-	testing = true;
+	testing = false;
 	// -----------------------------------------------------------
 	if (testing === true) {
 		console.log(`* * * TESTING = TRUE * * * `);
