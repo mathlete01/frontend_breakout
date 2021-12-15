@@ -37,7 +37,7 @@ function resetGlobalVars() {
 		console.log(`resetGlobalVars()`);
 	}
 	// ----------------------FOR TESTING--------------------------
-	testing = false;
+	testing = true;
 	// -----------------------------------------------------------
 	if (testing === true) {
 		console.log(`* * * TESTING = TRUE * * * `);
@@ -355,6 +355,36 @@ const preventDefaultKeys = {
 
 document.addEventListener("DOMContentLoaded", (event) => {
 	// ----------------------Get Elements--------------------------
+	var contentAbout = "";
+	var contentHireMe = "";
+	function getContent() {
+		Promise.all([
+			fetch("/content/about.html").then((x) => x.text()),
+			fetch("/content/hireMe.html").then((x) => x.text()),
+		]).then(([about, hireMe]) => {
+			contentAbout = about;
+			contentHireMe = hireMe;
+		});
+	}
+
+	getContent();
+
+	var content = "placeholder";
+
+	function readTextFile(title) {
+		console.log(`readTextFile()`, title);
+		var rawFile = new XMLHttpRequest();
+		let file = `/content/${title}.html`;
+		rawFile.open("GET", file, true);
+		rawFile.onreadystatechange = function () {
+			if (rawFile.readyState === 4) {
+				if (rawFile.status === 200 || rawFile.status == 0) {
+					content = rawFile.responseText;
+				}
+			}
+		};
+		rawFile.send(null);
+	}
 
 	const aboutContent = `<p>
   QWERTYBall is the realization of an idea I had years ago that it
@@ -391,15 +421,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
 <p>-Matty</p>`;
 
 	const aboutNav = document.getElementById("aboutNav");
-	aboutNav.addEventListener("click", () =>
-		showModal("About", aboutContent, [
+	aboutNav.addEventListener("click", () => {
+		showModal("About", contentAbout, [
 			{
 				label: "Close",
 				onClick: (modal) => {},
 				// triggerClose: true,
 			},
-		])
-	);
+		]);
+	});
 
 	const hireMeContent = `
   <p>
@@ -438,8 +468,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   `;
 
 	const hireMeNav = document.getElementById("hireMeNav");
+
 	hireMeNav.addEventListener("click", () => {
-		showModal("Hire Me!", hireMeContent, [
+		showModal("Hire Me!", contentHireMe, [
 			{
 				label: "Close",
 				onClick: (modal) => {},
@@ -579,7 +610,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		}
 	}
 
-	function showModal(titleHtml, contentHtml, buttons) {
+	function showModal(titleHtml, content) {
 		if (testing) {
 			console.log(`showModal()`);
 		}
@@ -593,19 +624,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
             <span class="material-icons">close</span>
           </button>
         </div>
-        <div class="modal--content">${contentHtml}</div>
+        <div class="modal--content">${content}</div>
         <div class="modal--bottom"></div>
       </div>
     `;
-
-		for (const button of buttons) {
-			const element = document.createElement("button");
-
-			element.setAttribute("type", "button");
-			element.classList.add("modal--button");
-			element.textContent = button.label;
-			modal.querySelector(".modal--bottom").appendChild(element);
-		}
 
 		modal.querySelector(".modal--close").addEventListener("click", () => {
 			if (testing) {
