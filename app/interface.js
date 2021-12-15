@@ -849,7 +849,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		}
 
 		let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
-		keyObj.s = 1;
+		if (keyObj) keyObj.s = 1;
+
 		return false;
 	}
 
@@ -857,7 +858,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		// console.log("captureKeyUp()");
 		let keyReleased = ev.code;
 		let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
-		keyObj.s = 0;
+		if (keyObj) keyObj.s = 0;
 		return false;
 	}
 
