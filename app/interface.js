@@ -315,8 +315,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 	var contentHireMe = "";
 	function getContent() {
 		Promise.all([
-			fetch("/content/about.html").then((x) => x.text()),
-			fetch("/content/hireMe.html").then((x) => x.text()),
+			fetch("content/about.html").then((x) => x.text()),
+			fetch("content/hireMe.html").then((x) => x.text()),
 		]).then(([about, hireMe]) => {
 			contentAbout = about;
 			contentHireMe = hireMe;
