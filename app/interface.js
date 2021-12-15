@@ -1,3 +1,4 @@
+// ----------------------Declare Global Constants--------------------------
 const colorLight = "#dfdfdf";
 const colorDark = "#808080";
 const colorWhite = "#ffffff";
@@ -16,29 +17,21 @@ var ctx;
 var ballRadius;
 var dx;
 var dy;
-var rightPressed;
-var leftPressed;
-var keyRowCount;
-var keyColumnCount;
-var keyPadding;
-var keyOffsetTop;
-var keyOffsetLeft;
-var topRow;
 var interval;
 var score;
 var directionV;
 var directionH;
 var gameOn;
+
 resetGlobalVars();
 
-// ---------------------GLOBAL VARIABLES ---------------------
 function resetGlobalVars() {
 	if (testing) {
 		console.log(`resetGlobalVars()`);
 	}
-	// ----------------------FOR TESTING--------------------------
+	// ----------------------FOR TESTING-------------------------------------
 	testing = false;
-	// -----------------------------------------------------------
+	// ----------------------------------------------------------------------
 	if (testing === true) {
 		console.log(`* * * TESTING = TRUE * * * `);
 		speed = 1; // test super fast
@@ -56,14 +49,6 @@ function resetGlobalVars() {
 	ballRadius = 10;
 	dx = speed;
 	dy = -1 * dx;
-	rightPressed = false;
-	leftPressed = false;
-	keyRowCount = 5;
-	keyColumnCount = 15;
-	keyPadding = 10;
-	keyOffsetTop = 30;
-	keyOffsetLeft = 30;
-	topRow = 100;
 	interval = "";
 	score = 0;
 	directionV = "north";
@@ -323,33 +308,6 @@ const preventDefaultKeys = {
 	Tab: true,
 	Enter: true,
 };
-
-// if (testing) {
-//   console.log(`* * * TESTING = TRUE * * * `);
-//   speed = 1; // test super fast
-//   lives = 2; // test
-// }
-
-// KEY_ARRAY = [];
-
-//Exceptions: function,command+spacebar, command+tab
-
-// hotkeys(
-//   "command+`,command+1,command+2,command+3,command+4,command+5,command+6,command+7,command+8,command+9,command+0,command+-,command+=,command+delete,command+tab,command+q,command+w,command+e,command+r,command+t,command+y,command+u,command+i,command+o,command+p,command+[,command+],command+\\,command+capslock,command+a,command+s,command+d,command+f,command+g,command+h,command+j,command+k,command+l,command+;,command+',command+enter,command+shift,command+z,command+x,command+c,command+v,command+b,command+n,command+m,command+,,command+.,command+/,command+crtl,command+option,command+left,command+right,command+up,command+down,ctrl+`,ctrl+1,ctrl+2,ctrl+3,ctrl+4,ctrl+5,ctrl+6,ctrl+7,ctrl+8,ctrl+9,ctrl+0,ctrl+-,ctrl+=,ctrl+delete,ctrl+tab,ctrl+q,ctrl+w,ctrl+e,ctrl+r,ctrl+t,ctrl+y,ctrl+u,ctrl+i,ctrl+o,ctrl+p,ctrl+[,ctrl+],ctrl+\\,ctrl+capslock,ctrl+a,ctrl+s,ctrl+d,ctrl+f,ctrl+g,ctrl+h,ctrl+j,ctrl+k,ctrl+l,ctrl+;,ctrl+',ctrl+enter,ctrl+shift,ctrl+z,ctrl+x,ctrl+c,ctrl+v,ctrl+b,ctrl+n,ctrl+m,ctrl+,,ctrl+.,ctrl+/,ctrl+crtl,ctrl+option,ctrl+left,ctrl+right,ctrl+up,ctrl+down,option+`,option+1,option+2,option+3,option+4,option+5,option+6,option+7,option+8,option+9,option+0,option+-,option+=,option+delete,option+tab,option+q,option+w,option+e,option+r,option+t,option+y,option+u,option+i,option+o,option+p,option+[,option+],option+\\,option+capslock,option+a,option+s,option+d,option+f,option+g,option+h,option+j,option+k,option+l,option+;,option+',option+enter,option+shift,option+z,option+x,option+c,option+v,option+b,option+n,option+m,option+,,option+.,option+/,option+crtl,option+option,option+left,option+right,option+up,option+down",
-//   function () {
-//     //alert('stopped it!');
-//     releaseAllKeys(KEY_ARRAY);
-//     //return false;
-//   }
-// );
-
-//Trying out with the event handler and returning false
-// hotkeys('option+\\,command+left,command+=,command+-,command+9,command+8,command+5,command+4,command+3,command+2,command+tab,command+q,command+w,command+e,command+r,command+t,command+y,command+u,command+i,command+o,command+p,command+[,command+],command+\\,command+a,command+s,command+d,command+f,command+g,command+h,command+j,command+k,command+l,command+;,command+\',command+enter,command+z,command+x,command+c,command+v,command+b,command+n,command+m,command+,,command+.,command+/,command+', function(event,handler) {
-//   //alert('stopped it!');
-//   event.preventDefault()
-//   releaseAllKeys(KEY_ARRAY)
-//   //return false;
-// });
 
 document.addEventListener("DOMContentLoaded", (event) => {
 	// ----------------------Get Elements--------------------------
