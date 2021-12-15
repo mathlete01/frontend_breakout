@@ -73,11 +73,17 @@ gulp.task("useref", async function () {
 		.pipe(gulp.dest("dist"));
 });
 
+//Copy Files from folder
+gulp.task("copyFiles", async ()=>{
+	return await 
+	gulp.src(['app/content/**/*']).pipe(gulp.dest('dist/content'));
+})
+
 // Build The outcome
 
 gulp.task(
 	"build",
-	gulp.series("clean", "sass", "js", "useref", "images", function (done) {
+	gulp.series("clean", "sass", "js", "useref", "images", "copyFiles", function (done) {
 		done();
 	})
 );
