@@ -42,7 +42,7 @@ function resetGlobalVars() {
 	if (testing === true) {
 		console.log(`* * * TESTING = TRUE * * * `);
 		speed = 1; // test super fast
-		lives = 2; // test
+		lives = 1; // test
 	} else if (testing === false) {
 		speed = 0.3; //normal
 		lives = 3; //normal
@@ -75,14 +75,12 @@ const BASE_URL = "https://evening-hollows-06706.herokuapp.com";
 const PLAYERS_URL = `${BASE_URL}/players`;
 const GAMES_URL = `${BASE_URL}/games`;
 const leaderboard = document.getElementById("leaderboard");
-// const browser = navigator.appName;
-// const platform = navigator.platform;
 const colorKeyDownStroke = colorBlack;
 const colorKeyDownFill = colorBlack;
 const colorKeyFontDown = colorWhite;
 const colorKeyGrayFill = colorDark;
-const colorBallFill = colorBlack; //red
-const colorBallStroke = colorBlack; //green
+const colorBallFill = colorBlack;
+const colorBallStroke = colorBlack;
 const strokeThickness = 1;
 const livesText = document.getElementById("livesText");
 const scoreText = document.getElementById("scoreText");
@@ -376,7 +374,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 			{
 				label: "Close",
 				onClick: (modal) => {},
-				// triggerClose: true,
 			},
 		]);
 	});
@@ -388,7 +385,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 			{
 				label: "Close",
 				onClick: (modal) => {},
-				// triggerClose: true,
 			},
 		]);
 	});
@@ -462,12 +458,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 		// Play an 'D3' just as the previous note finishes, that lasts for 0.232 seconds
 		playNote(146.832, context.currentTime + 0.232, 0.232, "square");
-	}
-
-	function soundPress() {
-		// console.log(`soundPress()`);
-		// Play a 'B2' now that lasts for 0.116 seconds
-		playNote(123.471, context.currentTime, 0.116, "square");
 	}
 
 	function soundNext() {
@@ -587,7 +577,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		skipButton.setAttribute("type", "button");
 		skipButton.classList.add("modal--button");
 		skipButton.textContent = "Skip This";
-		// skipButton.addEventListener("click", () => skip());
 		skipButton.addEventListener("click", () => {
 			if (testing) {
 				console.log(`showSaveModal: skip`);
@@ -795,7 +784,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		keyWidth = w / keySegments;
 		keyHeight = keyWidth;
 		renderGameboard();
-		// initializeWindowListener();
 	}
 
 	function resizeCanvas() {
@@ -814,7 +802,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		drawKeysDown(KEY_ARRAY);
 	}
 
-	// initializeCanvas();
 	initializeWindowListener();
 
 	// ----------------------Start Game--------------------------
@@ -897,7 +884,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 	function captureKeyDown(ev) {
 		// console.log("captureKeyDown()");
-		//ev.preventDefault();
 		let keyPressed = ev.code;
 
 		if (preventDefaultKeys[keyPressed]) {
@@ -906,13 +892,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 		let keyObj = KEY_ARRAY.find(({ code }) => code === keyPressed);
 		keyObj.s = 1;
-		// soundPress();
 		return false;
 	}
 
 	function captureKeyUp(ev) {
 		// console.log("captureKeyUp()");
-		//ev.preventDefault();
 		let keyReleased = ev.code;
 		let keyObj = KEY_ARRAY.find(({ code }) => code === keyReleased);
 		keyObj.s = 0;
@@ -1001,7 +985,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 				}
 				// If ball is within the vertical bounds of the key
 				if (y > topSide - ballDiameter && y < bottomSide + ballDiameter) {
-					//if ball is traveling EAST and overlaps LEFT side
+					// if ball is traveling EAST and overlaps LEFT side
 					if (
 						x > leftSide - ballDiameter &&
 						x < leftSide + ballDiameter &&
@@ -1011,7 +995,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 						toggleDirectionH();
 						scorePoint();
 					}
-					//if ball is traveling WEST and overlaps RIGHT side
+					// if ball is traveling WEST and overlaps RIGHT side
 					if (
 						x > rightSide - ballDiameter &&
 						x < rightSide + ballDiameter &&
@@ -1024,7 +1008,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 				}
 				// If ball is within the horizontal bounds of the key
 				if (x > leftSide - ballDiameter && x < rightSide + ballDiameter) {
-					//if ball is traveling SOUTH and overlaps TOP side
+					// if ball is traveling SOUTH and overlaps TOP side
 					if (
 						y > topSide - ballDiameter &&
 						y < topSide + ballDiameter &&
@@ -1034,7 +1018,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 						toggleDirectionV();
 						scorePoint();
 					}
-					//if ball is traveling NORTH and overlaps BOTTOM side
+					// if ball is traveling NORTH and overlaps BOTTOM side
 					if (
 						y > bottomSide - ballDiameter &&
 						y < bottomSide + ballDiameter &&
@@ -1051,7 +1035,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 	function drawSingleKeyGray(name, code, keyX, keyY, keyWidth, keyHeight) {
 		// console.log("drawSingleKeyDown()");
-		//console.log(`Drawing = ${name}`)
+		// console.log(`Drawing = ${name}`)
 		ctx.beginPath();
 		ctx.rect(keyX, keyY, keyWidth, keyHeight);
 		ctx.strokeStyle = colorKeyDownStroke;
@@ -1148,9 +1132,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		soundGameOver();
 		clearInterval(interval);
 		interval = "";
-		// console.log(
-		//   `endGame: CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`
-		// );
+		// console.log(`endGame: CURRENT_GAME = ${CURRENT_GAME}, CURRENT_PLAYER = ${CURRENT_PLAYER}`);
 		preSaveOrNot();
 	}
 
@@ -1197,7 +1179,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		if (score > 0) {
 			showSaveModal();
 		} else {
-			// document.location.reload();
 			skip();
 		}
 	}
@@ -1206,7 +1187,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		if (testing) {
 			console.log(`skip()`);
 		}
-		// document.location.reload();
 		reloadGame();
 	}
 	// ----------------------Save Player--------------------------
@@ -1254,7 +1234,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 		fetch(GAMES_URL, configOb)
 			.then((res) => res.json())
-			// .then(() => document.location.reload())
 			.then(() => reloadGame())
 			.catch((errors) => console.log(`updateGame: ${errors}`));
 	}
@@ -1268,9 +1247,5 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		leaderboard.innerHTML = "";
 	}
 
-	// ---------------------------------------------------
 	initializeCanvas();
-	// getLeaderboard();
-	// drawScore();
-	// drawLives();
 });
