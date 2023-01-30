@@ -318,12 +318,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		});
 	}
 
-	//getContent();
+	getContent();
 
 	const aboutNav = document.getElementById("aboutNav");
 
 	aboutNav.addEventListener("click", () => {
-		showModal("About", contentAbout, [
+		showModal("About!", contentAbout, [
 			{
 				label: "Close",
 				onClick: (modal) => {},
