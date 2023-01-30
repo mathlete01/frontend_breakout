@@ -8,7 +8,8 @@ const canvas = document.getElementById("myCanvas");
 var colorKeyUpStroke;
 var colorKeyUpFill;
 var colorKeyFontUp;
-var testing = false;
+//var testing = false;
+var testing = true;
 var speed;
 var lives;
 var scoreNote1;
@@ -314,7 +315,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		});
 	}
 
-	getContent();
+	//getContent();
 
 	const aboutNav = document.getElementById("aboutNav");
 
