@@ -16,7 +16,7 @@ QWERTYBall was built on Ruby 2.6.1 and uses npm to install node modules. You'll 
 6. Enter `rails db:migrate` to run the database migrations.
 7. Start the application by entering `rails s`.
 8. `cd ..` to get back into the `keyboard_breakout` directory.
-9. Finally, `cd` into the `frontend_breakout_api` directory and enter `open index.html` to see it running.
+9. Finally, `cd` into the `frontend_breakout_api` directory and enter `open app/index.html` to see it running.
 
 #### Using the app
 
