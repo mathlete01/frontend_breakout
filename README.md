@@ -28,3 +28,4 @@ QWERTYBall was built on Ruby 2.6.1 and uses npm to install node modules. You'll 
 #### Game Architecture
 
 ![QWERTYBall Architecture](https://github.com/mathlete01/frontend_breakout/raw/main/assets/images/QWERTYBall_Architecture.png)
+
