@@ -55,6 +55,7 @@ function resetGlobalVars() {
 		console.log(`* * * TESTING = TRUE * * * `);
 		speed = 1; // speed up gameplay
 		lives = 1; // test gameplay then immediately test saving
+		BASE_URL = 'http://localhost:3000';
 	} else  {
 		speed = 0.3; //normal
 		lives = 3; //normal
@@ -73,7 +74,7 @@ function resetGlobalVars() {
 	directionV = "north";
 	directionH = "east";
 	gameOn = false;
-	BASE_URL = process.env.BASE_URL;
+
 }
 //------------------------------------------
 
