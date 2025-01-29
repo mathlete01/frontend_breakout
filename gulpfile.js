@@ -1,6 +1,6 @@
 var gulp = require("gulp");
 var browserSync = require("browser-sync").create();
-var sass = require("gulp-sass")(require("node-sass"));
+var sass = require("gulp-sass")(require("sass"));
 var del = require("del");
 var useref = require("gulp-useref");
 var cache = require("gulp-cache");
@@ -74,18 +74,25 @@ gulp.task("useref", async function () {
 });
 
 //Copy Files from folder
-gulp.task("copyFiles", async ()=>{
-	return await 
-	gulp.src(['app/content/**/*']).pipe(gulp.dest('dist/content'));
-})
+gulp.task("copyFiles", async () => {
+	return await gulp.src(["app/content/**/*"]).pipe(gulp.dest("dist/content"));
+});
 
 // Build The outcome
 
 gulp.task(
 	"build",
-	gulp.series("clean", "sass", "js", "useref", "images", "copyFiles", function (done) {
-		done();
-	})
+	gulp.series(
+		"clean",
+		"sass",
+		"js",
+		"useref",
+		"images",
+		"copyFiles",
+		function (done) {
+			done();
+		}
+	)
 );
 
 gulp.task("default", gulp.series("serve"));

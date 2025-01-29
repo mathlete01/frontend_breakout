@@ -13,10 +13,12 @@ QWERTYBall was built on Ruby 2.6.1 and uses npm to install node modules. You'll 
 3. `cd` into the `frontend_breakout` directory and run `npm install` to install all the required module.
 4. `cd ..` once they're installed to get back into the `keyboard_breakout` directory.
 5. `cd` into the `backend_breakout_api` directory and run `npm install` to install all the required module.
-6. Enter `rails db:migrate` to run the database migrations.
+6. Enter `rails db:migrate` to run the database migrations. If there's no rails database, create it using `rails db:create`
+   6b. If you get the error that your Ruby version doesn't match the one specified by your Gemfile, then run rbenv to install the required version.
 7. Start the application by entering `rails s`.
 8. `cd ..` to get back into the `keyboard_breakout` directory.
-9. Finally, `cd` into the `frontend_breakout_api` directory and enter `open app/index.html` to see it running.
+   8b. Navigate to the main project directory and run 'http-server'
+9. Finally, `cd` into the `frontend_breakout_api` directory and enter `open http://localhost:8080/app/index.html` to see it running.
 
 #### Using the app
 
@@ -28,4 +30,3 @@ QWERTYBall was built on Ruby 2.6.1 and uses npm to install node modules. You'll 
 #### Game Architecture
 
 ![QWERTYBall Architecture](https://github.com/mathlete01/frontend_breakout/raw/main/assets/images/QWERTYBall_Architecture.png)
-
